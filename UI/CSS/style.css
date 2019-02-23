@@ -41,6 +41,16 @@ span {
   height: 100%;
 }
 
+/** display login form*/
+.login {
+  display: block;
+}
+
+/** hide register form*/
+.register {
+  display: none;
+}
+
 .sub_header {
   padding: 5px;
   font-size: 16px;
@@ -102,7 +112,8 @@ hr {
 }
 /**#ffaf30;**/
 /* Set a style for the submit/login button */
-.loginbtn {
+.loginbtn,
+.registerbtn {
   background-color: #1433c4;
   color: white;
   padding: 16px 20px;
@@ -114,7 +125,12 @@ hr {
   border-radius: 3px;
 }
 
-.loginbtn:hover {
+.actionbtn {
+  cursor: pointer;
+  color: #1433c4;
+}
+.loginbtn:hover,
+.registerbtn:hover {
   opacity: 1;
 }
 
