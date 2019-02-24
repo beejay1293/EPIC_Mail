@@ -64,13 +64,13 @@ span {
   padding-bottom: 155px;
   border: 1.5px solid #eee;
   border-radius: 5px;
-  height: 100%;
+  height: calc(100vh);
 }
 /* sets wrapper to a width of 70% and addd a background image */
 .wrapper {
   width: 70%;
   background: url("../images/mails.jpg") no-repeat center/cover;
-  min-height: 100%;
+  height: calc(100vh);
 }
 
 /* Add padding to login_container */
