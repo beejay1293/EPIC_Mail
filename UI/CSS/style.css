@@ -19,6 +19,7 @@ body {
   font-size: 14px;
   line-height: 1.4286;
   height: 100%;
+  color: #393e46;
 }
 
 /** sets the style Mail in EPIC Mail */
@@ -30,7 +31,7 @@ body {
 span {
   color: #ffaf30;
   font-family: "Encode Sans Condensed", sans-serif;
-  font-size: 0.97em;
+  font-size: 0.99em;
   font-weight: bolder;
 }
 
@@ -79,7 +80,8 @@ span {
 
 /* Full-width input fields */
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -91,7 +93,8 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+textarea:focus {
   background-color: #ddd;
 }
 
@@ -147,4 +150,379 @@ a {
   .login__wrapper {
     width: 100%;
   }
+}
+
+/** user dashboard styling */
+
+.header__container {
+  width: 100%;
+  display: flex;
+  padding: 0px 30px;
+  justify-content: space-between;
+  background: #eee;
+  position: fixed;
+}
+
+.logo {
+  width: 50%;
+}
+
+.navbar {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 90p 10px;
+  font-family: "sarabun";
+  font-weight: bolder;
+  font-weight: 5em;
+  font-size: 20px;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 20px;
+  text-align: right;
+}
+
+.navbar ul li {
+  display: inline;
+  margin: 0 20px;
+}
+
+.main {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px;
+
+  min-height: calc(100vh);
+}
+
+.nav {
+  width: 15%;
+  padding: 10px 10px 0px 0px;
+  box-sizing: border-box;
+  background: #f4f4f4;
+  min-height: calc(100vh);
+  min-width: 110px;
+  position: fixed;
+  margin-top: 68px;
+}
+
+/**background: url("../images/mail-bg.png") no-repeat center/cover;*/
+.main__body {
+  width: 85%;
+  background: #f4f4f4;
+  min-height: 100%;
+  padding: 100px 10px 10px 10px;
+  box-sizing: border-box;
+  margin-left: 15%;
+}
+
+.visible1 {
+  width: 15%;
+  padding: 10px 10px 0px 0px;
+  box-sizing: border-box;
+  background: #f4f4f4;
+  min-height: calc(100vh);
+  min-width: 110px;
+  position: fixed;
+  margin-top: 68px;
+}
+
+/**background: url("../images/mail-bg.png") no-repeat center/cover;*/
+.visible {
+  width: 85%;
+  background: #f4f4f4;
+  min-height: 100%;
+  padding: 100px 10px 10px 10px;
+  box-sizing: border-box;
+  margin-left: 15%;
+}
+
+.bars {
+  display: none;
+}
+
+@media only screen and (max-width: 442px) {
+  .nav {
+    display: none;
+  }
+
+  .main__body {
+    margin-left: 0%;
+    width: 100%;
+  }
+
+  .bars {
+    display: inline-block;
+  }
+
+  .visible1 {
+    width: 15%;
+    padding: 10px 10px 0px 0px;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    min-width: 110px;
+    position: fixed;
+    margin-top: 100px;
+    display: block;
+  }
+
+  .visible {
+    width: 85%;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    padding: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    margin-left: 100px;
+    margin-top: 100px;
+  }
+}
+
+@media only screen and (min-width: 443px) {
+  .nav {
+    display: block;
+  }
+  .visible1 {
+    width: 15%;
+    padding: 10px 10px 0px 0px;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    min-width: 110px;
+    position: fixed;
+    margin-top: 68px;
+  }
+
+  /**background: url("../images/mail-bg.png") no-repeat center/cover;*/
+  .visible {
+    width: 85%;
+    background: #f4f4f4;
+    min-height: 100%;
+    padding: 100px 10px 10px 10px;
+    box-sizing: border-box;
+    margin-left: 15%;
+  }
+}
+
+.compose {
+  padding: 20px;
+}
+
+.compose__message_wrapper {
+  text-align: center;
+  padding: 10px 5px;
+}
+
+.compose__message_btn {
+  border-radius: 20px;
+  padding: 10px;
+  background: #ffaf30;
+
+  text-align: center;
+  color: #393e46;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: "Sarabun";
+  font-weight: bolder;
+  border: 2px solid #d4d0d0;
+}
+
+.compose__message_btn:hover {
+  opacity: 0.9;
+  box-shadow: 3px 8px 10px inset #eee;
+  transform: scale(1.05, 1.05);
+  transition: transform 0.3s linear;
+}
+
+.nav2 ul li {
+  margin-bottom: 10px;
+  border-radius: 0 70px 70px 0;
+  background: #eee;
+  padding: 10px 10px;
+  font-family: "Encode Sans Condensed", sans-serif;
+  font-size: 1.2em;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.nav2 ul li:hover {
+  opacity: 0.4;
+  background: #6272b8;
+}
+
+/* @media only screen and (max-width: 400px) {
+  .bars {
+    display: inline-block;
+  }
+
+  
+  .nav {
+    width: 0%;
+    padding: 10px 10px 0px 0px;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    min-width: 110px;
+    position: fixed;
+    margin-top: 98px;
+    display: none;
+  }
+
+  .main__body {
+    width: 100%;
+    background: #f4f4f4;
+    min-height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .visible1 {
+    width: 15%;
+    padding: 10px 10px 0px 0px;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    min-width: 110px;
+    position: fixed;
+    margin-top: 138px;
+    display: block;
+  }
+
+  .visible {
+    width: 100%;
+    background: #f4f4f4;
+    min-height: 100%;
+    padding: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    margin-left: 100px;
+    margin-top: 100px;
+  }
+} */
+
+.main__body ul,
+.visible ul {
+  list-style-type: none;
+  margin: 20px;
+}
+
+.main__body ul li {
+  display: inline-block;
+  margin: 10 10px;
+  padding: 20px;
+  border-radius: 40px;
+  background: #eee;
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+}
+
+.visible ul li {
+  display: inline-block;
+  margin: 10 10px;
+  padding: 20px;
+  border-radius: 40px;
+  background: #eee;
+  width: 80%;
+  display: flex;
+  margin-top: 20px;
+}
+
+.name {
+  width: 20%;
+}
+.message {
+  width: 60%;
+}
+.time {
+  width: 20%;
+}
+.main__body ul li:hover {
+  opacity: 0.7;
+  background: #f4f4f4;
+  cursor: pointer;
+  border: 1px solid #888;
+}
+/* @media only screen and (min-width: 400px) {
+  .visible1 {
+    width: 15%;
+    padding: 100px 10px 0px 0px;
+    box-sizing: border-box;
+    background: #f4f4f4;
+    min-height: calc(100vh);
+    min-width: 110px;
+    display: block;
+  }
+
+  .visible {
+    width: 85%;
+    background: #f4f4f4;
+    min-height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+} */
+/* add overlay */
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  text-align: center;
+}
+
+.message_container {
+  width: 40%;
+  padding: 20px;
+  background: #f1f1f1;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
+.message_wrapper ul {
+  list-style-type: none;
+  display: flex;
+  width: 100%;
+}
+
+.message_wrapper ul li {
+  list-style-type: none;
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.clear__overlay {
+  color: red;
+  font-family: "Sarabun";
+  font-weight: bolder;
+  font-size: 25px;
+}
+
+.message_container input[type="text"],
+.message_container input[type="password"],
+.message_container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: 2px solid rgba(110, 108, 108, 0.5);
+  background: rgba(223, 217, 217, 0.5);
+  border-radius: 5px;
+  transition: 1s;
+}
+
+.message_container input[type="text"]:focus,
+.message_container input[type="password"]:focus,
+textarea:focus {
+  background-color: #ddd;
 }
