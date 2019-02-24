@@ -17,8 +17,9 @@ body {
   font-size: 100%;
   line-height: 1.2;
   font-size: 14px;
-  line-height: 1.4286;
+
   color: #393e46;
+  height: calc(100vh);
 }
 
 /** sets the style Mail in EPIC Mail */
@@ -84,7 +85,7 @@ input[type="tel"],
 input[type="email"],
 textarea {
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
