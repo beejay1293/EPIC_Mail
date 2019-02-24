@@ -218,7 +218,7 @@ a {
   min-height: calc(100vh);
   min-width: 110px;
   position: fixed;
-  margin-top: 68px;
+  margin-top: 64px;
 }
 
 /**background: url("../images/mail-bg.png") no-repeat center/cover;*/
