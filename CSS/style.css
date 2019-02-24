@@ -81,6 +81,8 @@ span {
 /* Full-width input fields */
 input[type="text"],
 input[type="password"],
+input[type="tel"],
+input[type="email"],
 textarea {
   width: 100%;
   padding: 15px;
@@ -94,7 +96,8 @@ textarea {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-textarea:focus {
+input[type="tel"]:focus,
+input[type="email"]:focus textarea:focus {
   background-color: #ddd;
 }
 
@@ -105,7 +108,8 @@ hr {
 }
 /**#ffaf30;**/
 /* Set a style for the submit/login button */
-.loginbtn {
+.loginbtn,
+.registerbtn {
   background-color: #1433c4;
   color: white;
   padding: 16px 20px;
@@ -115,6 +119,15 @@ hr {
   width: 100%;
   opacity: 0.9;
   border-radius: 3px;
+}
+
+.actionbtn {
+  color: #1433c4;
+  cursor: pointer;
+}
+
+.register {
+  display: none;
 }
 
 .loginbtn:hover {
