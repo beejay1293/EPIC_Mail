@@ -17,9 +17,9 @@ body {
   font-size: 100%;
   line-height: 1.2;
   font-size: 14px;
-  line-height: 1.4286;
-  height: 100%;
+
   color: #393e46;
+  height: calc(100vh);
 }
 
 /** sets the style Mail in EPIC Mail */
@@ -39,16 +39,7 @@ span {
 .container {
   width: 100%;
   display: flex;
-}
-
-/** display login form*/
-.login {
-  display: block;
-}
-
-/** hide register form*/
-.register {
-  display: none;
+  height: 100%;
 }
 
 .sub_header {
@@ -67,21 +58,19 @@ span {
 /*  set login__wrapper to a width of 30% */
 .login__wrapper {
   width: 30%;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   margin: 0 auto;
+
   border: 1.5px solid #eee;
   border-radius: 5px;
-  padding-bottom: 258px;
+
+  padding-bottom: 288px;
 }
 /* sets wrapper to a width of 70% and addd a background image */
 .wrapper {
   width: 70%;
   background: url("../images/mails.jpg") no-repeat center/cover;
-}
-
-.pad {
-  padding-bottom: 19px;
 }
 
 /* Add padding to login_container */
@@ -92,11 +81,11 @@ span {
 /* Full-width input fields */
 input[type="text"],
 input[type="password"],
-textarea
+input[type="tel"],
 input[type="email"],
-input[type="tel"] {
+textarea {
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
@@ -107,9 +96,8 @@ input[type="tel"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-textarea:focus 
-input[type="email"]:focus,
-input[type="tel"]:focus {
+input[type="tel"]:focus,
+input[type="email"]:focus textarea:focus {
   background-color: #ddd;
 }
 
@@ -118,6 +106,7 @@ hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
+
 /**#ffaf30;**/
 /* Set a style for the submit/login button */
 .loginbtn,
@@ -134,11 +123,15 @@ hr {
 }
 
 .actionbtn {
-  cursor: pointer;
   color: #1433c4;
+  cursor: pointer;
 }
-.loginbtn:hover,
-.registerbtn:hover {
+
+.register {
+  display: none;
+}
+
+.loginbtn:hover {
   opacity: 1;
 }
 
@@ -182,6 +175,7 @@ a {
   justify-content: space-between;
   background: #eee;
   position: fixed;
+  border-bottom: 1px solid rgb(180, 174, 174);
 }
 
 .logo {
@@ -226,17 +220,35 @@ a {
   min-height: calc(100vh);
   min-width: 110px;
   position: fixed;
-  margin-top: 68px;
+  margin-top: 64px;
+  border-right: 1px solid rgb(180, 174, 174);
+  margin-right: 12px;
 }
 
-/**background: url("../images/mail-bg.png") no-repeat center/cover;*/
 .main__body {
   width: 85%;
   background: #f4f4f4;
   min-height: 100%;
-  padding: 100px 10px 10px 10px;
+  padding: 90px 10px 10px 10px;
   box-sizing: border-box;
   margin-left: 15%;
+  overflow: auto;
+}
+
+.inbox__body {
+  display: block;
+}
+
+.sent__body {
+  display: none;
+}
+
+.draft__body {
+  display: none;
+}
+
+.starred__body {
+  display: none;
 }
 
 .visible1 {
@@ -248,6 +260,7 @@ a {
   min-width: 110px;
   position: fixed;
   margin-top: 68px;
+  border-right: 1px solid rgb(180, 174, 174);
 }
 
 /**background: url("../images/mail-bg.png") no-repeat center/cover;*/
@@ -286,8 +299,9 @@ a {
     min-height: calc(100vh);
     min-width: 110px;
     position: fixed;
-    margin-top: 100px;
+    margin-top: 88px;
     display: block;
+    margin-right: 18px;
   }
 
   .visible {
@@ -297,7 +311,7 @@ a {
     padding: 10px 10px 10px 10px;
     box-sizing: border-box;
     margin-left: 100px;
-    margin-top: 100px;
+    margin-top: 88px;
   }
 }
 
@@ -373,11 +387,15 @@ a {
   background: #6272b8;
 }
 
+.nav2 ul li.active {
+  opacity: 1;
+  background: #6272b8;
+}
+
 /* @media only screen and (max-width: 400px) {
   .bars {
     display: inline-block;
   }
-
   
   .nav {
     width: 0%;
@@ -390,7 +408,6 @@ a {
     margin-top: 98px;
     display: none;
   }
-
   .main__body {
     width: 100%;
     background: #f4f4f4;
@@ -398,7 +415,6 @@ a {
     padding: 10px;
     box-sizing: border-box;
   }
-
   .visible1 {
     width: 15%;
     padding: 10px 10px 0px 0px;
@@ -410,7 +426,6 @@ a {
     margin-top: 138px;
     display: block;
   }
-
   .visible {
     width: 100%;
     background: #f4f4f4;
@@ -431,8 +446,8 @@ a {
 .main__body ul li {
   display: inline-block;
   margin: 10 10px;
-  padding: 20px;
-  border-radius: 40px;
+  padding: 10px;
+  border-radius: 20px;
   background: #eee;
   width: 100%;
   display: flex;
@@ -475,7 +490,6 @@ a {
     min-width: 110px;
     display: block;
   }
-
   .visible {
     width: 85%;
     background: #f4f4f4;
