@@ -77,7 +77,7 @@ starredButton.addEventListener("click", () => {
   starredBody.style.display = "block";
   draftBody.style.display = "none";
   sentBody.style.display = "none";
-  inbox.style.display = "none";
+  inboxBody.style.display = "none";
 });
 
 window.onload = () => {
