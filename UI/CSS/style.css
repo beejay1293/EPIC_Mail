@@ -109,7 +109,7 @@ input[type="email"]:focus textarea:focus {
 
 /* Overwrite default styles of hr */
 hr {
-  border: 1px solid #f1f1f1;
+  border: 1px solid #eee;
   margin-bottom: 25px;
 }
 
@@ -694,4 +694,40 @@ a {
 .message_container input[type="password"]:focus,
 textarea:focus {
   background-color: #ddd;
+}
+
+.read__email {
+  display: none;
+  padding: 17px;
+}
+
+.subject__wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.subject {
+  width: 60%;
+}
+
+.time__created {
+  width: 40%;
+}
+
+.users {
+  margin-bottom: 25px;
+}
+.message__body {
+  padding-right: 40%;
+  margin-bottom: 25px;
+}
+
+.epic {
+  display: inline-block;
+}
+
+.from {
+  display: inline-block;
 }
