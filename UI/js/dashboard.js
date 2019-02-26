@@ -1,12 +1,5 @@
-const bars = document.querySelector(".bars");
-const navbar = document.querySelector(".nav");
 const messageBody = document.querySelector(".main__body");
-const composeMessage = document.querySelector(".compose__message_btn");
 const overlay = document.querySelector(".overlay");
-const clearOverlay = document.querySelector(".clear__overlay");
-const inbox = document.querySelector(".inbox");
-const sent = document.querySelector(".sent");
-const draft = document.querySelector(".draft");
 const inboxButton = document.querySelector(".inbox__btn");
 const draftButton = document.querySelector(".draft__btn");
 const sentButton = document.querySelector(".sent__btn");
@@ -15,69 +8,94 @@ const sentBody = document.querySelector(".sent__body");
 const inboxBody = document.querySelector(".inbox__body");
 const draftBody = document.querySelector(".draft__body");
 const starredBody = document.querySelector(".starred__body");
+const topNav = document.querySelector(".top__nav");
 
-bars.addEventListener("click", () => {
-  navbar.classList.toggle("nav");
-  navbar.classList.toggle("visible1");
+document.addEventListener("click", e => {
+  if (e.target.parentNode.className == "draft__message") {
+    overlay.style.display = "block";
+  }
 
-  messageBody.classList.toggle("main__body");
-  messageBody.classList.toggle("visible");
-});
+  if (
+    e.target.className == "top_nav_inbox__btn" ||
+    e.target.className == "top_nav_sent__btn" ||
+    e.target.className == "top_nav_draft__btn" ||
+    e.target.className == "top_nav_starred__btn"
+  ) {
+    topNav.classList.toggle("top__navs");
+    messageBody.classList.toggle("main__body__height");
+  }
 
-composeMessage.addEventListener("click", () => {
-  overlay.style.display = "block";
-});
+  if (e.target.className == "fas fa-bars") {
+    topNav.classList.toggle("top__navs");
+    messageBody.classList.toggle("main__body__height");
+  }
 
-clearOverlay.addEventListener("click", () => {
-  overlay.style.display = "none";
-});
+  if (e.target.className == "compose__message_btn") {
+    overlay.style.display = "block";
+  }
 
-inboxButton.addEventListener("click", () => {
-  draftButton.classList.remove("active");
-  sentButton.classList.remove("active");
-  starredButton.classList.remove("active");
-  inboxButton.classList.add("active");
+  if (e.target.className == "clear__overlay") {
+    overlay.style.display = "none";
+  }
+  if (
+    e.target.className == "inbox__btn" ||
+    e.target.className == "top_nav_inbox__btn"
+  ) {
+    draftButton.classList.remove("active");
+    sentButton.classList.remove("active");
+    starredButton.classList.remove("active");
+    inboxButton.classList.add("active");
 
-  inboxBody.style.display = "block";
-  draftBody.style.display = "none";
-  sentBody.style.display = "none";
-  starredBody.style.display = "none";
-});
+    inboxBody.style.display = "block";
+    draftBody.style.display = "none";
+    sentBody.style.display = "none";
+    starredBody.style.display = "none";
+  }
 
-sentButton.addEventListener("click", () => {
-  draftButton.classList.remove("active");
-  inboxButton.classList.remove("active");
-  starredButton.classList.remove("active");
-  sentButton.classList.add("active");
+  if (
+    e.target.className == "draft__btn" ||
+    e.target.className == "top_nav_draft__btn"
+  ) {
+    inboxButton.classList.remove("active");
+    sentButton.classList.remove("active");
+    starredButton.classList.remove("active");
+    draftButton.classList.add("active");
 
-  sentBody.style.display = "block";
-  draftBody.style.display = "none";
-  inboxBody.style.display = "none";
-  starredBody.style.display = "none";
-});
+    draftBody.style.display = "block";
+    inboxBody.style.display = "none";
+    sentBody.style.display = "none";
+    starredBody.style.display = "none";
+  }
 
-draftButton.addEventListener("click", () => {
-  inboxButton.classList.remove("active");
-  sentButton.classList.remove("active");
-  starredButton.classList.remove("active");
-  draftButton.classList.add("active");
+  if (
+    e.target.className == "sent__btn" ||
+    e.target.className == "top_nav_sent__btn"
+  ) {
+    inboxButton.classList.remove("active");
+    draftButton.classList.remove("active");
+    starredButton.classList.remove("active");
+    sentButton.classList.add("active");
 
-  draftBody.style.display = "block";
-  inboxBody.style.display = "none";
-  sentBody.style.display = "none";
-  starredBody.style.display = "none";
-});
+    sentBody.style.display = "block";
+    inboxBody.style.display = "none";
+    draftBody.style.display = "none";
+    starredBody.style.display = "none";
+  }
 
-starredButton.addEventListener("click", () => {
-  draftButton.classList.remove("active");
-  inboxButton.classList.remove("active");
-  sentButton.classList.remove("active");
-  starredButton.classList.add("active");
+  if (
+    e.target.className == "starred__btn" ||
+    e.target.className == "top_nav_starred__btn"
+  ) {
+    draftButton.classList.remove("active");
+    inboxButton.classList.remove("active");
+    sentButton.classList.remove("active");
+    starredButton.classList.add("active");
 
-  starredBody.style.display = "block";
-  draftBody.style.display = "none";
-  sentBody.style.display = "none";
-  inboxBody.style.display = "none";
+    starredBody.style.display = "block";
+    draftBody.style.display = "none";
+    sentBody.style.display = "none";
+    inboxBody.style.display = "none";
+  }
 });
 
 window.onload = () => {
