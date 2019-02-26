@@ -9,6 +9,9 @@ const inboxBody = document.querySelector(".inbox__body");
 const draftBody = document.querySelector(".draft__body");
 const starredBody = document.querySelector(".starred__body");
 const topNav = document.querySelector(".top__nav");
+const readEmail = document.querySelector(".read__email");
+
+document.querySelector(".time__created").textContent = new Date().toUTCString();
 
 document.addEventListener("click", e => {
   if (e.target.parentNode.className == "draft__message") {
@@ -38,8 +41,8 @@ document.addEventListener("click", e => {
     overlay.style.display = "none";
   }
   if (
-    e.target.className == "inbox__btn" ||
-    e.target.className == "top_nav_inbox__btn"
+    e.target.classList[0] == "inbox__btn" ||
+    e.target.classList[0] == "top_nav_inbox__btn"
   ) {
     draftButton.classList.remove("active");
     sentButton.classList.remove("active");
@@ -50,6 +53,7 @@ document.addEventListener("click", e => {
     draftBody.style.display = "none";
     sentBody.style.display = "none";
     starredBody.style.display = "none";
+    readEmail.style.display = "none";
   }
 
   if (
@@ -65,11 +69,12 @@ document.addEventListener("click", e => {
     inboxBody.style.display = "none";
     sentBody.style.display = "none";
     starredBody.style.display = "none";
+    readEmail.style.display = "none";
   }
 
   if (
-    e.target.className == "sent__btn" ||
-    e.target.className == "top_nav_sent__btn"
+    e.target.classList[0] == "sent__btn" ||
+    e.target.classList[0] == "top_nav_sent__btn"
   ) {
     inboxButton.classList.remove("active");
     draftButton.classList.remove("active");
@@ -80,6 +85,7 @@ document.addEventListener("click", e => {
     inboxBody.style.display = "none";
     draftBody.style.display = "none";
     starredBody.style.display = "none";
+    readEmail.style.display = "none";
   }
 
   if (
@@ -95,6 +101,19 @@ document.addEventListener("click", e => {
     draftBody.style.display = "none";
     sentBody.style.display = "none";
     inboxBody.style.display = "none";
+    readEmail.style.display = "none";
+  }
+  console.log(e.target.classList[0]);
+
+  if (
+    e.target.parentNode.className == "inbox__message" ||
+    e.target.parentNode.className == "sent__message"
+  ) {
+    readEmail.style.display = "block";
+    draftBody.style.display = "none";
+    sentBody.style.display = "none";
+    inboxBody.style.display = "none";
+    starredBody.style.display = "none";
   }
 });
 
