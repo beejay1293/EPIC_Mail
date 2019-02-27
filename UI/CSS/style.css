@@ -220,9 +220,9 @@ a {
 }
 
 .navbar {
-  width: 50%;
+  width: 25%;
   box-sizing: border-box;
-  padding: 90p 10px;
+  padding: 90p 0px;
   font-family: "sarabun";
   font-weight: bolder;
   font-weight: 5em;
@@ -234,6 +234,15 @@ a {
   list-style-type: none;
   margin: 20px;
   text-align: center;
+}
+
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+.navbar ul li a:hover {
+  color: #fff;
+  opacity: 0.7;
 }
 
 .navbar ul li {
@@ -315,28 +324,6 @@ a {
   display: none;
 }
 
-.visible1 {
-  width: 15%;
-  padding: 10px 10px 0px 0px;
-  box-sizing: border-box;
-  background: #f4f4f4;
-  min-height: calc(100vh);
-  min-width: 110px;
-  position: fixed;
-  margin-top: 68px;
-  border-right: 1px solid rgb(180, 174, 174);
-}
-
-/**background: url("../images/mail-bg.png") no-repeat center/cover;*/
-.visible {
-  width: 85%;
-  background: #f4f4f4;
-  min-height: 100%;
-  padding: 100px 10px 10px 10px;
-  box-sizing: border-box;
-  margin-left: 15%;
-}
-
 .bars {
   display: none;
 }
@@ -353,17 +340,27 @@ a {
   margin-top: 220px;
 }
 
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 498px) {
   .main__body {
-    margin-top: 35px;
+    margin-top: 95px;
+    padding-top: 90px;
   }
 
   .main__body__height {
-    margin-top: 270px;
+    margin-top: 290px;
+  }
+}
+@media only screen and (min-width: 802px) {
+  .top__nav {
+    display: none;
+  }
+  .main__body,
+  .main__body__height {
+    margin-top: 0px;
   }
 }
 
-@media only screen and (max-width: 790px) {
+@media only screen and (max-width: 802px) {
   .bars {
     display: block;
     cursor: pointer;
@@ -377,72 +374,12 @@ a {
   .main__body {
     width: 100%;
     margin-left: 0%;
+    margin-top: 20px;
+  }
+  .main__body__height {
+    margin-top: 220px;
   }
 }
-
-/* @media only screen and (max-width: 442px) {
-  .nav {
-    display: none;
-  }
-
-  .main__body {
-    margin-left: 0%;
-    width: 100%;
-  }
-
-  .bars {
-    display: inline-block;
-  }
-
-  .visible1 {
-    width: 15%;
-    padding: 10px 10px 0px 0px;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    min-width: 110px;
-    position: fixed;
-    margin-top: 88px;
-    display: block;
-    margin-right: 18px;
-  }
-
-  .visible {
-    width: 85%;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    padding: 10px 10px 10px 10px;
-    box-sizing: border-box;
-    margin-left: 100px;
-    margin-top: 88px;
-  }
-} */
-
-/* @media only screen and (min-width: 443px) {
-  .nav {
-    display: block;
-  }
-  .visible1 {
-    width: 15%;
-    padding: 10px 10px 0px 0px;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    min-width: 110px;
-    position: fixed;
-    margin-top: 68px;
-  }
-
-  
-  .visible {
-    width: 85%;
-    background: #f4f4f4;
-    min-height: 100%;
-    padding: 100px 10px 10px 10px;
-    box-sizing: border-box;
-    margin-left: 15%;
-  }
-} */
 
 .compose {
   padding: 20px;
@@ -469,9 +406,10 @@ a {
 
 .compose__message_btn:hover {
   opacity: 0.9;
-  box-shadow: 3px 8px 10px #eee;
+
   transform: scale(1.05, 1.05);
   transition: transform 0.3s linear;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .nav2 ul li {
@@ -515,51 +453,6 @@ a {
   /* background: #1433c4; */
 }
 
-/* @media only screen and (max-width: 400px) {
-  .bars {
-    display: inline-block;
-  }
-  
-  .nav {
-    width: 0%;
-    padding: 10px 10px 0px 0px;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    min-width: 110px;
-    position: fixed;
-    margin-top: 98px;
-    display: none;
-  }
-  .main__body {
-    width: 100%;
-    background: #f4f4f4;
-    min-height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  .visible1 {
-    width: 15%;
-    padding: 10px 10px 0px 0px;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    min-width: 110px;
-    position: fixed;
-    margin-top: 138px;
-    display: block;
-  }
-  .visible {
-    width: 100%;
-    background: #f4f4f4;
-    min-height: 100%;
-    padding: 10px 10px 10px 10px;
-    box-sizing: border-box;
-    margin-left: 100px;
-    margin-top: 100px;
-  }
-} */
-
 .main__body ul,
 .visible ul {
   list-style-type: none;
@@ -600,26 +493,10 @@ a {
   border-bottom: 2px solid #888;
   padding: 4px;
 }
-/* @media only screen and (min-width: 400px) {
-  .visible1 {
-    width: 15%;
-    padding: 100px 10px 0px 0px;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    min-height: calc(100vh);
-    min-width: 110px;
-    display: block;
-  }
-  .visible {
-    width: 85%;
-    background: #f4f4f4;
-    min-height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-} */
+
 /* add overlay */
-.overlay {
+.overlay,
+.password__reset_overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
   width: 100%; /* Full width (cover the whole page) */
@@ -699,6 +576,7 @@ textarea:focus {
 .read__email {
   display: none;
   padding: 17px;
+  margin-top: 2em;
 }
 
 .subject__wrapper {
@@ -730,4 +608,55 @@ textarea:focus {
 
 .from {
   display: inline-block;
+}
+
+.delete__icon {
+  color: red;
+}
+
+.plus__icon {
+  display: inline-block;
+  color: #1433c4;
+}
+
+.compose__message_btn {
+  display: inline-block;
+}
+
+.dropdown {
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  background: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-top: 3px;
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 7px 9px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background: #ddd;
+}
+
+.user {
+  display: inline-block;
+}
+
+.top__nav ul li.actives {
+  background: #ffaf30;
+  color: #333;
 }
