@@ -140,6 +140,10 @@ hr {
   border-radius: 3px;
 }
 
+.recover__password {
+  display: none;
+}
+
 .draft_message__btn {
   background-color: #1433c4;
   color: white;

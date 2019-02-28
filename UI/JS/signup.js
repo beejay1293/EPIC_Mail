@@ -3,6 +3,9 @@ const loginbtn = document.querySelector(".signinbtn");
 const register = document.querySelector(".register");
 const login = document.querySelector(".login");
 const login_wrapper = document.querySelector(".login__wrapper");
+const recoverPassword = document.querySelector(".recover__password");
+const forgotPassword = document.querySelector(".forgot__password");
+const loginButton = document.querySelector(".login__btn");
 
 //add a click event listener to registerbtn
 registerbtn.addEventListener("click", () => {
@@ -11,6 +14,7 @@ registerbtn.addEventListener("click", () => {
 
   //hide login form
   login.style.display = "none";
+  recoverPassword.style.display = "none";
 
   login_wrapper.classList.add("pad");
 });
@@ -22,6 +26,29 @@ loginbtn.addEventListener("click", () => {
 
   //hide register form
   register.style.display = "none";
+  recoverPassword.style.display = "none";
+
+  login_wrapper.classList.remove("pad");
+});
+
+forgotPassword.addEventListener("click", () => {
+  //display login form
+  login.style.display = "none";
+
+  //hide register form
+  register.style.display = "none";
+  recoverPassword.style.display = "block";
+
+  login_wrapper.classList.remove("pad");
+});
+
+loginButton.addEventListener("click", () => {
+  //display login form
+  login.style.display = "block";
+
+  //hide register form
+  register.style.display = "none";
+  recoverPassword.style.display = "none";
 
   login_wrapper.classList.remove("pad");
 });
