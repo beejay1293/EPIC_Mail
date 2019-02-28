@@ -23,8 +23,6 @@ const topNavAllGroup = document.querySelector(".top_nav_all__groups");
 document.querySelector(".time__created").textContent = new Date().toUTCString();
 
 document.addEventListener("click", e => {
-  console.log(e.target.className);
-
   if (
     e.target.className == "create__group" ||
     e.target.className == "top_nav_create__group"
