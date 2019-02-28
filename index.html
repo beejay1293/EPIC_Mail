@@ -21,7 +21,7 @@
         </h1>
 
         <div class="register">
-          <p class="sub_header">Create an EPIC Mail Account</p>
+          <h3 class="sub_header">Create an EPIC Mail Account</h3>
           <form action="dashboard.html" class="login-form">
             <div class="login_container">
               <hr />
@@ -68,7 +68,7 @@
         </div>
 
         <div class="login">
-          <p class="sub_header">Use your EPIC Mail Account</p>
+          <h3 class="sub_header">Use your EPIC Mail Account</h3>
           <p class="sub_header">Please Login</p>
           <form action="dashboard.html" class="login-form">
             <div class="login_container">
@@ -91,13 +91,39 @@
               <hr />
 
               <button type="submit" class="loginbtn">Login</button>
-              <p><a href="#">Forgot Password? </a></p>
+              <p class="forgot__password"><a href="#">Forgot Password? </a></p>
             </div>
 
             <div class="signup">
               <p>
                 Don't have an account?
                 <em class="signupbtn actionbtn">Sign up.</em>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <div class="recover__password">
+          <h3 class="sub_header">Recover Password</h3>
+          <p class="sub_header">
+            Please Enter the phone number you registered with
+          </p>
+          <form action="index.html" class="login-form">
+            <div class="login_container">
+              <hr />
+
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                name="phone"
+                required
+              />
+
+              <button type="submit" class="loginbtn">Recover</button>
+            </div>
+            <div class="signup">
+              <p>
+                <em class="login__btn actionbtn">Sign in.</em>
               </p>
             </div>
           </form>
