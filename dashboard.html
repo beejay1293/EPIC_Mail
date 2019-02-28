@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>mattimobolaji@epicmail.com -EPIC Mail</title>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
@@ -46,8 +46,20 @@
             <li class="top_nav_inbox__btn"><i class="fas fa-inbox"></i> Inbox</li>
             <li  class="top_nav_sent__btn"><i class="fas fa-paper-plane"></i> Sent Messages</li>
             <li  class="top_nav_draft__btn" ><i class="far fa-comment-alt"></i> Draft</li>
-            <li  class="top_nav_groups__btn"><i class="fas fa-users"></i></i> Groups</li>
             <li class="top_nav_starred__btn"><i class="far fa-star"></i> starred</li>
+                
+            <hr/>
+            
+            
+            <li class="top_nav_groups"> <i class="fas fa-angle-up  top_nav_up"></i>  <h4 class="top_nav_group__wrapper"> Groups</h4></li>
+            <ul class="top_nav_all__groups">
+              <li>Andela(2) <i class="fas fa-user-plus top_nav_add_user"></i></i></li>
+              <li>Epic(6) <i class="fas fa-user-plus top_nav_add_user"></i></i></li>
+            </ul>
+
+            <li class="top_nav_create__group"><i class="fas fa-plus"></i> Create Group</li>
+            <hr />
+           
           </ul>
         </div>
     </header>
@@ -67,8 +79,20 @@
             <li class="inbox__btn"><i class="fas fa-inbox"></i> Inbox</li>
             <li  class="sent__btn"><i class="fas fa-paper-plane"></i> Sent Messages</li>
             <li  class="draft__btn" ><i class="far fa-comment-alt"></i> Draft</li>
-            <li  class="groups__btn"><i class="fas fa-users"></i></i> Groups</li>
+         
             <li class="starred__btn"><i class="far fa-star"></i> starred</li>
+
+            <hr/>
+            
+            
+            <li class="groups"> <i class="fas fa-angle-up  up"></i> <h4 class="group__wrapper">Groups</h4></li>
+            <ul class="all__groups">
+              <li>Andela(2) <i class="fas fa-user-plus add_user"></i></i></li>
+              <li>Epic(6) <i class="fas fa-user-plus add_user"></i></i></li>
+            </ul>
+
+            <li class="create__group"><i class="fas fa-plus"></i> Create Group</li>
+            <hr />
           </ul>
         </div>
 
@@ -145,7 +169,7 @@
         </ul>
 
         <ul class="sent__body">
-          <li class="sent__message"><h1 class="name"><i class="fas fa-angle-double-left"></i>sent</h1> <h1 class="message"> Messages</h1> <h1 class="time">Feb 28</h1> <div class="delete__icon"> <i class="fas fa-trash-alt"></i></div> </li>
+          <li class="sent__message"><h1 class="name"><i class="fas fa-angle-double-left"></i>1stsent</h1> <h1 class="message"> Messages</h1> <h1 class="time">Feb 28</h1> <div class="delete__icon"> <i class="fas fa-trash-alt"></i></div> </li>
           <li class="sent__message"><h1 class="name"><i class="fas fa-angle-double-left"></i>sent</h1> <h1 class="message"> Messages</h1> <h1 class="time">Feb 28</h1> <div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
           <li class="sent__message"><h1 class="name"><i class="fas fa-angle-double-left"></i>sent</h1> <h1 class="message"> Messages</h1> <h1 class="time">Feb 28</h1> <div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
           <li class="sent__message"><h1 class="name"><i class="fas fa-angle-double-left"></i>sent</h1> <h1 class="message"> Messages</h1> <h1 class="time">Feb 28</h1> <div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
@@ -256,6 +280,36 @@
                  <hr />
      
                  <button type="submit" class="send_message__btn">Reset</button>
+                
+              
+               </div>
+              
+            </form></div>
+
+            <div class="create__group_overlay"><form action="" class="create__group_form">
+         
+              <div class="message_container">
+                  <div class="message_wrapper">
+                      <ul><li class="message_wrapper_header"><h1 class="message_header">Add Group</h1>
+                       </li><li class="message_wrapper_clear"><div class="clear__overlay">x</div></li>
+                   </ul>
+                  </div>
+                   
+                 <hr />
+     
+                 <input
+                   type="text"
+                   placeholder="Name"
+                   name="groupname"
+                   required
+                 />
+     
+                 
+                 
+     
+                 <hr />
+     
+                 <button type="submit" class="send_message__btn">Add</button>
                 
               
                </div>
