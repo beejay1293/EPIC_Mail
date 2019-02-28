@@ -11,14 +11,42 @@ const starredBody = document.querySelector(".starred__body");
 const topNav = document.querySelector(".top__nav");
 const readEmail = document.querySelector(".read__email");
 const passwordResetOverlay = document.querySelector(".password__reset_overlay");
+const createGroupOverlay = document.querySelector(".create__group_overlay");
 const topNavInbox = document.querySelector(".top_nav_inbox__btn");
 const topNavSent = document.querySelector(".top_nav_sent__btn");
 const topNavDraft = document.querySelector(".top_nav_draft__btn");
 const topNavStarred = document.querySelector(".top_nav_starred__btn");
-
+const up = document.querySelector(".up");
+const topNavUp = document.querySelector(".top_nav_up");
+const allGroup = document.querySelector(".all__groups");
+const topNavAllGroup = document.querySelector(".top_nav_all__groups");
 document.querySelector(".time__created").textContent = new Date().toUTCString();
 
 document.addEventListener("click", e => {
+  console.log(e.target.className);
+
+  if (
+    e.target.className == "create__group" ||
+    e.target.className == "top_nav_create__group"
+  ) {
+    createGroupOverlay.style.display = "block";
+  }
+
+  if (e.target.className == "clear__overlay") {
+    createGroupOverlay.style.display = "none";
+  }
+
+  if (e.target.className == "top_nav_group__wrapper") {
+    topNavUp.classList.toggle("down");
+    topNavAllGroup.classList.toggle("show__groups");
+    messageBody.classList.toggle("main__body__height2");
+  }
+
+  if (e.target.className == "group__wrapper") {
+    up.classList.toggle("down");
+
+    allGroup.classList.toggle("show__groups");
+  }
   if (e.target.className == "reset__password") {
     passwordResetOverlay.style.display = "block";
   }
@@ -44,6 +72,9 @@ document.addEventListener("click", e => {
   if (e.target.className == "fas fa-bars") {
     topNav.classList.toggle("top__navs");
     messageBody.classList.toggle("main__body__height");
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 
   if (e.target.className == "compose__message_btn") {
@@ -73,6 +104,10 @@ document.addEventListener("click", e => {
     sentBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 
   if (
@@ -94,6 +129,10 @@ document.addEventListener("click", e => {
     sentBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 
   if (
@@ -115,6 +154,10 @@ document.addEventListener("click", e => {
     draftBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 
   if (
@@ -136,6 +179,10 @@ document.addEventListener("click", e => {
     sentBody.style.display = "none";
     inboxBody.style.display = "none";
     readEmail.style.display = "none";
+
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 
   if (
