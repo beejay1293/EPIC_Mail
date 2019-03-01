@@ -4,6 +4,7 @@ const inboxButton = document.querySelector(".inbox__btn");
 const draftButton = document.querySelector(".draft__btn");
 const sentButton = document.querySelector(".sent__btn");
 const starredButton = document.querySelector(".starred__btn");
+const contactButton = document.querySelector(".contacts__btn");
 const sentBody = document.querySelector(".sent__body");
 const inboxBody = document.querySelector(".inbox__body");
 const draftBody = document.querySelector(".draft__body");
@@ -16,13 +17,22 @@ const topNavInbox = document.querySelector(".top_nav_inbox__btn");
 const topNavSent = document.querySelector(".top_nav_sent__btn");
 const topNavDraft = document.querySelector(".top_nav_draft__btn");
 const topNavStarred = document.querySelector(".top_nav_starred__btn");
+const topNavContact = document.querySelector(".top_nav_contacts__btn");
 const up = document.querySelector(".up");
 const topNavUp = document.querySelector(".top_nav_up");
 const allGroup = document.querySelector(".all__groups");
 const topNavAllGroup = document.querySelector(".top_nav_all__groups");
+const dropDownUser = document.querySelector(".dropdown-user");
+const allContacts = document.querySelector(".all_contacts");
 document.querySelector(".time__created").textContent = new Date().toUTCString();
 
 document.addEventListener("click", e => {
+  console.log(e.target.classList[0]);
+
+  if (e.target.className == "add") {
+    dropDownUser.style.display = "block";
+  }
+
   if (
     e.target.className == "create__group" ||
     e.target.className == "top_nav_create__group"
@@ -61,7 +71,8 @@ document.addEventListener("click", e => {
     e.target.classList[0] == "top_nav_inbox__btn" ||
     e.target.classList[0] == "top_nav_sent__btn" ||
     e.target.classList[0] == "top_nav_draft__btn" ||
-    e.target.classList[0] == "top_nav_starred__btn"
+    e.target.classList[0] == "top_nav_starred__btn" ||
+    e.target.classList[0] == "top_nav_contacts__btn"
   ) {
     topNav.classList.toggle("top__navs");
     messageBody.classList.toggle("main__body__height");
@@ -91,17 +102,20 @@ document.addEventListener("click", e => {
     sentButton.classList.remove("active");
     starredButton.classList.remove("active");
     inboxButton.classList.add("active");
+    contactButton.classList.remove("active");
 
     topNavSent.classList.remove("actives");
     topNavDraft.classList.remove("actives");
     topNavStarred.classList.remove("actives");
     topNavInbox.classList.add("actives");
+    topNavContact.classList.remove("actives");
 
     inboxBody.style.display = "block";
     draftBody.style.display = "none";
     sentBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+    allContacts.style.display = "none";
 
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
@@ -116,17 +130,20 @@ document.addEventListener("click", e => {
     sentButton.classList.remove("active");
     starredButton.classList.remove("active");
     draftButton.classList.add("active");
+    contactButton.classList.remove("active");
 
     topNavSent.classList.remove("actives");
     topNavDraft.classList.add("actives");
     topNavStarred.classList.remove("actives");
     topNavInbox.classList.remove("actives");
+    topNavContact.classList.remove("actives");
 
     draftBody.style.display = "block";
     inboxBody.style.display = "none";
     sentBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+    allContacts.style.display = "none";
 
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
@@ -141,17 +158,20 @@ document.addEventListener("click", e => {
     draftButton.classList.remove("active");
     starredButton.classList.remove("active");
     sentButton.classList.add("active");
+    contactButton.classList.remove("active");
 
     topNavSent.classList.add("actives");
     topNavDraft.classList.remove("actives");
     topNavStarred.classList.remove("actives");
     topNavInbox.classList.remove("actives");
+    topNavContact.classList.remove("actives");
 
     sentBody.style.display = "block";
     inboxBody.style.display = "none";
     draftBody.style.display = "none";
     starredBody.style.display = "none";
     readEmail.style.display = "none";
+    allContacts.style.display = "none";
 
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
@@ -166,17 +186,20 @@ document.addEventListener("click", e => {
     inboxButton.classList.remove("active");
     sentButton.classList.remove("active");
     starredButton.classList.add("active");
+    contactButton.classList.remove("active");
 
     topNavSent.classList.remove("actives");
     topNavDraft.classList.remove("actives");
     topNavStarred.classList.add("actives");
     topNavInbox.classList.remove("actives");
+    topNavContact.classList.remove("actives");
 
     starredBody.style.display = "block";
     draftBody.style.display = "none";
     sentBody.style.display = "none";
     inboxBody.style.display = "none";
     readEmail.style.display = "none";
+    allContacts.style.display = "none";
 
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
@@ -192,6 +215,35 @@ document.addEventListener("click", e => {
     sentBody.style.display = "none";
     inboxBody.style.display = "none";
     starredBody.style.display = "none";
+    allContacts.style.display = "none";
+  }
+
+  if (
+    e.target.classList[0] == "top_nav_contacts__btn" ||
+    e.target.classList[0] == "contacts__btn"
+  ) {
+    allContacts.style.display = "block";
+    draftBody.style.display = "none";
+    sentBody.style.display = "none";
+    inboxBody.style.display = "none";
+    starredBody.style.display = "none";
+    readEmail.style.display = "none";
+
+    draftButton.classList.remove("active");
+    inboxButton.classList.remove("active");
+    sentButton.classList.remove("active");
+    starredButton.classList.remove("active");
+    contactButton.classList.add("active");
+
+    topNavSent.classList.remove("actives");
+    topNavDraft.classList.remove("actives");
+    topNavStarred.classList.remove("actives");
+    topNavInbox.classList.remove("actives");
+    topNavContact.classList.add("actives");
+
+    topNavUp.classList.remove("down");
+    topNavAllGroup.classList.remove("show__groups");
+    messageBody.classList.remove("main__body__height2");
   }
 });
 
