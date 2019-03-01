@@ -41,6 +41,12 @@ span {
   font-weight: bolder;
 }
 
+.email {
+  color: #ffaf30;
+  font-family: "sarabun";
+  font-size: 0.79em;
+}
+
 /* sets display of my container content to flex */
 .container {
   width: 100%;
@@ -56,7 +62,7 @@ span {
 /* sets a style for the header class */
 .header {
   color: #202124;
-  padding: 10px;
+  padding: 15px;
   font-weight: bold;
   color: #ffaf30;
 }
@@ -117,7 +123,7 @@ hr {
 /* Set a style for the submit/login button */
 .loginbtn,
 .registerbtn {
-  background-color: #1433c4;
+  background-color: #6272b8;
   color: white;
   padding: 16px 20px;
   margin: 8px 0;
@@ -129,7 +135,7 @@ hr {
 }
 
 .send_message__btn {
-  background-color: #1433c4;
+  background-color: #6272b8;
   color: white;
   padding: 16px 20px;
   margin: 8px 0;
@@ -145,7 +151,7 @@ hr {
 }
 
 .draft_message__btn {
-  background-color: #1433c4;
+  background-color: #6272b8;
   color: white;
   padding: 16px 7px;
   margin: 8px 4px;
@@ -201,6 +207,10 @@ a {
   .login__wrapper {
     width: 100%;
   }
+
+  .epic__mail {
+    display: none;
+  }
 }
 
 /** user dashboard styling */
@@ -208,12 +218,12 @@ a {
 .header__container {
   width: 100%;
   display: flex;
-  padding: 0px 30px;
+  padding: 0px 5px;
   justify-content: space-between;
   /* background: #eee; */
   background: #6272b8;
   position: fixed;
-  border-bottom: 1px solid rgb(180, 174, 174);
+  border-bottom: 0px solid rgb(180, 174, 174);
   flex-wrap: wrap;
 }
 
@@ -224,19 +234,20 @@ a {
 }
 
 .navbar {
-  width: 25%;
+  width: 10%;
   box-sizing: border-box;
-  padding: 90p 0px;
+  padding: 9px 0px;
   font-family: "sarabun";
   font-weight: bolder;
   font-weight: 5em;
   font-size: 20px;
   color: #fff;
+  margin-left: 0px;
 }
 
 .navbar ul {
   list-style-type: none;
-  margin: 20px;
+  margin: 10px 0px;
   text-align: center;
 }
 
@@ -251,7 +262,7 @@ a {
 
 .navbar ul li {
   display: inline;
-  margin: 0 20px;
+  margin: 0 0px;
 }
 
 .main {
@@ -272,7 +283,7 @@ a {
   min-width: 150px;
   position: fixed;
   margin-top: 64px;
-  border-right: 1px solid rgb(180, 174, 174);
+  border-right: 1px solid #6272b8;
   margin-right: 12px;
 }
 
@@ -285,7 +296,7 @@ a {
   list-style-type: none;
   width: 100%;
 
-  text-align: center;
+  text-align: left;
 }
 
 .top__nav ul li {
@@ -344,14 +355,29 @@ a {
   margin-top: 220px;
 }
 
-@media only screen and (max-width: 498px) {
+@media only screen and (max-width: 700px) {
   .main__body {
     margin-top: 95px;
-    padding-top: 90px;
+    padding-top: 0px;
   }
 
   .main__body__height {
     margin-top: 1290px;
+  }
+  .navbar {
+    width: 39%;
+    box-sizing: border-box;
+    padding: 20p 0px;
+    font-family: "sarabun";
+    font-weight: bolder;
+    font-weight: 5em;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .dropdown-content {
+    padding-right: 40px;
+    width: 10px;
   }
 }
 @media only screen and (min-width: 802px) {
@@ -361,6 +387,22 @@ a {
   .main__body,
   .main__body__height {
     margin-top: 0px;
+  }
+
+  .dropdown {
+    cursor: pointer;
+    padding-left: 20%;
+  }
+  .navbar {
+    width: 30%;
+    box-sizing: border-box;
+    padding: 9px 0px;
+    font-family: "sarabun";
+    font-weight: bolder;
+    font-weight: 5em;
+    font-size: 20px;
+    color: #fff;
+    margin-left: 0px;
   }
 }
 
@@ -378,14 +420,24 @@ a {
   .main__body {
     width: 100%;
     margin-left: 0%;
-    margin-top: 20px;
+    margin-top: 50px;
   }
   .main__body__height {
-    margin-top: 300px;
+    margin-top: 360px;
   }
 
   .main__body__height2 {
-    margin-top: 350px;
+    margin-top: 410px;
+  }
+  .navbar {
+    width: 39%;
+    box-sizing: border-box;
+    padding: 10px 0px;
+    font-family: "sarabun";
+    font-weight: bolder;
+    font-weight: 5em;
+    font-size: 20px;
+    color: #fff;
   }
 }
 
@@ -394,7 +446,7 @@ a {
 }
 
 .compose__message_wrapper {
-  text-align: center;
+  text-align: left;
   padding: 10px 5px;
 }
 
@@ -701,40 +753,15 @@ textarea:focus {
 
 .plus__icon {
   display: inline-block;
-  color: #1433c4;
+  color: #6272b8;
 }
 
 .compose__message_btn {
   display: inline-block;
 }
 
-.dropdown {
-  cursor: pointer;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  z-index: 1;
-  background: #fff;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  margin-top: 3px;
-}
-
-.dropdown-content a {
-  color: #333;
-  padding: 7px 9px;
-  text-decoration: none;
-  display: block;
-}
-
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-.dropdown-content a:hover {
-  background: #ddd;
 }
 
 .user {
@@ -742,8 +769,8 @@ textarea:focus {
 }
 
 .top__nav ul li.actives {
-  background: #ffaf30;
-  color: #333;
+  color: #ffaf30;
+  /* color: #333; */
 }
 
 .all__groups,
@@ -753,4 +780,79 @@ textarea:focus {
 
 .show__groups {
   display: block;
+}
+
+.all_contacts {
+  display: none;
+}
+.all_contacts {
+  display: none;
+  padding: 20px;
+
+  width: 100%;
+}
+
+.contact {
+  display: flex;
+  background: #eee;
+  padding: 18px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  justify-content: space-between;
+}
+
+.contact_name {
+  width: 80%;
+}
+
+.dropdown_label {
+  width: 10%;
+  text-align: right;
+}
+
+.contact_mail {
+  width: 20%;
+  display: inline-block;
+  font-size: 17px;
+}
+
+.dropbtn {
+  color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown_label {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 98px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown_label:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown_label:hover .dropbtn {
+  background-color: #6272b8;
 }
