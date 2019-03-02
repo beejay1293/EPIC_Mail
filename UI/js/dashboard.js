@@ -24,10 +24,18 @@ const allGroup = document.querySelector(".all__groups");
 const topNavAllGroup = document.querySelector(".top_nav_all__groups");
 const dropDownUser = document.querySelector(".dropdown-user");
 const allContacts = document.querySelector(".all_contacts");
+const addUser = document.querySelector(".add_user");
+const TopNavAddUser = document.querySelector(".top_nav_add_user");
+const bars = document.querySelector(".nav_name");
+
 document.querySelector(".time__created").textContent = new Date().toUTCString();
 
 document.addEventListener("click", e => {
-  console.log(e.target.classList[0]);
+  if (
+    e.target.classList[0] == "add_user" ||
+    e.target.classList[0] == "top_nav_add_user"
+  ) {
+  }
 
   if (e.target.className == "add") {
     dropDownUser.style.display = "block";
@@ -120,6 +128,8 @@ document.addEventListener("click", e => {
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
     messageBody.classList.remove("main__body__height2");
+
+    bars.textContent = "inbox";
   }
 
   if (
@@ -148,6 +158,8 @@ document.addEventListener("click", e => {
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
     messageBody.classList.remove("main__body__height2");
+
+    bars.textContent = "draft";
   }
 
   if (
@@ -176,6 +188,8 @@ document.addEventListener("click", e => {
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
     messageBody.classList.remove("main__body__height2");
+
+    bars.textContent = "sent";
   }
 
   if (
@@ -204,6 +218,8 @@ document.addEventListener("click", e => {
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
     messageBody.classList.remove("main__body__height2");
+
+    bars.textContent = "starred";
   }
 
   if (
@@ -215,7 +231,6 @@ document.addEventListener("click", e => {
     sentBody.style.display = "none";
     inboxBody.style.display = "none";
     starredBody.style.display = "none";
-    allContacts.style.display = "none";
   }
 
   if (
@@ -244,6 +259,8 @@ document.addEventListener("click", e => {
     topNavUp.classList.remove("down");
     topNavAllGroup.classList.remove("show__groups");
     messageBody.classList.remove("main__body__height2");
+
+    bars.textContent = "contacts";
   }
 });
 
