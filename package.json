@@ -4,9 +4,13 @@
   "description": "a web app that helps people exchange exchange mails/information over the internet",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "gh-pages": "^2.0.1",
-    "body-parser": "^1.18.3"
+    "validator": "^10.11.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "faker": "^4.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
@@ -18,8 +22,6 @@
     "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
-    "chai": "^4.2.0",
-    "chai-http": "^4.2.1",
     "coffeescript": "^2.3.2",
     "coveralls": "^3.0.2",
     "eslint": "^5.12.0",
@@ -38,9 +40,11 @@
     "webpack": "^4.28.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc ./node_modules/.bin/mocha  --compilers  js:@babel/register ./server/test/ --timeout 10000 --exit",
     "deploy": "gh-pages -d UI",
     "start": "nodemon ./server/app.js --exec babel-node",
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "showcoverage": "start ./coverage/index.html",
     "lint": "./node_modules/.bin/eslint server --fix"
   },
   "repository": {
