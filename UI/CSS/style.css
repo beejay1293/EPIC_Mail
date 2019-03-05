@@ -755,9 +755,11 @@ textarea:focus {
 }
 
 .read__email {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
+  border: 1px solid rgb(238, 238, 238);
   display: none;
   padding: 17px;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 .subject__wrapper {
@@ -772,7 +774,7 @@ textarea:focus {
 }
 
 .time__created {
-  width: 40%;
+  width: 20%;
 }
 
 .users {

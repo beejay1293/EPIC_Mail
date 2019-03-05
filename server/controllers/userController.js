@@ -1,5 +1,6 @@
 import validateSignUpInput from '../validation/signup';
 import userData from '../data/users';
+import contactData from '../data/contacts';
 import helper from '../helper/helper';
 import validateLoginInput from '../validation/login';
 
@@ -45,8 +46,19 @@ class UserController {
         password: body.password,
       };
 
+      const contact = {
+        id: helper.generateId(userData, 0),
+        firstname: body.firstname,
+        lastname: body.lastname,
+        email: body.email,
+        number: body.number,
+      };
+
       const filePath = 'server/data/users.json';
       const savedData = helper.saveDataToFile(filePath, userData, values);
+
+      const contactfilePath = 'server/data/contacts.json';
+      helper.saveDataToFile(contactfilePath, contactData, contact);
 
       return res.status(201).json({
         status: 201,
