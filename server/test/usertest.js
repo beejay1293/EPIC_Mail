@@ -144,7 +144,7 @@ describe('POST api/v1/auth/login', () => {
 });
 
 // Test suite for POST /login user email does not exists
-describe('POST api/v1/auth/signup', () => {
+describe('POST api/v1/auth/login', () => {
   it('Should return an error if login email inputs is invalid', (done) => {
     chai
       .request(app)
@@ -191,7 +191,7 @@ describe('POST api/v1/auth/login', () => {
 
 // Test suite for POST /login route invalid
 describe('POST api/v1/auth/login', () => {
-  it('Should return an error if signup inputs are invalid', (done) => {
+  it('Should return an error if login inputs are invalid', (done) => {
     chai
       .request(app)
       .post('/api/v1/auth/login')
