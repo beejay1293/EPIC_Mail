@@ -16,6 +16,14 @@ class Helper {
     return values;
   }
 
+  static saveMessage(filePath, dataFile) {
+    fs.writeFile(filePath, JSON.stringify(dataFile), 'utf8', (error) => {
+      if (error) {
+        console.log(`file not found: ${error}`);
+      }
+    });
+  }
+
   // delete data from a file
   static deleteDataFromFile(filePath, dataFile, values) {
     const result = dataFile.shift(values);
@@ -39,6 +47,11 @@ class Helper {
   // find a user by email
   static findUserByEmail(objArr, userEmail) {
     return objArr.find(element => element.email === userEmail);
+  }
+
+  // find a message by status
+  static findMessage(objArr, status) {
+    return objArr.filter(el => el.status === status);
   }
 }
 

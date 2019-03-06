@@ -82,3 +82,22 @@ describe('POST api/v1/messages', () => {
       });
   });
 });
+
+// Test suite for GET /messages
+describe('GET api/v1/messages', () => {
+  it('Should return all received messages', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/messages')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data[0]).to.be.a('object');
+
+        done();
+      });
+  });
+});
