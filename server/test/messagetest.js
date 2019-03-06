@@ -120,3 +120,22 @@ describe('GET api/v1/messages/unread', () => {
       });
   });
 });
+
+// Test suite for GET /messages/sent
+describe('GET api/v1/messages/sent', () => {
+  it('Should return all sent messages', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/messages/sent')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data[0]).to.be.a('object');
+
+        done();
+      });
+  });
+});

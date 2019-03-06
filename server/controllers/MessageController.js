@@ -104,15 +104,15 @@ class MessageController {
    */
   static GetAllReceivedMessages(req, res) {
     const sent = helper.findMessage(messageData, 'sent');
-    const draft = helper.findMessage(messageData, 'draft');
+    // const draft = helper.findMessage(messageData, 'draft');
     const read = helper.findMessage(messageData, 'read');
 
-    sent.forEach((e) => {
-      e.status = 'read';
-    });
+    // sent.forEach((e) => {
+    //   e.status = 'read';
+    // });
     const receivedMessages = [...sent, ...read];
-    const msg = [...sent, ...draft, ...read];
-    helper.saveMessage(messagefilePath, msg);
+    // const msg = [...sent, ...draft, ...read];
+    // helper.saveMessage(messagefilePath, msg);
 
     return res.status(200).json({
       status: 200,
@@ -127,19 +127,27 @@ class MessageController {
    */
   static GetAllUnreadReceivedMessages(req, res) {
     const sent = helper.findMessage(messageData, 'sent');
-    const draft = helper.findMessage(messageData, 'draft');
-    const read = helper.findMessage(messageData, 'read');
-
-    sent.forEach((e) => {
-      e.status = 'read';
-    });
-
-    const msg = [...sent, ...draft, ...read];
-    helper.saveMessage(messagefilePath, msg);
 
     return res.status(200).json({
       status: 200,
       data: sent,
+    });
+  }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   */
+  static GetAllSentMessages(req, res) {
+    const sent = helper.findMessage(messageData, 'sent');
+    const read = helper.findMessage(messageData, 'read');
+
+    const sentMessages = [...sent, ...read];
+
+    return res.status(200).json({
+      status: 200,
+      data: sentMessages,
     });
   }
 }
