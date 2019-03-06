@@ -150,6 +150,29 @@ class MessageController {
       data: sentMessages,
     });
   }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   */
+  static GetSpecificMessage(req, res) {
+    const { messageId } = req.params;
+    const id = parseInt(messageId, 10);
+    const message = helper.findMessageById(messageData, id);
+    const updatedMessage = helper.filterMessage(messageData, id);
+    message.forEach((e) => {
+      e.status = 'read';
+    });
+
+    const newMessages = [...message, ...updatedMessage];
+    helper.saveMessage(messagefilePath, newMessages);
+
+    return res.status(200).json({
+      status: 200,
+      data: message,
+    });
+  }
 }
 
 export default MessageController;
