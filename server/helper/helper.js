@@ -53,6 +53,16 @@ class Helper {
   static findMessage(objArr, status) {
     return objArr.filter(el => el.status === status);
   }
+
+  // find a message by id
+  static findMessageById(objArr, messageId) {
+    return objArr.filter(el => el.id === messageId);
+  }
+
+  // filter a message by id
+  static filterMessage(objArr, messageId) {
+    return objArr.filter(el => el.id !== messageId);
+  }
 }
 
 export default Helper;

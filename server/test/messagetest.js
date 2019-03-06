@@ -139,3 +139,23 @@ describe('GET api/v1/messages/sent', () => {
       });
   });
 });
+
+// Test suite for GET /messages/messageId
+describe('GET api/v1/messages/messageId', () => {
+  it('Should return a specific messages', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/messages/0')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.an('array');
+        expect(body.data.length).to.be.equal(1);
+
+        done();
+      });
+  });
+});
