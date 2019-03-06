@@ -101,3 +101,22 @@ describe('GET api/v1/messages', () => {
       });
   });
 });
+
+// Test suite for GET /messages/unread
+describe('GET api/v1/messages/unread', () => {
+  it('Should return all unread received messages if there is any', (done) => {
+    chai
+      .request(app)
+      .get('/api/v1/messages/unread')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.a('array');
+
+        done();
+      });
+  });
+});

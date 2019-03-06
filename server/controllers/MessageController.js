@@ -119,6 +119,29 @@ class MessageController {
       data: receivedMessages,
     });
   }
+
+  /**
+   *
+   * @param {*} req
+   * @param {*} res
+   */
+  static GetAllUnreadReceivedMessages(req, res) {
+    const sent = helper.findMessage(messageData, 'sent');
+    const draft = helper.findMessage(messageData, 'draft');
+    const read = helper.findMessage(messageData, 'read');
+
+    sent.forEach((e) => {
+      e.status = 'read';
+    });
+
+    const msg = [...sent, ...draft, ...read];
+    helper.saveMessage(messagefilePath, msg);
+
+    return res.status(200).json({
+      status: 200,
+      data: sent,
+    });
+  }
 }
 
 export default MessageController;

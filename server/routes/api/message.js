@@ -9,5 +9,7 @@ router.post('/messages', MessageController.createMessage);
 // get all received messages route
 router.get('/messages', MessageController.GetAllReceivedMessages);
 
+router.get('/messages/unread', MessageController.GetAllUnreadReceivedMessages);
+
 // expose router
 export default router;
