@@ -24,21 +24,6 @@ class Helper {
     });
   }
 
-  // delete data from a file
-  static deleteDataFromFile(filePath, dataFile, values) {
-    const result = dataFile.shift(values);
-
-    if (result !== -1) {
-      fs.writeFile(filePath, JSON.stringify(dataFile), 'utf8', (error) => {
-        if (error) {
-          console.log(`file not found: ${error}`);
-        }
-      });
-    }
-
-    return values;
-  }
-
   // generate unique id
   static generateId(dataArray, index) {
     return dataArray.length > 0 ? dataArray[index].id + 1 : 0;

@@ -18,5 +18,8 @@ router.get('/messages/sent', MessageController.GetAllSentMessages);
 // get specific messages endpoint
 router.get('/messages/:messageId', MessageController.GetSpecificMessage);
 
+// delete specific messages endpoint
+router.delete('/messages/:messageId', MessageController.DeleteSpecificMessage);
+
 // expose router
 export default router;

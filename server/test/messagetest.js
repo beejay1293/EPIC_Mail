@@ -142,10 +142,10 @@ describe('GET api/v1/messages/sent', () => {
 
 // Test suite for GET /messages/messageId
 describe('GET api/v1/messages/messageId', () => {
-  it('Should return a specific messages', (done) => {
+  it('Should return a specific message', (done) => {
     chai
       .request(app)
-      .get('/api/v1/messages/0')
+      .get('/api/v1/messages/12')
       .end((err, res) => {
         if (err) done();
         const { body } = res;
@@ -154,6 +154,29 @@ describe('GET api/v1/messages/messageId', () => {
         expect(body.status).to.be.equal(200);
         expect(body.data).to.be.an('array');
         expect(body.data.length).to.be.equal(1);
+
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /messages/messageId
+describe('DELETE api/v1/messages/messageId', () => {
+  it('Should delete a specific message', (done) => {
+    chai
+      .request(app)
+      .delete('/api/v1/messages/13')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.a('object');
+        expect(body.data.length).to.be.equal(1);
+        expect(body.data[0]).to.haveOwnProperty('message');
+        expect(body.data[0].message).to.be.a('string');
 
         done();
       });
