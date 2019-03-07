@@ -104,19 +104,16 @@ class MessageController {
    */
   static GetAllReceivedMessages(req, res) {
     const sent = helper.findMessage(messageData, 'sent');
-    // const draft = helper.findMessage(messageData, 'draft');
+
     const read = helper.findMessage(messageData, 'read');
 
-    // sent.forEach((e) => {
-    //   e.status = 'read';
-    // });
     const receivedMessages = [...sent, ...read];
-    // const msg = [...sent, ...draft, ...read];
-    // helper.saveMessage(messagefilePath, msg);
+
+    const newReceivedMsg = receivedMessages.sort((a, b) => (a.id < b.id ? 1 : -1));
 
     return res.status(200).json({
       status: 200,
-      data: receivedMessages,
+      data: newReceivedMsg,
     });
   }
 
@@ -143,11 +140,12 @@ class MessageController {
     const sent = helper.findMessage(messageData, 'sent');
     const read = helper.findMessage(messageData, 'read');
 
-    const sentMessages = [...sent, ...read];
+    const sentMessages = [...read, ...sent];
+    const msg = sentMessages.sort((a, b) => (a.id < b.id ? 1 : -1));
 
     return res.status(200).json({
       status: 200,
-      data: sentMessages,
+      data: msg,
     });
   }
 
@@ -166,11 +164,30 @@ class MessageController {
     });
 
     const newMessages = [...message, ...updatedMessage];
-    helper.saveMessage(messagefilePath, newMessages);
+    const newMsg = newMessages.sort((a, b) => (a.id < b.id ? 1 : -1));
+    helper.saveMessage(messagefilePath, newMsg);
 
     return res.status(200).json({
       status: 200,
       data: message,
+    });
+  }
+
+  static DeleteSpecificMessage(req, res) {
+    const { messageId } = req.params;
+    const id = parseInt(messageId, 10);
+    const data = helper.filterMessage(messageData, id);
+
+    const message = [...data];
+    helper.saveMessage(messagefilePath, message);
+
+    return res.status(200).json({
+      status: 200,
+      data: [
+        {
+          message: 'message deleted',
+        },
+      ],
     });
   }
 }
