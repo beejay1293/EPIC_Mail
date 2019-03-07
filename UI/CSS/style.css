@@ -356,6 +356,13 @@ a {
 .main__body__height {
   margin-top: 220px;
 }
+.message_container {
+  width: 40%;
+  padding: 0px;
+  background: #f1f1f1;
+  margin: 20px auto;
+  border-radius: 10px;
+}
 
 @media only screen and (max-width: 700px) {
   .main__body {
@@ -444,6 +451,13 @@ a {
 
   .epic__mail {
     display: none;
+  }
+  .message_container {
+    width: 90%;
+    padding: 0px;
+    background: #f1f1f1;
+    margin: 20px auto;
+    border-radius: 10px;
   }
 }
 
@@ -688,14 +702,6 @@ a {
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
   text-align: center;
-}
-
-.message_container {
-  width: 40%;
-  padding: 0px;
-  background: #f1f1f1;
-  margin: 20px auto;
-  border-radius: 10px;
 }
 
 .message_wrapper {
