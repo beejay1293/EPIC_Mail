@@ -1,8 +1,10 @@
+import bcrypt from 'bcryptjs';
 import validateSignUpInput from '../validation/signup';
 import userData from '../data/users';
 import contactData from '../data/contacts';
 import helper from '../helper/helper';
 import validateLoginInput from '../validation/login';
+import Auth from '../middleswares/is-Auth';
 
 class UserController {
   /**
@@ -37,13 +39,17 @@ class UserController {
 
       const { body } = req;
 
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(body.password, salt);
+
       const values = {
         id: helper.generateId(userData, 0),
         firstname: body.firstname,
         lastname: body.lastname,
         email: body.email,
         number: body.number,
-        password: body.password,
+        password: hash,
+        isAdmin: false,
       };
 
       const contact = {
@@ -60,12 +66,15 @@ class UserController {
       const contactfilePath = 'server/data/contacts.json';
       helper.saveDataToFile(contactfilePath, contactData, contact);
 
+      // create token
+      const token = Auth.createToken(values.email, values.id, values.isAdmin);
+
       return res.status(201).json({
         status: 201,
         data: [
           {
             username: savedData.lastname,
-            token: '45erkjherht45495783',
+            token,
           },
         ],
       });
@@ -77,6 +86,11 @@ class UserController {
     }
   }
 
+  /**
+   * login a user
+   * @param {*} req
+   * @param {*} res
+   */
   static login(req, res) {
     // check if user pass valid and required data
     const { errors, isValid } = validateLoginInput(req.body);
@@ -89,9 +103,11 @@ class UserController {
         errors,
       });
     }
-    // check if user exists in our database
+
+    // find user by email
     const UserExists = helper.findUserByEmail(userData, req.body.email);
 
+    // check if user exists in our data structure
     if (!UserExists) {
       return res.status(404).json({
         status: 404,
@@ -99,19 +115,21 @@ class UserController {
       });
     }
 
-    // check if user password matches the user's password in the database
-    if (UserExists.password !== password) {
+    // check if user provided password matches user's hashed password in data structure
+    if (!bcrypt.compareSync(password, UserExists.password)) {
       return res.status(401).json({
         status: 401,
-        error: 'password incorrect',
+        error: 'Invalid Email/Password',
       });
     }
+    // create token
+    const token = Auth.createToken(UserExists.email, UserExists.id, UserExists.isAdmin);
 
     return res.status(200).json({
       status: 200,
       data: [
         {
-          token: 'ahd64jfhHG7832KFM5',
+          token,
         },
       ],
     });

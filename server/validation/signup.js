@@ -32,6 +32,10 @@ const validateSignUpInput = (data) => {
     errors.firstname = 'First Name field cannot contain numbers and symbols';
   }
 
+  if (!/^[a-zA-Z ]+$/.test(body.lastname)) {
+    errors.firstname = 'Last Name field cannot contain numbers and symbols';
+  }
+
   if (validator.isEmpty(body.number)) {
     errors.phonenumber = 'Phone Number field is required';
   }
