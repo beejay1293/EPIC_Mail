@@ -10,7 +10,7 @@ const sentfilePath = 'server/data/sent.json';
 const inboxfilePath = 'server/data/inbox.json';
 class MessageController {
   /**
-   *
+   *create a message
    * @param {*} req
    * @param {*} res
    */
@@ -44,15 +44,15 @@ class MessageController {
     }
     try {
       const reciever = helper.findUserByEmail(userData, body.reciever);
-      const sender = helper.findUserByEmail(userData, body.sender);
 
+      // check if reciever is a valid user
       if (!reciever) {
         return res.status(404).json({
           status: 404,
           error: 'Reciever address was not recognized',
         });
       }
-
+      // message
       const values = {
         id: helper.generateId(messageData, 0),
         createdOn: new Date().toUTCString(),
@@ -60,12 +60,12 @@ class MessageController {
         message: body.message,
         parentMessageId: helper.generateId(messageData, 0),
         status: 'sent',
-        senderId: sender.id,
+        senderId: req.user.id,
         recieverId: reciever.id,
       };
       // sent message
       const sent = {
-        senderId: sender.id,
+        senderId: req.user.id,
         messageId: values.id,
         createdOn: values.createdOn,
       };
@@ -77,8 +77,10 @@ class MessageController {
       };
 
       const message = helper.saveDataToFile(messagefilePath, messageData, values);
-
+      // save sent message in sent
       helper.saveDataToFile(sentfilePath, sentData, sent);
+
+      // save recieved message in inbox
       helper.saveDataToFile(inboxfilePath, inboxData, inbox);
 
       return res.status(201).json({
@@ -98,17 +100,21 @@ class MessageController {
   }
 
   /**
-   *
+   *Get recieved messages
    * @param {*} req
    * @param {*} res
    */
   static GetAllReceivedMessages(req, res) {
+    // get all sent messages by status
     const sent = helper.findMessage(messageData, 'sent');
 
+    // get all read messages by status
     const read = helper.findMessage(messageData, 'read');
 
+    // using spread operator to join sent and read array to form a new array
     const receivedMessages = [...sent, ...read];
 
+    // sort the messages by id in descending order
     const newReceivedMsg = receivedMessages.sort((a, b) => (a.id < b.id ? 1 : -1));
 
     return res.status(200).json({
@@ -118,7 +124,7 @@ class MessageController {
   }
 
   /**
-   *
+   *Get unread messages
    * @param {*} req
    * @param {*} res
    */
@@ -132,7 +138,7 @@ class MessageController {
   }
 
   /**
-   *
+   *Get all sent messages
    * @param {*} req
    * @param {*} res
    */
@@ -150,7 +156,7 @@ class MessageController {
   }
 
   /**
-   *
+   *Get a specific message
    * @param {*} req
    * @param {*} res
    */
@@ -173,6 +179,11 @@ class MessageController {
     });
   }
 
+  /**
+   * Delete a Specific message
+   * @param {*} req
+   * @param {*} res
+   */
   static DeleteSpecificMessage(req, res) {
     const { messageId } = req.params;
     const id = parseInt(messageId, 10);
@@ -191,5 +202,5 @@ class MessageController {
     });
   }
 }
-
+// expose messageController
 export default MessageController;
