@@ -6,6 +6,11 @@ import helper from '../helper/helper';
 import validateLoginInput from '../validation/login';
 import Auth from '../middleswares/is-Auth';
 
+const { genSaltSync, hashSync, compareSync } = bcrypt;
+const { saveDataToFile, generateId, findUserByEmail } = helper;
+
+const { createToken } = Auth;
+
 class UserController {
   /**
    * Create a user account
@@ -28,7 +33,7 @@ class UserController {
 
     try {
       // check if user already exists
-      const emailExists = helper.findUserByEmail(userData, req.body.email);
+      const emailExists = findUserByEmail(userData, req.body.email);
 
       if (emailExists) {
         return res.status(409).json({
@@ -39,11 +44,11 @@ class UserController {
 
       const { body } = req;
 
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(body.password, salt);
+      const salt = genSaltSync(10);
+      const hash = hashSync(body.password, salt);
 
       const values = {
-        id: helper.generateId(userData, 0),
+        id: generateId(userData, 0),
         firstname: body.firstname,
         lastname: body.lastname,
         email: body.email,
@@ -53,7 +58,7 @@ class UserController {
       };
 
       const contact = {
-        id: helper.generateId(userData, 0),
+        id: generateId(userData, 0),
         firstname: body.firstname,
         lastname: body.lastname,
         email: body.email,
@@ -61,13 +66,13 @@ class UserController {
       };
 
       const filePath = 'server/data/users.json';
-      const savedData = helper.saveDataToFile(filePath, userData, values);
+      const savedData = saveDataToFile(filePath, userData, values);
 
       const contactfilePath = 'server/data/contacts.json';
-      helper.saveDataToFile(contactfilePath, contactData, contact);
+      saveDataToFile(contactfilePath, contactData, contact);
 
       // create token
-      const token = Auth.createToken(values.email, values.id, values.isAdmin);
+      const token = createToken(values.email, values.id, values.isAdmin);
 
       return res.status(201).json({
         status: 201,
@@ -105,7 +110,7 @@ class UserController {
     }
 
     // find user by email
-    const UserExists = helper.findUserByEmail(userData, req.body.email);
+    const UserExists = findUserByEmail(userData, req.body.email);
 
     // check if user exists in our data structure
     if (!UserExists) {
@@ -116,14 +121,14 @@ class UserController {
     }
 
     // check if user provided password matches user's hashed password in data structure
-    if (!bcrypt.compareSync(password, UserExists.password)) {
+    if (!compareSync(password, UserExists.password)) {
       return res.status(401).json({
         status: 401,
         error: 'Invalid Email/Password',
       });
     }
     // create token
-    const token = Auth.createToken(UserExists.email, UserExists.id, UserExists.isAdmin);
+    const token = createToken(UserExists.email, UserExists.id, UserExists.isAdmin);
 
     return res.status(200).json({
       status: 200,
