@@ -39,9 +39,29 @@ class Helper {
     return objArr.filter(el => el.status === status);
   }
 
+  // find a sent messages by sender
+  static findSentMessagesById(objArr, status, id) {
+    return objArr.filter(el => el.status === status && el.senderId === id);
+  }
+
+  // find a Recieved messages by Reciever
+  static findRecievedMessagesById(objArr, status, id) {
+    return objArr.filter(el => el.status === status && el.recieverId === id);
+  }
+
   // find a message by id
-  static findMessageById(objArr, messageId) {
-    return objArr.filter(el => el.id === messageId);
+  static findMessageById(objArr, messageId, id) {
+    const sent = objArr.filter(el => el.id === messageId && el.senderId === id);
+    const recieved = objArr.filter(el => el.id === messageId && el.recieverId === id);
+
+    const messages = [...sent, ...recieved];
+
+    return messages;
+  }
+
+  // find message by sender id
+  static findMessageBySenderId(objArr, messageId, id) {
+    return objArr.filter(el => el.id === messageId && el.senderId === id);
   }
 
   // filter a message by id

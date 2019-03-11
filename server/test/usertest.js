@@ -2,6 +2,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import app from '../app';
+import messageData from '../data/messages.json';
+
+const { id } = messageData[0];
 
 const { expect } = chai;
 
@@ -9,11 +12,12 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 const validMessage = {
+  id: 26,
   sender: 'andela.giwa1@epic.com',
   subject: 'Welcome home',
   message: 'New message',
   status: 'sent',
-  reciever: 'andela.giwa1@epic.com',
+  reciever: 'matti@epics.com',
 };
 
 const invalidMessage = {
@@ -333,7 +337,7 @@ describe('GET api/v1/messages', () => {
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(200);
-        expect(body.data[0]).to.be.a('object');
+        expect(body.data).to.be.an('array');
 
         done();
       });
@@ -366,7 +370,6 @@ describe('GET api/v1/messages', () => {
       });
   });
 });
-
 
 // Test suite for GET /messages/unread
 describe('GET api/v1/messages/unread', () => {
@@ -467,7 +470,7 @@ describe('GET api/v1/messages/messageId', () => {
   it('Should return a specific message', (done) => {
     chai
       .request(app)
-      .get('/api/v1/messages/12')
+      .get(`/api/v1/messages/${id}`)
       .set('token', UserToken)
       .end((err, res) => {
         if (err) done();
@@ -488,7 +491,7 @@ describe('GET api/v1/messages/messageId', () => {
   it('Should throw an error is token is invalid', (done) => {
     chai
       .request(app)
-      .get('/api/v1/messages/12')
+      .get(`/api/v1/messages/${id}`)
       .set('token', 'sfjjjjjjkkkkkkkkkkkkknnnnjn')
       .end((err, res) => {
         if (err) done();
@@ -515,7 +518,7 @@ describe('DELETE api/v1/messages/messageId', () => {
   it('Should delete a specific message', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/messages/13')
+      .delete(`/api/v1/messages/${id}`)
       .set('token', UserToken)
       .end((err, res) => {
         if (err) done();
@@ -539,7 +542,7 @@ describe('DELETE api/v1/messages/messageId', () => {
   it('Should throw an error is token is invalid', (done) => {
     chai
       .request(app)
-      .delete('/api/v1/messages/13')
+      .delete(`/api/v1/messages/${id}`)
       .set('token', 'sfjjjjjjkkkkkkkkkkkkknnnnjn')
       .end((err, res) => {
         if (err) done();
