@@ -35,6 +35,11 @@ document.addEventListener('click', (e) => {
 
   if (e.target.className === 'create__group' || e.target.className === 'top_nav_create__group') {
     createGroupOverlay.style.display = 'block';
+    topNav.classList.remove('top__navs');
+    messageBody.classList.remove('main__body__height');
+    topNavUp.classList.remove('down');
+    topNavAllGroup.classList.remove('show__groups');
+    messageBody.classList.remove('main__body__height2');
   }
 
   if (e.target.className === 'clear__overlay') {
@@ -83,8 +88,16 @@ document.addEventListener('click', (e) => {
     messageBody.classList.remove('main__body__height2');
   }
 
-  if (e.target.className === 'compose__message_btn') {
+  if (
+    e.target.className === 'compose__message_btn'
+    || e.target.parentNode.className === 'plus__icon'
+  ) {
     overlay.style.display = 'block';
+    topNav.classList.remove('top__navs');
+    messageBody.classList.remove('main__body__height');
+    topNavUp.classList.remove('down');
+    topNavAllGroup.classList.remove('show__groups');
+    messageBody.classList.remove('main__body__height2');
   }
 
   if (e.target.className === 'clear__overlay') {
