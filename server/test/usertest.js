@@ -28,13 +28,13 @@ const invalidMessage = {
   reciever: 'Layne80@hotmailwrong.com',
 };
 
-const user = {
-  firstname: faker.name.firstName(),
-  lastname: faker.name.lastName(),
-  email: faker.internet.email(),
-  number: '08162990467',
-  password: '1940andela',
-};
+// const user = {
+//   firstname: faker.name.firstName(),
+//   lastname: faker.name.lastName(),
+//   email: faker.internet.email(),
+//   number: '08162990467',
+//   password: '1940andela',
+// };
 
 let UserToken;
 // Test suite for home route
@@ -81,7 +81,40 @@ describe('POST api/v1/auth/signup', () => {
     chai
       .request(app)
       .post('/api/v1/auth/signup')
-      .send(user)
+      .send({
+        firstname: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        email: faker.internet.email(),
+        number: '0816957689',
+        password: 'dele1989',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        UserToken = body.data[0].token;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equals(201);
+        expect(body.data[0]).to.haveOwnProperty('token');
+        expect(body.data[0].token).to.be.a('string');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /signup db route
+describe('POST api/v2/auth/signup', () => {
+  it('Should successfully create a user account if inputs are valid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/signup')
+      .send({
+        firstname: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        email: faker.internet.email(),
+        number: '0816957689',
+        password: 'dele1989',
+      })
       .end((err, res) => {
         if (err) done();
         const { body } = res;
@@ -116,6 +149,26 @@ describe('POST api/v1/auth/signup', () => {
   });
 });
 
+// Test suite for POST /signup db route invalid
+describe('POST api/v2/auth/signup', () => {
+  it('Should return an error if signup inputs are invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/signup')
+      .send({})
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(400);
+        expect(body.errors).to.be.a('object');
+
+        done();
+      });
+  });
+});
+
 // test suite for POST /signup user already exists
 describe('POST api/v1/auth/signup', () => {
   it('should return an error if email already exists', (done) => {
@@ -123,10 +176,10 @@ describe('POST api/v1/auth/signup', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .send({
-        firstname: 'Cynthia',
-        lastname: 'Morgan',
-        email: 'andela.giwa1@epic.com',
-        number: '08169504447',
+        firstname: 'Matti',
+        lastname: 'Mobolaji',
+        email: 'andela.matti@eeeepic.com',
+        number: '0816957689',
         password: 'dele1989',
       })
       .end((err, res) => {
@@ -135,8 +188,30 @@ describe('POST api/v1/auth/signup', () => {
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(409);
         expect(body.error).to.be.a('string');
-        expect(body.error).to.be.equals('user already exists');
+        done();
+      });
+  });
+});
 
+// test suite for POST /signup db user already exists
+describe('POST api/v2/auth/signup', () => {
+  it('should return an error if email already exists', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/signup')
+      .send({
+        firstname: 'Matti',
+        lastname: 'Mobolaji',
+        email: 'andela.matti@eeeepic.com',
+        number: '0816957689',
+        password: 'dele1989',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equals(409);
+        expect(body.error).to.be.a('string');
         done();
       });
   });

@@ -6,22 +6,14 @@ class Helper {
     const result = dataFile.unshift(values);
 
     if (result !== -1) {
-      fs.writeFile(filePath, JSON.stringify(dataFile), 'utf8', (error) => {
-        if (error) {
-          console.log(`file not found: ${error}`);
-        }
-      });
+      fs.writeFileSync(filePath, JSON.stringify(dataFile), 'utf8');
     }
 
     return values;
   }
 
   static saveMessage(filePath, dataFile) {
-    fs.writeFile(filePath, JSON.stringify(dataFile), 'utf8', (error) => {
-      if (error) {
-        console.log(`file not found: ${error}`);
-      }
-    });
+    fs.writeFileSync(filePath, JSON.stringify(dataFile), 'utf8');
   }
 
   // generate unique id

@@ -5,6 +5,7 @@ import contactData from '../data/contacts';
 import helper from '../helper/helper';
 import validateLoginInput from '../validation/login';
 import Auth from '../middleswares/is-Auth';
+import DB from '../db/index';
 
 const { genSaltSync, hashSync, compareSync } = bcrypt;
 const { saveDataToFile, generateId, findUserByEmail } = helper;
@@ -87,6 +88,57 @@ class UserController {
       return res.status(400).json({
         status: 400,
         error: 'Sorry, something went wrong, try again',
+      });
+    }
+  }
+  /**
+   *sign up v2(postgresql)
+   * @param {*} req
+   * @param {*} res
+   */
+
+  static async createAccountDb(req, res) {
+    // check if user pass valid and required data
+    const { errors, isValid } = validateSignUpInput(req.body);
+    // check if user inputs are valid
+    if (!isValid) {
+      return res.status(400).json({
+        status: 400,
+        errors,
+      });
+    }
+
+    //  if user already exists
+    const { body } = req;
+    const salt = genSaltSync(10);
+    const hash = hashSync(body.password, salt);
+    const values = [body.firstname, body.lastname, body.email, body.number, hash];
+
+    try {
+      const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning lastname, email, isAdmin';
+      const { rows } = await DB.query(queryString, values);
+      // create token
+      const token = createToken(rows.email, rows.id, rows.isAdmin);
+      return res.status(201).json({
+        status: 201,
+        data: [
+          {
+            username: rows.lastname,
+            token,
+          },
+        ],
+      });
+    } catch (error) {
+      // check if user exist
+      if (error.routine === '_bt_check_unique') {
+        return res.status(409).json({
+          status: 409,
+          error: 'User already exist',
+        });
+      }
+      return res.status(400).json({
+        status: 400,
+        errors: error,
       });
     }
   }
