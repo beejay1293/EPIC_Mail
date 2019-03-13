@@ -6,13 +6,15 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
-    "dotenv": "^6.2.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "faker": "^4.1.0",
     "gh-pages": "^2.0.1",
     "jsonwebtoken": "^8.5.0",
+    "pg": "^7.8.2",
+    "pg-pool": "^2.0.6",
     "validator": "^10.11.0"
   },
   "devDependencies": {
@@ -43,7 +45,7 @@
     "webpack": "^4.28.3"
   },
   "scripts": {
-    "test": "nyc ./node_modules/.bin/mocha  --compilers  js:@babel/register ./server/test/ --timeout 10000 --exit",
+    "test": "nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./server/test/ --recursive --timeout 20000 --exit",
     "deploy": "gh-pages -d UI",
     "start": "nodemon ./server/app.js --exec babel-node",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",

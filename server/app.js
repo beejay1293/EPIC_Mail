@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import users from './routes/api/users';
 import message from './routes/api/message';
+import usersdb from './routes/api/usersdb';
 
 // Initialize express app
 const app = express();
@@ -24,6 +25,9 @@ app.get('/', (req, res) => res.status(200).json({
 // user routes
 app.use('/api/v1/auth', users);
 
+// db user route
+app.use('/api/v2/auth', usersdb);
+
 // message route
 app.use('/api/v1', message);
 
@@ -34,7 +38,7 @@ app.all('*', (req, res) => res.status(404).json({
 }));
 
 // Define application port number
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3000;
 
 // Start server
 app.listen(port);
