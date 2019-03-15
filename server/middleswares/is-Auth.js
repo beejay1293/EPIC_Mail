@@ -13,12 +13,11 @@ class Auth {
    * @param {*} id
    * @param {*} isAdmin
    */
-  static createToken(email, id, isAdmin) {
+  static createToken(email, id) {
     const token = jwt.sign(
       {
         email,
         id,
-        isAdmin,
       },
       process.env.SECRET,
       { expiresIn: '24h' },
