@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import users from './routes/api/users';
 import message from './routes/api/message';
 import usersdb from './routes/api/usersdb';
+import messagedb from './routes/api/messagedb';
 
 // Initialize express app
 const app = express();
@@ -30,6 +31,9 @@ app.use('/api/v2/auth', usersdb);
 
 // message route
 app.use('/api/v1', message);
+
+// db message route
+app.use('/api/v2', messagedb);
 
 // Handle non existing route with with proper message
 app.all('*', (req, res) => res.status(404).json({

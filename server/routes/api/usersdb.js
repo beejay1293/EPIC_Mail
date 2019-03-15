@@ -3,12 +3,12 @@ import userController from '../../controllers/userController';
 
 const router = express.Router();
 
-const { login, createAccountDb } = userController;
+const { loginDb, createAccountDb } = userController;
 
 // db user signup route
 router.post('/signup', createAccountDb);
 
-router.post('/login', login);
+router.post('/login', loginDb);
 
 // expose router
 export default router;

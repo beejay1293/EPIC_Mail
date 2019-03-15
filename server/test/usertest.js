@@ -112,7 +112,7 @@ describe('POST api/v2/auth/signup', () => {
         firstname: faker.name.firstName(),
         lastname: faker.name.lastName(),
         email: faker.internet.email(),
-        number: '0816957689',
+        number: '66778',
         password: 'dele1989',
       })
       .end((err, res) => {
@@ -242,6 +242,30 @@ describe('POST api/v1/auth/login', () => {
   });
 });
 
+// test for POST /login DB suite
+describe('POST api/v2/auth/login', () => {
+  it('should login successfully if user inputs are valid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/login')
+      .send({
+        email: 'andela.giwa1@epic.com',
+        password: 'dele1989',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        UserToken = body.data[0].token;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equals(200);
+        expect(body.data[0]).to.haveOwnProperty('token');
+        expect(body.data[0].token).to.be.a('string');
+
+        done();
+      });
+  });
+});
 // Test suite for POST /login user email does not exists
 describe('POST api/v1/auth/login', () => {
   it('Should return an error if login email inputs is invalid', (done) => {
@@ -260,6 +284,29 @@ describe('POST api/v1/auth/login', () => {
         expect(body.status).to.be.equal(404);
         expect(body.error).to.be.a('string');
         expect(body.error).to.be.equals('User does not exist');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /login Db user email does not exists
+describe('POST api/v2/auth/login', () => {
+  it('Should return an error if login email inputs is invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/login')
+      .send({
+        email: 'wrongemail@epicmail.com',
+        password: 'cent46',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(404);
+        expect(body.error).to.be.a('string');
+        expect(body.error).to.be.equals('User not Found');
         done();
       });
   });
@@ -288,12 +335,54 @@ describe('POST api/v1/auth/login', () => {
   });
 });
 
+// Test suite for POST /login DB password invalid
+describe('POST api/v2/auth/login', () => {
+  it('Should return an error if login password inputs is invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/login')
+      .send({
+        email: 'andela.giwa1@epic.com',
+        password: 'wrongpassword',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(401);
+        expect(body.error).to.be.a('string');
+        expect(body.error).to.be.equals('Invalid Email/Password');
+        done();
+      });
+  });
+});
 // Test suite for POST /login route invalid
 describe('POST api/v1/auth/login', () => {
   it('Should return an error if login inputs are invalid', (done) => {
     chai
       .request(app)
       .post('/api/v1/auth/login')
+      .send({})
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(400);
+        expect(body.errors).to.be.a('object');
+
+        done();
+      });
+  });
+});
+
+// Test suite for POST /login Db route invalid
+describe('POST api/v2/auth/login', () => {
+  it('Should return an error if login inputs are invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/auth/login')
       .send({})
       .end((err, res) => {
         if (err) done();
