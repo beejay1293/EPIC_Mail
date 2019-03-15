@@ -4,6 +4,7 @@ import users from './routes/api/users';
 import message from './routes/api/message';
 import usersdb from './routes/api/usersdb';
 import messagedb from './routes/api/messagedb';
+import group from './routes/api/group';
 
 // Initialize express app
 const app = express();
@@ -34,6 +35,9 @@ app.use('/api/v1', message);
 
 // db message route
 app.use('/api/v2', messagedb);
+
+// db group route
+app.use('/api/v2', group);
 
 // Handle non existing route with with proper message
 app.all('*', (req, res) => res.status(404).json({
