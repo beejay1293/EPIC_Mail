@@ -115,10 +115,15 @@ class UserController {
     const values = [body.firstname, body.lastname, body.email, body.number, hash];
 
     try {
-      const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning lastname, email, isAdmin';
+      const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning *';
       const { rows } = await DB.query(queryString, values);
+
       // create token
-      const token = createToken(rows.email, rows.id, rows.isAdmin);
+      const token = createToken(rows[0].email, rows[0].id, rows[0].isAdmin);
+      const contact = [rows[0].firstname, rows[0].lastname, rows[0].email];
+      const contactQueyString = 'INSERT INTO contacts(firstname, lastname, email) VALUES($1, $2, $3)';
+      await DB.query(contactQueyString, contact);
+
       return res.status(201).json({
         status: 201,
         data: [
@@ -151,7 +156,7 @@ class UserController {
   static login(req, res) {
     // check if user pass valid and required data
     const { errors, isValid } = validateLoginInput(req.body);
-    const { password } = req.body;
+    const { email, password } = req.body;
 
     // check if user inputs are valid
     if (!isValid) {
@@ -162,7 +167,7 @@ class UserController {
     }
 
     // find user by email
-    const UserExists = findUserByEmail(userData, req.body.email);
+    const UserExists = findUserByEmail(userData, email);
 
     // check if user exists in our data structure
     if (!UserExists) {
@@ -190,6 +195,65 @@ class UserController {
         },
       ],
     });
+  }
+
+  /**
+   * db login controller
+   * @param {*} req
+   * @param {*} res
+   */
+  static async loginDb(req, res) {
+    // check if user pass valid and required data
+    const { errors, isValid } = validateLoginInput(req.body);
+    const { email, password } = req.body;
+    const queryString = 'SELECT * FROM users WHERE email = $1';
+
+    // check if user inputs are valid
+    if (!isValid) {
+      return res.status(400).json({
+        status: 400,
+        errors,
+      });
+    }
+
+    try {
+      // Select all user record where email is equal db email
+      const { rows } = await DB.query(queryString, [email]);
+
+      // check if user exist in database
+      if (!rows[0]) {
+        return res.status(404).json({
+          status: 404,
+          error: 'User not Found',
+        });
+      }
+
+      // check if user provided password matches user's hashed password in database
+      if (!compareSync(password, rows[0].password)) {
+        return res.status(401).json({
+          status: 401,
+          error: 'Invalid Email/Password',
+        });
+      }
+
+      // generate token
+      const token = createToken(rows[0].email, rows[0].id, rows[0].isAdmin);
+
+      // return success message
+      return res.status(200).json({
+        status: 200,
+        data: [
+          {
+            token,
+          },
+        ],
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 400,
+        error: `Something went wrong, try again ${error}`,
+      });
+    }
   }
 }
 
