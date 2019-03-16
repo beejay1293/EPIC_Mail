@@ -4,7 +4,7 @@ import isAuth from '../../middleswares/is-Auth';
 
 const { verifyTokendb } = isAuth;
 
-const { createGroup, GetAllGroups } = GroupController;
+const { createGroup, GetAllGroups, EditSpecificGroupName } = GroupController;
 
 const router = express.Router();
 
@@ -13,6 +13,8 @@ router.post('/groups', verifyTokendb, createGroup);
 
 // get all group route
 router.get('/groups', verifyTokendb, GetAllGroups);
+
+router.patch('/groups/:groupId/name', verifyTokendb, EditSpecificGroupName);
 
 // expose router
 export default router;

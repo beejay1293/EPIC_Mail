@@ -256,7 +256,7 @@ describe('POST api/v2/auth/login', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-
+        DbToken = body.data[0].token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(200);
@@ -766,6 +766,29 @@ describe('GET api/v2/groups', () => {
         expect(body.status).to.be.a('string');
         expect(body.status).to.be.equal('success');
         expect(body.data).to.be.a('array');
+        done();
+      });
+  });
+});
+
+// Test suite for PATCH /groups/
+describe('PATCH api/v2/groups', () => {
+  it('Should edit the name of a specific group', (done) => {
+    chai
+      .request(app)
+      .patch('/api/v2/groups/11/name')
+      .set('token', DbToken)
+      .send({
+        groupname: 'South Epic Group',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.an('object');
         done();
       });
   });
