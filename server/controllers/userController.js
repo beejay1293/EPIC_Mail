@@ -117,14 +117,12 @@ class UserController {
     try {
       const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning *';
       const { rows } = await DB.query(queryString, values);
-      console.log(rows[0].isadmin);
 
       // create token
       const token = createToken(rows[0].email, rows[0].id);
       const contact = [rows[0].firstname, rows[0].lastname, rows[0].email];
       const contactQueyString = 'INSERT INTO contacts(firstname, lastname, email) VALUES($1, $2, $3)';
       await DB.query(contactQueyString, contact);
-      console.log(token);
 
       return res.status(201).json({
         status: 201,
