@@ -73,7 +73,7 @@ class UserController {
       saveDataToFile(contactfilePath, contactData, contact);
 
       // create token
-      const token = createToken(values.email, values.id, values.isAdmin);
+      const token = createToken(values.email, values.id);
 
       return res.status(201).json({
         status: 201,
@@ -117,18 +117,20 @@ class UserController {
     try {
       const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning *';
       const { rows } = await DB.query(queryString, values);
+      console.log(rows[0].isadmin);
 
       // create token
-      const token = createToken(rows[0].email, rows[0].id, rows[0].isAdmin);
+      const token = createToken(rows[0].email, rows[0].id);
       const contact = [rows[0].firstname, rows[0].lastname, rows[0].email];
       const contactQueyString = 'INSERT INTO contacts(firstname, lastname, email) VALUES($1, $2, $3)';
       await DB.query(contactQueyString, contact);
+      console.log(token);
 
       return res.status(201).json({
         status: 201,
         data: [
           {
-            username: rows.lastname,
+            username: rows[0].lastname,
             token,
           },
         ],
@@ -185,7 +187,7 @@ class UserController {
       });
     }
     // create token
-    const token = createToken(UserExists.email, UserExists.id, UserExists.isAdmin);
+    const token = createToken(UserExists.email, UserExists.id);
 
     return res.status(200).json({
       status: 200,
@@ -237,7 +239,7 @@ class UserController {
       }
 
       // generate token
-      const token = createToken(rows[0].email, rows[0].id, rows[0].isAdmin);
+      const token = createToken(rows[0].email, rows[0].id);
 
       // return success message
       return res.status(200).json({

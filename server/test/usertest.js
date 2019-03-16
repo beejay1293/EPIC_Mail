@@ -37,6 +37,7 @@ const invalidMessage = {
 // };
 
 let UserToken;
+let DbToken;
 // Test suite for home route
 describe('GET /', () => {
   it('Should redirect to home route', (done) => {
@@ -112,13 +113,13 @@ describe('POST api/v2/auth/signup', () => {
         firstname: faker.name.firstName(),
         lastname: faker.name.lastName(),
         email: faker.internet.email(),
-        number: '66778',
         password: 'dele1989',
+        number: '66778',
       })
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        UserToken = body.data[0].token;
+        DbToken = body.data[0].token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);
@@ -249,13 +250,13 @@ describe('POST api/v2/auth/login', () => {
       .request(app)
       .post('/api/v2/auth/login')
       .send({
-        email: 'andela.giwa1@epic.com',
+        email: 'Darryl99@hotmail.com',
         password: 'dele1989',
       })
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        UserToken = body.data[0].token;
+
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(200);
@@ -342,7 +343,7 @@ describe('POST api/v2/auth/login', () => {
       .request(app)
       .post('/api/v2/auth/login')
       .send({
-        email: 'andela.giwa1@epic.com',
+        email: 'Darryl99@hotmail.com',
         password: 'wrongpassword',
       })
       .end((err, res) => {
@@ -385,7 +386,7 @@ describe('POST api/v2/auth/login', () => {
       .post('/api/v2/auth/login')
       .send({})
       .end((err, res) => {
-        if (err) done();
+        if (err) done(err);
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
@@ -407,7 +408,7 @@ describe('POST api/v1/messages', () => {
       .set('token', UserToken)
       .send(validMessage)
       .end((err, res) => {
-        if (err) done();
+        if (err) done(err);
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
@@ -428,7 +429,7 @@ describe('POST api/v1/messages', () => {
       .set('token', UserToken)
       .send(invalidMessage)
       .end((err, res) => {
-        if (err) done();
+        if (err) done(err);
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
@@ -449,7 +450,7 @@ describe('POST api/v1/messages', () => {
       .set('token', UserToken)
       .send({})
       .end((err, res) => {
-        if (err) done();
+        if (err) done(err);
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
@@ -723,6 +724,48 @@ describe('DELETE api/v1/messages/messageId', () => {
         expect(body.errors[0].name).to.be.a('string');
         expect(body.errors[0].message).to.be.a('string');
 
+        done();
+      });
+  });
+});
+
+// ========================GROUPS TEST=====================
+// test route for POST /groups
+describe('POST api/v2/groups', () => {
+  it('Should successfully create a group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups')
+      .set('token', DbToken)
+      .send({
+        groupname: 'ALWAYS TEST',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('string');
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.an('object');
+        done();
+      });
+  });
+});
+
+// Test suite for GET /groups/
+describe('GET api/v2/groups', () => {
+  it('Should return all group records', (done) => {
+    chai
+      .request(app)
+      .get('/api/v2/groups/')
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('string');
+        expect(body.status).to.be.equal('success');
+        expect(body.data).to.be.a('array');
         done();
       });
   });
