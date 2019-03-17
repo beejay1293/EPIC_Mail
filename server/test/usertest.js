@@ -28,17 +28,18 @@ const invalidMessage = {
   reciever: 'Layne80@hotmailwrong.com',
 };
 
-// const user = {
-//   firstname: faker.name.firstName(),
-//   lastname: faker.name.lastName(),
-//   email: faker.internet.email(),
-//   number: '08162990467',
-//   password: '1940andela',
-// };
+const newUser = {
+  firstname: faker.name.firstName(),
+  lastname: faker.name.lastName(),
+  email: faker.internet.email(),
+  password: 'dele1989',
+  number: '66778',
+};
 
 let UserToken;
 let DbToken;
 let groupId;
+let DbnewUserToken;
 // Test suite for home route
 describe('GET /', () => {
   it('Should redirect to home route', (done) => {
@@ -110,17 +111,11 @@ describe('POST api/v2/auth/signup', () => {
     chai
       .request(app)
       .post('/api/v2/auth/signup')
-      .send({
-        firstname: faker.name.firstName(),
-        lastname: faker.name.lastName(),
-        email: faker.internet.email(),
-        password: 'dele1989',
-        number: '66778',
-      })
+      .send(newUser)
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        DbToken = body.data[0].token;
+        DbnewUserToken = body.data[0].token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);
@@ -774,7 +769,7 @@ describe('GET api/v2/groups', () => {
 });
 
 // Test suite for PATCH /groups/<:groupId>/name
-describe('PATCH api/v2/groups', () => {
+describe('PATCH api/v2/groups/<:groupId>/name', () => {
   it('Should edit the name of a specific group', (done) => {
     chai
       .request(app)
@@ -833,6 +828,105 @@ describe('DELETE api/v2/groups/<:groupId>', () => {
         expect(body.status).to.be.equal(400);
         expect(body.error).to.be.an('string');
         expect(body.error).to.be.equal('sorry you can not delete group');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/users
+describe('POST api/v2/groups', () => {
+  it('Should add a new user to a group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/users')
+      .set('token', DbToken)
+      .send({
+        email: `${newUser.email}`,
+        role: 'user',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(201);
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.an('object');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/users
+describe('POST api/v2/groups', () => {
+  it('Should throw an error if user is not an admin/moderator in group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/users')
+      .set('token', DbnewUserToken)
+      .send({
+        email: `${newUser.email}`,
+        role: 'moderator',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(401);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('sorry, you can not add a user to this group');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/users user already a group member
+describe('POST api/v2/groups', () => {
+  it('Should throw an error if user already exists in group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/users')
+      .set('token', DbToken)
+      .send({
+        email: 'Stephan71@yahoo.com',
+        role: 'moderator',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(409);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('user already a group member');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/users invalid user
+describe('POST api/v2/groups', () => {
+  it('Should return an error if user cannot be found', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/users')
+      .set('token', DbToken)
+      .send({
+        email: 'nono@gmail.com',
+        role: 'user',
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(404);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('user not found');
         done();
       });
   });

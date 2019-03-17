@@ -20,6 +20,7 @@ EPIC Mail is an Application that helps people exchange messages/information over
 - Users can **get all groups records**
 - Admin/Moderator can **edit the name of a specific group**
 - Admin can **delete a specific group record**
+- Admin/Moderator can **add a new user to a group**
 
 ## Technologies
 
@@ -98,6 +99,8 @@ npm test
 `- PATCH /api/v2/groups/<:groupId>/name Edit the name of a specific group record.`
 
 `- DELETE /api/v2/groups/<:groupId> Delete a specific group record.`
+
+`- POST /api/v2/groups/<:groupId>/users Add a new user to a group.`
 
 ## Pivotal Tracker stories
 
