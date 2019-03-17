@@ -5,7 +5,11 @@ import isAuth from '../../middleswares/is-Auth';
 const { verifyTokendb } = isAuth;
 
 const {
-  createGroup, GetAllGroups, EditSpecificGroupName, DeleteSpecificGroup,
+  createGroup,
+  GetAllGroups,
+  EditSpecificGroupName,
+  DeleteSpecificGroup,
+  AddUserToGroup,
 } = GroupController;
 
 const router = express.Router();
@@ -21,6 +25,9 @@ router.patch('/groups/:groupId/name', verifyTokendb, EditSpecificGroupName);
 
 // delete a specific group
 router.delete('/groups/:groupId', verifyTokendb, DeleteSpecificGroup);
+
+// Add a user to a specific group
+router.post('/groups/:groupId/users', verifyTokendb, AddUserToGroup);
 
 // expose router
 export default router;

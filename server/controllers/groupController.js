@@ -18,7 +18,11 @@ class GroupController {
     const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3) returning *';
     const groupmember = await query(queryString2, [rows[0].id, id, 'admin']);
     const response = [
-      { id: groupmember.rows[0].groupid, name: rows[0].name, role: groupmember.rows[0].role },
+      {
+        id: groupmember.rows[0].groupid,
+        name: rows[0].name,
+        role: groupmember.rows[0].role,
+      },
     ];
     return res.status(200).json({
       status: 'success',
@@ -79,6 +83,11 @@ class GroupController {
     });
   }
 
+  /**
+   * delete a specific user from group
+   * @param {*} req
+   * @param {*} res
+   */
   static async DeleteSpecificGroup(req, res) {
     const { id } = req.user;
     const { groupId } = req.params;
@@ -86,6 +95,7 @@ class GroupController {
     const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId, role) = ($1, $2, $3)';
     const { rows } = await query(queryString, [groupId, id, 'admin']);
 
+    // check if user is an admin
     if (!rows[0]) {
       return res.status(400).json({
         status: 400,
@@ -105,6 +115,60 @@ class GroupController {
           message: 'group has been deleted',
         },
       ],
+    });
+  }
+
+  /**
+   * Add user to group
+   * @param {*} req
+   * @param {*} res
+   */
+  static async AddUserToGroup(req, res) {
+    const { id } = req.user;
+    const { groupId } = req.params;
+    const { body } = req;
+
+    const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId) = ($1, $2)';
+    const { rows } = await query(queryString, [groupId, id]);
+
+    // check if user is an admin or moderator in froup
+    if (rows.length === 0 || rows[0].role === 'user') {
+      return res.status(401).json({
+        status: 401,
+        error: 'sorry, you can not add a user to this group',
+      });
+    }
+
+    const userQuery = 'SELECT * FROM users WHERE email = $1';
+    const user = await query(userQuery, [body.email]);
+
+    // check if the user exists in our users db
+    if (user.rows.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        error: 'user not found',
+      });
+    }
+
+    const userExistQuery = 'SELECT * FROM groups_members WHERE (groupId, groups_members.memberId) = ($1, $2)';
+    const userExist = await query(userExistQuery, [groupId, user.rows[0].id]);
+    // check if user is already a member of the group
+    if (userExist.rows.length > 0) {
+      return res.status(409).json({
+        status: 409,
+        error: 'user already a group member',
+      });
+    }
+
+    const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3)';
+    await query(queryString2, [groupId, user.rows[0].id, body.role]);
+
+    const responseQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
+    const response = await query(responseQuery, [groupId]);
+
+    return res.status(201).json({
+      status: 201,
+      data: response.rows,
     });
   }
 }
