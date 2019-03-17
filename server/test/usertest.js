@@ -38,6 +38,7 @@ const invalidMessage = {
 
 let UserToken;
 let DbToken;
+let groupId;
 // Test suite for home route
 describe('GET /', () => {
   it('Should redirect to home route', (done) => {
@@ -743,6 +744,7 @@ describe('POST api/v2/groups', () => {
       .end((err, res) => {
         if (err) done(err);
         const { body } = res;
+        groupId = body.data[0].id;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('string');
         expect(body.data).to.be.an('array');
@@ -771,7 +773,7 @@ describe('GET api/v2/groups', () => {
   });
 });
 
-// Test suite for PATCH /groups/
+// Test suite for PATCH /groups/<:groupId>/name
 describe('PATCH api/v2/groups', () => {
   it('Should edit the name of a specific group', (done) => {
     chai
@@ -789,6 +791,48 @@ describe('PATCH api/v2/groups', () => {
         expect(body.status).to.be.equal(200);
         expect(body.data).to.be.an('array');
         expect(body.data[0]).to.be.an('object');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId>
+describe('DELETE api/v2/groups/<:groupId>', () => {
+  it('Should delete a specific group', (done) => {
+    chai
+      .request(app)
+      .delete(`/api/v2/groups/${groupId}`)
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.an('object');
+        expect(body.data[0]).to.haveOwnProperty('message');
+        expect(body.data[0].message).to.be.equal('group has been deleted');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId> invalid
+describe('DELETE api/v2/groups/<:groupId>', () => {
+  it('Should throw an error is user is not an admin in a specific group', (done) => {
+    chai
+      .request(app)
+      .delete('/api/v2/groups/9')
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(400);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('sorry you can not delete group');
         done();
       });
   });

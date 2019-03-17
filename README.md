@@ -16,6 +16,10 @@ EPIC Mail is an Application that helps people exchange messages/information over
 - Users can **fetch all sent emails**
 - Users can **fetch a specific email record**
 - Users can **delete a specific email record**
+- Users can **Create a new group**
+- Users can **get all groups records**
+- Admin/Moderator can **edit the name of a specific group**
+- Admin can **delete a specific group record**
 
 ## Technologies
 
@@ -51,6 +55,8 @@ npm test
 
 ## API-ENDPOINTS
 
+- V1
+
 `- POST /api/v1/auth/signup Create a new user record.`
 
 `- POST /api/v1/auth/login login a user.`
@@ -67,6 +73,32 @@ npm test
 
 `- DELETE /api/v1/messages/<:message-id> Delete a specific email record.`
 
+- v2
+
+`- POST /api/v2/auth/signup Create a new user record.`
+
+`- POST /api/v2/auth/login login a user.`
+
+`- POST /api/v2/messages Create or send an email.`
+
+`- GET /api/v2/messages Get all received emails.`
+
+`- GET /api/v2/messages/unread get all unread received emails.`
+
+`- GET /api/v2/sent get all sent emails.`
+
+`- GET /api/v2/messages/<:message-id> Get a specific email record.`
+
+`- DELETE /api/v2/messages/<:message-id> Delete a specific email record.`
+
+`- POST /api/v2/groups Create a new group record.`
+
+`- GET /api/v2/groups Get all group records.`
+
+`- PATCH /api/v2/groups/<:groupId>/name Edit the name of a specific group record.`
+
+`- DELETE /api/v2/groups/<:groupId> Delete a specific group record.`
+
 ## Pivotal Tracker stories
 
 [https://www.pivotaltracker.com/n/projects/2314351](https://www.pivotaltracker.com/n/projects/2314351)
@@ -77,7 +109,7 @@ You can see a hosted version of the template at [https://beejay1293.github.io/EP
 
 ## API
 
-The API is currently in version 1 (v1) and is hosted at
+The API is currently in version 1 (v1) and in version 2 (v2) and is hosted at
 
 [https://andela-epic-mail.herokuapp.com/](https://andela-epic-mail.herokuapp.com/)
 
