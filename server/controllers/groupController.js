@@ -78,6 +78,36 @@ class GroupController {
       error: 'sorry, you can not edit group name',
     });
   }
+
+  static async DeleteSpecificGroup(req, res) {
+    const { id } = req.user;
+    const { groupId } = req.params;
+
+    const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId, role) = ($1, $2, $3)';
+    const { rows } = await query(queryString, [groupId, id, 'admin']);
+
+    if (!rows[0]) {
+      return res.status(400).json({
+        status: 400,
+        error: 'sorry you can not delete group',
+      });
+    }
+    const querystr = 'DELETE FROM groups_members WHERE groups_members.groupId = $1';
+    await query(querystr, [groupId]);
+
+    const queryString2 = 'DELETE FROM groups WHERE groups.id = $1';
+    await query(queryString2, [groupId]);
+
+    return res.status(200).json({
+      status: 200,
+      data: [
+        {
+          message: 'group has been deleted',
+        },
+      ],
+    });
+  }
 }
 
+// Expose Group Controller
 export default GroupController;
