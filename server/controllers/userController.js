@@ -77,16 +77,14 @@ class UserController {
 
       return res.status(201).json({
         status: 201,
-        data: [
-          {
-            username: savedData.lastname,
-            token,
-          },
-        ],
+        data: {
+          username: savedData.lastname,
+          token,
+        },
       });
     } catch (e) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(500).json({
+        status: 500,
         error: 'Sorry, something went wrong, try again',
       });
     }
@@ -126,12 +124,10 @@ class UserController {
 
       return res.status(201).json({
         status: 201,
-        data: [
-          {
-            username: rows[0].lastname,
-            token,
-          },
-        ],
+        data: {
+          username: rows[0].lastname,
+          token,
+        },
       });
     } catch (error) {
       // check if user exist
@@ -189,11 +185,9 @@ class UserController {
 
     return res.status(200).json({
       status: 200,
-      data: [
-        {
-          token,
-        },
-      ],
+      data: {
+        token,
+      },
     });
   }
 
@@ -242,16 +236,14 @@ class UserController {
       // return success message
       return res.status(200).json({
         status: 200,
-        data: [
-          {
-            token,
-          },
-        ],
+        data: {
+          token,
+        },
       });
     } catch (error) {
-      return res.status(400).json({
-        status: 400,
-        error: `Something went wrong, try again ${error}`,
+      return res.status(500).json({
+        status: 500,
+        error: 'Something went wrong, try again',
       });
     }
   }

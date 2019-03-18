@@ -10,6 +10,7 @@ const {
   EditSpecificGroupName,
   DeleteSpecificGroup,
   AddUserToGroup,
+  DeleteUserFromGroup,
 } = GroupController;
 
 const router = express.Router();
@@ -28,6 +29,9 @@ router.delete('/groups/:groupId', verifyTokendb, DeleteSpecificGroup);
 
 // Add a user to a specific group
 router.post('/groups/:groupId/users', verifyTokendb, AddUserToGroup);
+
+// Delete a user from a group
+router.delete('/groups/:groupId/users/:userId', verifyTokendb, DeleteUserFromGroup);
 
 // expose router
 export default router;

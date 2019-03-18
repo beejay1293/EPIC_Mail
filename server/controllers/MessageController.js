@@ -41,11 +41,9 @@ class MessageController {
       const message = saveDataToFile(messagefilePath, messageData, body);
       return res.status(201).json({
         status: 201,
-        data: [
-          {
-            message,
-          },
-        ],
+        data: {
+          message,
+        },
       });
     }
     // check if user pass valid and required data
@@ -101,16 +99,14 @@ class MessageController {
 
       return res.status(201).json({
         status: 201,
-        data: [
-          {
-            message,
-          },
-        ],
+        data: {
+          message,
+        },
       });
     } catch (e) {
-      return res.status(400).json({
-        status: 400,
-        error: `${e} Sorry, something went wrong, try again`,
+      return res.status(500).json({
+        status: 500,
+        error: 'Sorry, something went wrong, try again',
       });
     }
   }
@@ -130,11 +126,9 @@ class MessageController {
 
         return res.status(201).json({
           status: 201,
-          data: [
-            {
-              rows,
-            },
-          ],
+          data: {
+            rows,
+          },
         });
       }
 
@@ -177,16 +171,14 @@ class MessageController {
       const msg = rows[0];
       return res.status(201).json({
         status: 201,
-        data: [
-          {
-            msg,
-          },
-        ],
+        data: {
+          msg,
+        },
       });
     } catch (error) {
-      return res.status(400).json({
-        status: 400,
-        error,
+      return res.status(500).json({
+        status: 500,
+        error: 'Internal server error',
       });
     }
   }
@@ -377,8 +369,8 @@ class MessageController {
         error: 'message does not exist',
       });
     } catch (error) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(500).json({
+        status: 500,
         error: 'message cannot be found',
       });
     }
@@ -414,11 +406,9 @@ class MessageController {
 
     return res.status(200).json({
       status: 200,
-      data: [
-        {
-          message: 'message deleted',
-        },
-      ],
+      data: {
+        message: 'message deleted',
+      },
     });
   }
 
@@ -458,9 +448,9 @@ class MessageController {
         error: 'sorry, you are unable to delete this message',
       });
     } catch (error) {
-      return res.status(400).json({
-        status: 400,
-        error,
+      return res.status(500).json({
+        status: 500,
+        error: 'internal server error',
       });
     }
   }
