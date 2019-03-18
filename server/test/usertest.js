@@ -40,6 +40,7 @@ let UserToken;
 let DbToken;
 let groupId;
 let DbnewUserToken;
+let userToDelete;
 // Test suite for home route
 describe('GET /', () => {
   it('Should redirect to home route', (done) => {
@@ -94,12 +95,13 @@ describe('POST api/v1/auth/signup', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        UserToken = body.data[0].token;
+
+        UserToken = body.data.token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);
-        expect(body.data[0]).to.haveOwnProperty('token');
-        expect(body.data[0].token).to.be.a('string');
+        expect(body.data).to.be.an('object');
+        expect(body.data.token).to.be.a('string');
         done();
       });
   });
@@ -115,12 +117,12 @@ describe('POST api/v2/auth/signup', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        DbnewUserToken = body.data[0].token;
+        DbnewUserToken = body.data.token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);
-        expect(body.data[0]).to.haveOwnProperty('token');
-        expect(body.data[0].token).to.be.a('string');
+        expect(body.data).to.be.an('object');
+        expect(body.data.token).to.be.a('string');
         done();
       });
   });
@@ -227,12 +229,12 @@ describe('POST api/v1/auth/login', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        UserToken = body.data[0].token;
+        UserToken = body.data.token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(200);
-        expect(body.data[0]).to.haveOwnProperty('token');
-        expect(body.data[0].token).to.be.a('string');
+        expect(body.data).to.be.an('object');
+        expect(body.data.token).to.be.a('string');
 
         done();
       });
@@ -252,12 +254,12 @@ describe('POST api/v2/auth/login', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        DbToken = body.data[0].token;
+        DbToken = body.data.token;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(200);
-        expect(body.data[0]).to.haveOwnProperty('token');
-        expect(body.data[0].token).to.be.a('string');
+        expect(body.data).to.be.an('object');
+        expect(body.data.token).to.be.a('string');
 
         done();
       });
@@ -409,8 +411,8 @@ describe('POST api/v1/messages', () => {
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);
-        expect(body.data[0]).to.haveOwnProperty('message');
-        expect(body.data[0].message).to.be.an('object');
+        expect(body.data).to.be.an('object');
+        expect(body.data.message).to.be.an('object');
         done();
       });
   });
@@ -687,11 +689,9 @@ describe('DELETE api/v1/messages/messageId', () => {
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(200);
-        expect(body.data).to.be.an('array');
-        expect(body.data[0]).to.be.a('object');
-        expect(body.data.length).to.be.equal(1);
-        expect(body.data[0]).to.haveOwnProperty('message');
-        expect(body.data[0].message).to.be.a('string');
+        expect(body.data).to.be.an('object');
+        expect(body.data).to.haveOwnProperty('message');
+        expect(body.data.message).to.be.a('string');
 
         done();
       });
@@ -739,11 +739,10 @@ describe('POST api/v2/groups', () => {
       .end((err, res) => {
         if (err) done(err);
         const { body } = res;
-        groupId = body.data[0].id;
+        groupId = body.data.id;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('string');
-        expect(body.data).to.be.an('array');
-        expect(body.data[0]).to.be.an('object');
+        expect(body.data).to.be.an('object');
         done();
       });
   });
@@ -804,10 +803,9 @@ describe('DELETE api/v2/groups/<:groupId>', () => {
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(200);
-        expect(body.data).to.be.an('array');
-        expect(body.data[0]).to.be.an('object');
-        expect(body.data[0]).to.haveOwnProperty('message');
-        expect(body.data[0].message).to.be.equal('group has been deleted');
+        expect(body.data).to.be.an('object');
+        expect(body.data).to.haveOwnProperty('message');
+        expect(body.data.message).to.be.equal('group has been deleted');
         done();
       });
   });
@@ -847,7 +845,7 @@ describe('POST api/v2/groups', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-
+        userToDelete = body.data[body.data.length - 1].memberid;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(201);
@@ -927,6 +925,68 @@ describe('POST api/v2/groups', () => {
         expect(body.status).to.be.equal(404);
         expect(body.error).to.be.an('string');
         expect(body.error).to.be.equal('user not found');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId>/users/userId
+describe('POST api/v2/groups', () => {
+  it('Should delete a user from a group', (done) => {
+    chai
+      .request(app)
+      .delete(`/api/v2/groups/11/users/${userToDelete}`)
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(201);
+        expect(body.data).to.be.an('object');
+        expect(body.data).to.haveOwnProperty('message');
+        expect(body.data.message).to.be.a('string');
+        expect(body.data.message).to.be.equal('user has been removed from group');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId>/users/userId
+describe('POST api/v2/groups', () => {
+  it('Should throw an error is user is not an admin/moderator in group', (done) => {
+    chai
+      .request(app)
+      .delete(`/api/v2/groups/11/users/${userToDelete}`)
+      .set('token', DbnewUserToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(401);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('sorry, you can not delete a user from this group');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId>/users/userId
+describe('POST api/v2/groups', () => {
+  it('Should throw an error if userId is not in group', (done) => {
+    chai
+      .request(app)
+      .delete('/api/v2/groups/11/users/2000')
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(409);
+        expect(body.error).to.be.an('string');
+        expect(body.error).to.be.equal('user not a group member');
         done();
       });
   });
