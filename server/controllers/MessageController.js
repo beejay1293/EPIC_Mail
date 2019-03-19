@@ -179,8 +179,8 @@ class MessageController {
 
       // deliever messages with twilio
       client.messages.create({
-        to: '+2348169504447',
-        from: '+18169740787',
+        to: process.env.TO,
+        from: process.env.FROM,
         body: `${email} SENT "${msg.message}" TO ${receiver.rows[0].email}`,
       });
       return res.status(201).json({

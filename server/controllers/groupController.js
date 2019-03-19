@@ -287,8 +287,8 @@ class GroupController {
 
       // deliever messages with twilio
       client.messages.create({
-        to: '+2348169504447',
-        from: '+18169740787',
+        to: process.env.TO,
+        from: process.env.FROM,
         body: `${email} SENT "${message.rows[0].message}" TO a group with ID of ${groupId}`,
       });
 
