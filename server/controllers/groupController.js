@@ -1,4 +1,11 @@
+import dotenv from 'dotenv';
 import DB from '../db/index';
+
+dotenv.config();
+
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const client = require('twilio')(accountSid, authToken);
 
 const { query } = DB;
 
@@ -251,7 +258,7 @@ class GroupController {
    * @param {*} res
    */
   static async SendEmailToGroup(req, res) {
-    const { id } = req.user;
+    const { id, email } = req.user;
     const { groupId } = req.params;
     const { body } = req;
     try {
@@ -277,6 +284,13 @@ class GroupController {
       ];
       const queryString2 = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid, groupmessage, groupmessageid) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
       const message = await query(queryString2, values);
+
+      // deliever messages with twilio
+      client.messages.create({
+        to: '+2348169504447',
+        from: '+18169740787',
+        body: `${email} SENT "${message.rows[0].message}" TO a group with ID of ${groupId}`,
+      });
 
       return res.status(201).json({
         status: 201,

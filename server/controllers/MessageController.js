@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import messageData from '../data/messages';
 import sentData from '../data/sent';
 import inboxData from '../data/inbox';
@@ -5,6 +6,12 @@ import helper from '../helper/helper';
 import userData from '../data/users';
 import validateMessageInput from '../validation/message';
 import DB from '../db/index';
+
+dotenv.config();
+
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const client = require('twilio')(accountSid, authToken);
 
 const messagefilePath = 'server/data/messages.json';
 const sentfilePath = 'server/data/sent.json';
@@ -114,7 +121,7 @@ class MessageController {
   static async createMessagedb(req, res) {
     const { body } = req;
 
-    const { id } = req.user;
+    const { id, email } = req.user;
 
     try {
       // save as draft is status is draft
@@ -169,6 +176,13 @@ class MessageController {
       const inbox = [receiver.rows[0].id, rows[0].id];
       await DB.query(inboxQueryString, inbox);
       const msg = rows[0];
+
+      // deliever messages with twilio
+      client.messages.create({
+        to: '+2348169504447',
+        from: '+18169740787',
+        body: `${email} SENT "${msg.message}" TO ${receiver.rows[0].email}`,
+      });
       return res.status(201).json({
         status: 201,
         data: {

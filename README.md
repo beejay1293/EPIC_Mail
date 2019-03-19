@@ -24,6 +24,11 @@ EPIC Mail is an Application that helps people exchange messages/information over
 - Admin/Moderator can **delete a user from a group**
 - Users can **send an email to a group**
 
+## ROptional Features
+
+- Deliver messages via SMS
+- Users can **send an email to a group**
+
 ## Technologies
 
 - Node JS
