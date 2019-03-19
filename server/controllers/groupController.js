@@ -151,10 +151,10 @@ class GroupController {
       const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId) = ($1, $2)';
       const { rows } = await query(queryString, [groupId, id]);
 
-      // check if user is an admin or moderator in froup
+      // check if user is an admin or moderator in group
       if (rows.length === 0 || rows[0].role === 'user') {
-        return res.status(401).json({
-          status: 401,
+        return res.status(403).json({
+          status: 403,
           error: 'sorry, you can not add a user to this group',
         });
       }
@@ -212,8 +212,8 @@ class GroupController {
 
       // check if user is an admin or moderator in group
       if (rows.length === 0 || rows[0].role === 'user') {
-        return res.status(401).json({
-          status: 401,
+        return res.status(403).json({
+          status: 403,
           error: 'sorry, you can not delete a user from this group',
         });
       }
@@ -236,6 +236,51 @@ class GroupController {
         data: {
           message: 'user has been removed from group',
         },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 500,
+        error: 'internal server error',
+      });
+    }
+  }
+
+  /**
+   * Send an email to a group
+   * @param {*} req
+   * @param {*} res
+   */
+  static async SendEmailToGroup(req, res) {
+    const { id } = req.user;
+    const { groupId } = req.params;
+    const { body } = req;
+    try {
+      const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId) = ($1, $2)';
+      const { rows } = await query(queryString, [groupId, id]);
+
+      // check if user belongs to group
+      if (rows.length === 0) {
+        return res.status(403).json({
+          status: 403,
+          error: 'sorry, you are not a member of this group',
+        });
+      }
+
+      const values = [
+        body.subject,
+        body.message,
+        'sent',
+        id,
+        body.parentmessageid,
+        'true',
+        groupId,
+      ];
+      const queryString2 = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid, groupmessage, groupmessageid) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
+      const message = await query(queryString2, values);
+
+      return res.status(201).json({
+        status: 201,
+        data: message.rows[0],
       });
     } catch (error) {
       return res.status(500).json({
