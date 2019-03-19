@@ -11,6 +11,7 @@ const {
   DeleteSpecificGroup,
   AddUserToGroup,
   DeleteUserFromGroup,
+  SendEmailToGroup,
 } = GroupController;
 
 const router = express.Router();
@@ -32,6 +33,9 @@ router.post('/groups/:groupId/users', verifyTokendb, AddUserToGroup);
 
 // Delete a user from a group
 router.delete('/groups/:groupId/users/:userId', verifyTokendb, DeleteUserFromGroup);
+
+// Send an email to a group
+router.post('/groups/:groupId/messages', verifyTokendb, SendEmailToGroup);
 
 // expose router
 export default router;

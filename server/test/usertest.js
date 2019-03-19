@@ -873,7 +873,7 @@ describe('POST api/v2/groups', () => {
 
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
-        expect(body.status).to.be.equal(401);
+        expect(body.status).to.be.equal(403);
         expect(body.error).to.be.an('string');
         expect(body.error).to.be.equal('sorry, you can not add a user to this group');
         done();
@@ -931,7 +931,7 @@ describe('POST api/v2/groups', () => {
 });
 
 // Test suite for DELETE /groups/<:groupId>/users/userId
-describe('POST api/v2/groups', () => {
+describe('DELETE api/v2/groups', () => {
   it('Should delete a user from a group', (done) => {
     chai
       .request(app)
@@ -953,7 +953,7 @@ describe('POST api/v2/groups', () => {
 });
 
 // Test suite for DELETE /groups/<:groupId>/users/userId
-describe('POST api/v2/groups', () => {
+describe('DELETE api/v2/groups', () => {
   it('Should throw an error is user is not an admin/moderator in group', (done) => {
     chai
       .request(app)
@@ -964,7 +964,7 @@ describe('POST api/v2/groups', () => {
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
-        expect(body.status).to.be.equal(401);
+        expect(body.status).to.be.equal(403);
         expect(body.error).to.be.an('string');
         expect(body.error).to.be.equal('sorry, you can not delete a user from this group');
         done();
@@ -973,7 +973,7 @@ describe('POST api/v2/groups', () => {
 });
 
 // Test suite for DELETE /groups/<:groupId>/users/userId
-describe('POST api/v2/groups', () => {
+describe('DELETE api/v2/groups', () => {
   it('Should throw an error if userId is not in group', (done) => {
     chai
       .request(app)
