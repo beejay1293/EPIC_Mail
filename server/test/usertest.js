@@ -741,7 +741,8 @@ describe('POST api/v2/groups', () => {
         const { body } = res;
         groupId = body.data.id;
         expect(body).to.be.an('object');
-        expect(body.status).to.be.a('string');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(201);
         expect(body.data).to.be.an('object');
         done();
       });
