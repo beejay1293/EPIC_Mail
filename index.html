@@ -22,40 +22,65 @@
 
         <div class="register">
           <h3 class="sub_header">Create an EPIC Mail Account</h3>
-          <form action="dashboard.html" class="login-form">
+          <form action="dashboard.html" class="login-form" method="POST">
             <div class="login_container">
+              <div class="feedback_container"></div>
+              <ul></ul>
               <hr />
 
-              <input type="text" placeholder="Firstname" name="name" required />
+              <input
+                type="text"
+                placeholder="Firstname"
+                name="name"
+                required
+                id="firstname"
+              />
 
               <input
                 type="text"
                 placeholder="lastname"
                 name="lastname"
                 required
+                id="lastname"
               />
 
-              <input type="email" placeholder="Email" name="email" required />
+              <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                required
+                id="email"
+              />
 
-              <input type="tel" placeholder="Phone" name="tel" required />
+              <input
+                type="tel"
+                placeholder="Phone"
+                name="tel"
+                required
+                id="number"
+              />
 
               <input
                 type="password"
                 placeholder="Enter Password"
                 name="psw"
                 required
+                id="password"
               />
-
+              <div class="feedback_container2"></div>
               <input
-                type="text"
+                type="password"
                 placeholder="Comfirm password"
                 name="psw2"
                 required
+                id="password2"
               />
 
               <hr />
 
-              <button type="submit" class="registerbtn">Sign Up</button>
+              <button type="submit" class="registerbtn" id="signup">
+                Sign up
+              </button>
             </div>
 
             <div class="signup">
@@ -131,7 +156,7 @@
       </div>
       <div class="wrapper"></div>
     </div>
-
+    <script src="JS/signupuser.js"></script>
     <script src="JS/signup.js"></script>
   </body>
 </html>
