@@ -1,11 +1,11 @@
 swagger: "2.0"
 info:
   version: "1.0"
-  title: EPIC MAIl
-  description: Epic mail is an application that helps users exchange messages over the internet
+  title: EPIC_Mail
+  description: An application that enables users to exchange information/messages over the internet
   contact: {}
 host: andela-epic-mail.herokuapp.com
-basePath: /api/v2/auth
+basePath: /api/v2
 schemes:
   - https
 consumes:
@@ -13,13 +13,39 @@ consumes:
 produces:
   - application/json
 paths:
-  /signup:
+  /auth/signup:
     post:
-      description: "TODO: Add Description"
+      description: Allows users to signup and create an account
+      summary: Signup
+      tags:
+        - Auth
+      operationId: AuthSignupPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/SignupRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /auth/login:
+    post:
+      description: Users can login to their EPIC Mail Account
       summary: login
       tags:
-        - auth
-      operationId: SignupPost
+        - Auth
+      operationId: AuthLoginPost
       deprecated: false
       produces:
         - application/json
@@ -39,13 +65,325 @@ paths:
         200:
           description: ""
           headers: {}
+  /messages:
+    post:
+      description: Authorized Users can create/send a message
+      summary: Create  or Send Message
+      tags:
+        - Message
+      operationId: MessagesPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/CreateorSendMessageRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+    get:
+      description: Authorized users can get all received messages
+      summary: Get all received messages
+      tags:
+        - Message
+      operationId: MessagesGet
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /messages/unread:
+    get:
+      description: Authorized users can get all unread recieved messages
+      summary: Get all unread recieved messages
+      tags:
+        - Message
+      operationId: MessagesUnreadGet
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /messages/sent:
+    get:
+      description: Authorized users can get all sent messages
+      summary: Get all sent messages
+      tags:
+        - Message
+      operationId: MessagesSentGet
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /messages/<:message-id>:
+    get:
+      description: Authorized users can get a specific message they created or recieved
+      summary: Get a specific message
+      tags:
+        - Message
+      operationId: Messages66Get
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+    delete:
+      description: Authorized users can delete a specific message they created
+      summary: Delete specific message
+      tags:
+        - Message
+      operationId: Messages66Delete
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups:
+    post:
+      description: Authorized users can create a new group
+      summary: create a new group
+      tags:
+        - Group
+      operationId: GroupsPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/createanewgroupRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+    get:
+      description: Authorized users can get all groups they belong to
+      summary: Get all groups
+      tags:
+        - Group
+      operationId: GroupsGet
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups/<:groupId>/name:
+    patch:
+      description: Authorized users can edit the name of a specific group
+      summary: Edit the name of a specific group
+      tags:
+        - Group
+      operationId: Groups8NamePatch
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/EditthenameofaspecificgroupRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups/<:groupId>:
+    delete:
+      description: Authorized users can delete a specific group record
+      summary: Delete Specific group
+      tags:
+        - Group
+      operationId: Groups8Delete
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups/<:groupId>/users:
+    post:
+      description: Authorized user can add a user to a specific group which they belong to as an admin/moderator
+      summary: Add a user to a specific group
+      tags:
+        - Group
+      operationId: Groups9UsersPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/AddausertoaspecificgroupRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups/<:groupId>/users/<:userId>:
+    delete:
+      description: An admin/moderator can remove a user from a group
+      summary: Remove a user from a specific group
+      tags:
+        - Group
+      operationId: Groups9Users151Delete
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+      responses:
+        200:
+          description: ""
+          headers: {}
+  /groups/<:groupId>/messages:
+    post:
+      description: Group memebers can send a message to their group
+      summary: send message to a specific message
+      tags:
+        - Group
+      operationId: Groups9MessagesPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/sendmessagetoaspecificmessageRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
 definitions:
-  loginRequest:
-    title: loginRequest
+  SignupRequest:
+    title: SignupRequest
     example:
       firstname: Tolaked
       lastname: Akere
-      email: akere@epicss.com
+      email: akere@epicss23.com
       number: 93215257
       password: december
     type: object
@@ -66,7 +404,92 @@ definitions:
       - email
       - number
       - password
+  loginRequest:
+    title: loginRequest
+    example:
+      email: akere@epicss23.com
+      password: december
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - email
+      - password
+  CreateorSendMessageRequest:
+    title: CreateorSendMessageRequest
+    example:
+      subject: new message
+      message: Welcome to andela Mr Mobolaji, Twilio is a nice tool to use
+      reciever: akere@epic.com
+    type: object
+    properties:
+      subject:
+        type: string
+      message:
+        type: string
+      reciever:
+        type: string
+    required:
+      - subject
+      - message
+      - reciever
+  createanewgroupRequest:
+    title: createanewgroupRequest
+    example:
+      groupname: Test group2
+    type: object
+    properties:
+      groupname:
+        type: string
+    required:
+      - groupname
+  EditthenameofaspecificgroupRequest:
+    title: EditthenameofaspecificgroupRequest
+    example:
+      groupname: New Test Group
+    type: object
+    properties:
+      groupname:
+        type: string
+    required:
+      - groupname
+  AddausertoaspecificgroupRequest:
+    title: AddausertoaspecificgroupRequest
+    example:
+      email: mattimobolaji@gmail.com
+      role: user
+    type: object
+    properties:
+      email:
+        type: string
+      role:
+        type: string
+    required:
+      - email
+      - role
+  sendmessagetoaspecificmessageRequest:
+    title: sendmessagetoaspecificmessageRequest
+    example:
+      subject: new group message
+      message: i want to send a new group message
+      parentmessageid: 8
+    type: object
+    properties:
+      subject:
+        type: string
+      message:
+        type: string
+      parentmessageid:
+        type: integer
+        format: int32
+    required:
+      - subject
+      - message
+      - parentmessageid
 tags:
-  - name: auth
-    description: >
-      for auth
+  - name: Auth
+  - name: Message
+  - name: Group

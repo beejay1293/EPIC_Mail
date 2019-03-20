@@ -31,8 +31,8 @@ class GroupController {
         role: groupmember.rows[0].role,
       };
 
-      return res.status(200).json({
-        status: 'success',
+      return res.status(201).json({
+        status: 201,
         data: response,
       });
     } catch (error) {
