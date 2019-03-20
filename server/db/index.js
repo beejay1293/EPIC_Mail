@@ -22,7 +22,7 @@ class Db {
    * @param {string} queryString
    * @param {*} params
    */
-  static query(queryString, params) {
+  static async query(queryString, params) {
     return new Promise((resolve, reject) => {
       pool
         .query(queryString, params)
