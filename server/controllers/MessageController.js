@@ -5,7 +5,7 @@ import inboxData from '../data/inbox';
 import helper from '../helper/helper';
 import userData from '../data/users';
 import validateMessageInput from '../validation/message';
-import DB from '../db/index';
+import Db from '../db/index';
 
 dotenv.config();
 
@@ -129,7 +129,7 @@ class MessageController {
       if (body.status === 'draft') {
         const values = [body.subject, body.message, body.parentmessageid, body.status, id];
         const queryString = 'INSERT INTO messages(subject, message, parentmessageid, status, createdby) VALUES($1, $2, $3, $4, $5) returning *';
-        const { rows } = await DB.query(queryString, values);
+        const { rows } = await Db.query(queryString, values);
 
         return res.status(201).json({
           status: 201,
@@ -149,46 +149,58 @@ class MessageController {
           errors,
         });
       }
+      try {
+        await Db.query('BEGIN');
 
-      const queryString = 'SELECT * FROM users WHERE email = $1';
-      const receiver = await DB.query(queryString, [body.reciever]);
+        const queryString = 'SELECT * FROM users WHERE email = $1';
+        const receiver = await Db.query(queryString, [body.reciever]);
 
-      // check if user exist in database
-      if (!receiver.rows[0]) {
-        return res.status(404).json({
-          status: 404,
-          error: 'Reciever not a valid user',
+        // check if user exist in database
+        if (!receiver.rows[0]) {
+          return res.status(404).json({
+            status: 404,
+            error: 'Reciever not a valid user',
+          });
+        }
+
+        const messagevalues = [body.subject, body.message, 'sent', id, body.parentmessageid];
+
+        const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid) VALUES($1, $2, $3, $4, $5) returning *';
+        const { rows } = await Db.query(saveMessagequeryString, messagevalues);
+        // sent message
+
+        const sentqueryString = 'INSERT INTO sent(senderid, messageid) VALUES($1, $2) returning *';
+        const sent = [id, rows[0].id];
+        await Db.query(sentqueryString, sent);
+
+        // received Message
+        const inboxQueryString = 'INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) returning *';
+        const inbox = [receiver.rows[0].id, rows[0].id];
+        await Db.query(inboxQueryString, inbox);
+
+        await Db.query('COMMIT');
+
+        // response
+        const msg = rows[0];
+
+        // deliever messages with twilio
+        client.messages.create({
+          to: process.env.TO,
+          from: process.env.FROM,
+          body: `${email} SENT "${msg.message}" TO ${receiver.rows[0].email}`,
         });
+        return res.status(201).json({
+          status: 201,
+          data: {
+            msg,
+          },
+        });
+      } catch (error) {
+        await Db.query('ROLLBACK');
+        throw error;
+      } finally {
+        Db.release();
       }
-
-      const messagevalues = [body.subject, body.message, 'sent', id, body.parentmessageid];
-
-      const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid) VALUES($1, $2, $3, $4, $5) returning *';
-      const { rows } = await DB.query(saveMessagequeryString, messagevalues);
-      // sent message
-
-      const sentqueryString = 'INSERT INTO sent(senderid, messageid) VALUES($1, $2) returning *';
-      const sent = [id, rows[0].id];
-      await DB.query(sentqueryString, sent);
-
-      // received Message
-      const inboxQueryString = 'INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) returning *';
-      const inbox = [receiver.rows[0].id, rows[0].id];
-      await DB.query(inboxQueryString, inbox);
-      const msg = rows[0];
-
-      // deliever messages with twilio
-      client.messages.create({
-        to: process.env.TO,
-        from: process.env.FROM,
-        body: `${email} SENT "${msg.message}" TO ${receiver.rows[0].email}`,
-      });
-      return res.status(201).json({
-        status: 201,
-        data: {
-          msg,
-        },
-      });
     } catch (error) {
       return res.status(500).json({
         status: 500,
@@ -226,7 +238,7 @@ class MessageController {
     const { id } = req.user;
 
     const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE inbox.receiverid = $1';
-    const { rows } = await DB.query(queryString, [id]);
+    const { rows } = await Db.query(queryString, [id]);
 
     return res.status(200).json({
       status: 200,
@@ -259,7 +271,7 @@ class MessageController {
     const { id } = req.user;
     // get all read messages by status
     const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE (inbox.receiverid, messages.status) = ($1, $2)';
-    const { rows } = await DB.query(queryString, [id, 'sent']);
+    const { rows } = await Db.query(queryString, [id, 'sent']);
 
     return res.status(200).json({
       status: 200,
@@ -297,7 +309,7 @@ class MessageController {
     const { id } = req.user;
 
     const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN sent ON messages.id = sent.messageid WHERE sent.senderid = $1';
-    const { rows } = await DB.query(queryString, [id]);
+    const { rows } = await Db.query(queryString, [id]);
 
     return res.status(200).json({
       status: 200,
@@ -352,7 +364,7 @@ class MessageController {
     try {
       const draftquery = 'SELECT * FROM messages WHERE (status, createdby, id) = ($1, $2, $3)';
 
-      const draftmessage = await DB.query(draftquery, ['draft', id, idParams]);
+      const draftmessage = await Db.query(draftquery, ['draft', id, idParams]);
 
       if (draftmessage.rows[0]) {
         return res.status(200).json({
@@ -361,7 +373,7 @@ class MessageController {
         });
       }
       const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status, sent.senderid, inbox.receiverid FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid LEFT JOIN sent ON messages.id = sent.messageid WHERE messages.id = $1';
-      const { rows } = await DB.query(queryString, [idParams]);
+      const { rows } = await Db.query(queryString, [idParams]);
 
       if (rows[0].senderid === id) {
         return res.status(200).json({
@@ -372,7 +384,7 @@ class MessageController {
 
       if (rows[0].receiverid === id) {
         const queryStrings = 'UPDATE messages SET STATUS = $1 WHERE ID = $2 returning *';
-        const updatedMessage = await DB.query(queryStrings, ['read', rows[0].id]);
+        const updatedMessage = await Db.query(queryStrings, ['read', rows[0].id]);
         return res.status(200).json({
           status: 200,
           data: updatedMessage.rows[0],
@@ -439,17 +451,17 @@ class MessageController {
     try {
       // delete from sent table
       const deletesent = 'DELETE FROM sent WHERE (senderid, messageid) = ($1, $2) returning *';
-      const deletedsentmessage = await DB.query(deletesent, [id, singleMessageId]);
+      const deletedsentmessage = await Db.query(deletesent, [id, singleMessageId]);
 
       if (deletedsentmessage.rows[0]) {
         // delete from inbox table
         const deleteinbox = 'DELETE FROM inbox WHERE messageid = $1 returning *';
-        await DB.query(deleteinbox, [singleMessageId]);
+        await Db.query(deleteinbox, [singleMessageId]);
       }
 
       // delete from message table
       const deleteMessage = 'DELETE FROM messages WHERE (createdby, id) = ($1, $2) returning *';
-      const deletedmessage = await DB.query(deleteMessage, [id, singleMessageId]);
+      const deletedmessage = await Db.query(deleteMessage, [id, singleMessageId]);
       if (deletedmessage.rows[0]) {
         return res.status(200).json({
           status: 200,

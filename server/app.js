@@ -1,19 +1,41 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import users from './routes/api/users';
 import message from './routes/api/message';
 import usersdb from './routes/api/usersdb';
 import messagedb from './routes/api/messagedb';
 import group from './routes/api/group';
-
 // Initialize express app
 const app = express();
+
+const swaggerDocument = YAML.load(`${__dirname}/../swagger.yaml`);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // body-parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  }),
+);
+
+app.all('/*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  next();
+});
+
+app.use(cors());
 // Home page route
 app.get('/', (req, res) => res.status(200).json({
   status: 200,
@@ -46,10 +68,12 @@ app.all('*', (req, res) => res.status(404).json({
 }));
 
 // Define application port number
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Start server
-app.listen(port);
+app.listen(port, () => {
+  console.log('now running');
+});
 
 // expose app to be use in another file
 export default app;

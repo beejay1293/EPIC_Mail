@@ -1,0 +1,72 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: EPIC MAIl
+  description: Epic mail is an application that helps users exchange messages over the internet
+  contact: {}
+host: andela-epic-mail.herokuapp.com
+basePath: /api/v2/auth
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /signup:
+    post:
+      description: "TODO: Add Description"
+      summary: login
+      tags:
+        - auth
+      operationId: SignupPost
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          description: ""
+        - name: Body
+          in: body
+          required: true
+          description: ""
+          schema:
+            $ref: "#/definitions/loginRequest"
+      responses:
+        200:
+          description: ""
+          headers: {}
+definitions:
+  loginRequest:
+    title: loginRequest
+    example:
+      firstname: Tolaked
+      lastname: Akere
+      email: akere@epicss.com
+      number: 93215257
+      password: december
+    type: object
+    properties:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      number:
+        type: string
+      password:
+        type: string
+    required:
+      - firstname
+      - lastname
+      - email
+      - number
+      - password
+tags:
+  - name: auth
+    description: >
+      for auth
