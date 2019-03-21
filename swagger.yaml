@@ -39,7 +39,7 @@ paths:
         200:
           description: ""
           headers: {}
-  /auth/login:8
+  /auth/login:
     post:
       description: Users can login to their EPIC Mail Account
       summary: login
