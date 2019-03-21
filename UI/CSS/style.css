@@ -23,12 +23,12 @@ body {
 /** sets the style Mail in EPIC Mail */
 .mails {
   color: #202124;
-  font-family: "sarabun";
+  font-family: "Comic Sans MS";
 }
 
 .mail {
   color: #fff;
-  font-family: "sarabun";
+  font-family: "Comic Sans MS";
 }
 
 /** span tag is used to style the E in EPIC */
@@ -546,7 +546,7 @@ a {
   font-weight: bolder;
   cursor: pointer;
   overflow: auto;
-  height: 100px;
+  height: 80px;
 }
 .add-contact {
   overflow: auto;
@@ -984,4 +984,118 @@ textarea:focus {
 
 .feedback-list-item {
   margin: 0.5em;
+}
+
+.get_started {
+  border: 2px solid #6272b8;
+  background: #ffaf30;
+  padding: 12px;
+  text-align: center;
+  margin: 10px 18px 0 0;
+  border-radius: 4px;
+  font-family: "Sarabun", sans-serif;
+  font-size: 20px;
+  color: #333;
+}
+
+.get_started2 {
+  border: 2px solid #6272b8;
+  background: #ffaf30;
+  padding: 12px;
+
+  border-radius: 4px;
+  font-family: "Sarabun", sans-serif;
+  font-size: 20px;
+  width: 20%;
+  text-align: center;
+}
+
+.note a {
+  border: 2px solid #6272b8;
+  background: #ffaf30;
+  padding: 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: "Comic Sans MS";
+  font-size: 20px;
+  width: 50%;
+  text-align: center;
+  color: #f8f8f8;
+}
+
+.get_started:hover,
+.note a:hover {
+  opacity: 0.9;
+
+  transform: scale(1.05, 1.05);
+  transition: transform 0.3s linear;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.header__container_index {
+  width: 100%;
+  display: flex;
+  padding: 0px 5px;
+  justify-content: space-between;
+  /* background: #eee; */
+  background: #6272b8;
+
+  flex-wrap: wrap;
+}
+
+.get_started a,
+.get_started2 a {
+  text-decoration: none;
+  color: #fff;
+  font-family: "Comic Sans MS";
+}
+
+.pic {
+  text-align: center;
+  margin-top: 50px;
+  font-family: "Comic Sans MS";
+  font-weight: bold;
+  font-size: 25px;
+  color: #f8f8f8;
+  position: fixed;
+
+  text-align: center;
+  width: 100%;
+  animation: jump 9s linear infinite;
+}
+
+.main_landing {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  min-height: calc(100vh);
+}
+
+.note {
+  padding: 20px 100px;
+  color: #f8f8f8;
+  font-family: "Comic Sans MS";
+  font-size: 90%;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.epic {
+  color: #ffaf30;
+  font-family: "Comic Sans MS";
+  font-size: 0.99em;
+  font-weight: bolder;
+}
+
+@keyframes jump {
+  0% {
+    top: 100px;
+  }
+  50% {
+    top: 50px;
+  }
+  100% {
+    top: 100px;
+  }
 }
