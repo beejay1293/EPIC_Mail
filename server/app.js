@@ -3,11 +3,13 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
+import morgan from 'morgan';
 import users from './routes/api/users';
 import message from './routes/api/message';
 import usersdb from './routes/api/usersdb';
 import messagedb from './routes/api/messagedb';
 import group from './routes/api/group';
+
 // Initialize express app
 const app = express();
 
@@ -19,6 +21,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
+app.use(morgan('combined'));
 
 app.use(
   cors({
@@ -71,9 +74,7 @@ app.all('*', (req, res) => res.status(404).json({
 const port = process.env.PORT || 5000;
 
 // Start server
-app.listen(port, () => {
-  console.log('now running');
-});
+app.listen(port);
 
 // expose app to be use in another file
 export default app;

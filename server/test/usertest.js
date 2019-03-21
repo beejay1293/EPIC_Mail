@@ -309,9 +309,9 @@ describe('POST api/v2/auth/login', () => {
         const { body } = res;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
-        expect(body.status).to.be.equal(404);
+        expect(body.status).to.be.equal(401);
         expect(body.error).to.be.a('string');
-        expect(body.error).to.be.equals('User not Found');
+        expect(body.error).to.be.equals('Invalid Email/Password');
         done();
       });
   });
@@ -434,7 +434,6 @@ describe('POST api/v2/messages', () => {
       .end((err, res) => {
         if (err) done(err);
         const { body } = res;
-        console.log(body);
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equals(201);

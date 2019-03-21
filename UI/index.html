@@ -76,8 +76,6 @@
                 id="password2"
               />
 
-              <hr />
-
               <button type="submit" class="registerbtn" id="signup">
                 Sign up
               </button>
@@ -97,25 +95,35 @@
           <p class="sub_header">Please Login</p>
           <form action="dashboard.html" class="login-form">
             <div class="login_container">
+              <div class="feedback-message-login"></div>
+              <hr />
+              <div>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  name="email"
+                  required
+                  id="sign-in-email"
+                />
+                <small class="error"></small>
+              </div>
+
+              <div>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  name="psw"
+                  required
+                  id="sign-in-password"
+                />
+                <small class="error"></small>
+              </div>
+
               <hr />
 
-              <input
-                type="email"
-                placeholder="Enter Email"
-                name="email"
-                required
-              />
-
-              <input
-                type="password"
-                placeholder="Enter Password"
-                name="psw"
-                required
-              />
-
-              <hr />
-
-              <button type="submit" class="loginbtn">Login</button>
+              <button type="submit" class="loginbtn" id="sign-in-btn">
+                Login
+              </button>
               <!-- <p class="forgot__password"><a href="#">Forgot Password? </a></p> -->
             </div>
 
@@ -133,7 +141,7 @@
           <p class="sub_header">
             Please Enter the phone number you registered with
           </p>
-          <form action="index.html" class="login-form">
+          <form action="index.html" class="login-form" method="POST">
             <div class="login_container">
               <hr />
 
@@ -157,6 +165,7 @@
       <div class="wrapper"></div>
     </div>
     <script src="JS/signupuser.js"></script>
+
     <script src="JS/signup.js"></script>
   </body>
 </html>

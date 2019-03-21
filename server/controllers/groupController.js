@@ -210,7 +210,7 @@ class GroupController {
       }
 
       const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3)';
-      await query(queryString2, [groupId, user.rows[0].id, body.role]);
+      await query(queryString2, [groupId, user.rows[0].id, 'user']);
 
       const responseQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
       const response = await query(responseQuery, [groupId]);

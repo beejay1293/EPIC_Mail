@@ -225,9 +225,9 @@ class UserController {
 
       // check if user exist in database
       if (!rows[0]) {
-        return res.status(404).json({
-          status: 404,
-          error: 'User not Found',
+        return res.status(401).json({
+          status: 401,
+          error: 'Invalid Email/Password',
         });
       }
 
@@ -246,6 +246,7 @@ class UserController {
       return res.status(200).json({
         status: 200,
         data: {
+          lastname: rows[0].lastname,
           token,
         },
       });

@@ -19,7 +19,8 @@
     "swagger-ui-express": "^4.0.2",
     "twilio": "^3.29.2",
     "validator": "^10.11.0",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
