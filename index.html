@@ -4,168 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign-in EPIC accounts</title>
-    <link rel="stylesheet" href="CSS/style.css" />
+    <title>mattimobolaji@epicmail.com -EPIC Mail</title>
     <link
-      href="https://fonts.googleapis.com/css?family=Coiny|Encode+Sans+Condensed|Sarabun"
       rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="CSS/style.css" />
     <link rel="shortcut icon" href="images/eee.png" type="image/x-icon" />
   </head>
   <body>
-    <div class="container">
-      <div class="login__wrapper">
+    <header class="header__container_index">
+      <div class="logo">
         <h1 class="header">
-          <span><em>E</em></span
-          >PIC <b class="mails">Mail</b>
+          <div class="epic__mails">
+            <span> <i class="fas fa-envelope"></i><em>E</em></span
+            >PIC <b class="mail">Mail</b>
+          </div>
         </h1>
-
-        <div class="register">
-          <h3 class="sub_header">Create an EPIC Mail Account</h3>
-          <form action="dashboard.html" class="login-form" method="POST">
-            <div class="login_container">
-              <div class="feedback_container"></div>
-              <ul></ul>
-              <hr />
-
-              <input
-                type="text"
-                placeholder="Firstname"
-                name="name"
-                required
-                id="firstname"
-              />
-
-              <input
-                type="text"
-                placeholder="lastname"
-                name="lastname"
-                required
-                id="lastname"
-              />
-
-              <input
-                type="email"
-                placeholder="Email"
-                name="email"
-                required
-                id="email"
-              />
-
-              <input
-                type="tel"
-                placeholder="Phone"
-                name="tel"
-                required
-                id="number"
-              />
-
-              <input
-                type="password"
-                placeholder="Enter Password"
-                name="psw"
-                required
-                id="password"
-              />
-              <div class="feedback_container2"></div>
-              <input
-                type="password"
-                placeholder="Comfirm password"
-                name="psw2"
-                required
-                id="password2"
-              />
-
-              <button type="submit" class="registerbtn" id="signup">
-                Sign up
-              </button>
-            </div>
-
-            <div class="signup">
-              <p>
-                Already have an account?
-                <em class="signinbtn actionbtn">Sign in.</em>
-              </p>
-            </div>
-          </form>
-        </div>
-
-        <div class="login">
-          <h3 class="sub_header">Use your EPIC Mail Account</h3>
-          <p class="sub_header">Please Login</p>
-          <form action="dashboard.html" class="login-form">
-            <div class="login_container">
-              <div class="feedback-message-login"></div>
-              <hr />
-              <div>
-                <input
-                  type="email"
-                  placeholder="Enter Email"
-                  name="email"
-                  required
-                  id="sign-in-email"
-                />
-                <small class="error"></small>
-              </div>
-
-              <div>
-                <input
-                  type="password"
-                  placeholder="Enter Password"
-                  name="psw"
-                  required
-                  id="sign-in-password"
-                />
-                <small class="error"></small>
-              </div>
-
-              <hr />
-
-              <button type="submit" class="loginbtn" id="sign-in-btn">
-                Login
-              </button>
-              <!-- <p class="forgot__password"><a href="#">Forgot Password? </a></p> -->
-            </div>
-
-            <div class="signup">
-              <p>
-                Don't have an account?
-                <em class="signupbtn actionbtn">Sign up.</em>
-              </p>
-            </div>
-          </form>
-        </div>
-
-        <div class="recover__password">
-          <h3 class="sub_header">Recover Password</h3>
-          <p class="sub_header">
-            Please Enter the phone number you registered with
-          </p>
-          <form action="index.html" class="login-form" method="POST">
-            <div class="login_container">
-              <hr />
-
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                name="phone"
-                required
-              />
-
-              <button type="submit" class="loginbtn">Recover</button>
-            </div>
-            <div class="signup">
-              <p>
-                <em class="login__btn actionbtn">Sign in.</em>
-              </p>
-            </div>
-          </form>
+      </div>
+      <div>
+        <div class="get_started">
+          <h5 class="user"><a href="auth.html">GET STARTED</a></h5>
         </div>
       </div>
-      <div class="wrapper"></div>
-    </div>
-    <script src="JS/signupuser.js"></script>
 
-    <script src="JS/signup.js"></script>
+      <section class="main_landing">
+        <div class="pic">
+          <h1>
+            <img
+              src="../UI/images/email8.png"
+              width="120px"
+              height="120px;"
+              alt=""
+            />
+          </h1>
+          <h1>WELCOME TO <span class="epic">EPIC MAIL</span></h1>
+          <p class="note">
+            Stay organized With EPIC Mail, you can enjoy the richness of email
+            communication delivered extremely fast when compared to traditional
+            post. Emails can be sent 24 hours a day, 365 days a year.
+          </p>
+          <p class="note"><a href="auth.html">Sign Up </a></p>
+        </div>
+      </section>
+    </header>
+
+    <script src="JS/dashboard.js"></script>
   </body>
 </html>
