@@ -12,12 +12,12 @@ const validateSignUpInput = (data) => {
   body.username = !isEmpty(body.username) ? body.username : '';
   body.password = !isEmpty(body.password) ? body.password : '';
 
-  if (!validator.isLength(body.firstname, { min: 2, max: 30 })) {
-    errors.firstname = 'First Name must be between 2 and 30 characters';
+  if (!validator.isLength(body.firstname, { min: 2, max: 100 })) {
+    errors.firstname = 'First Name must have a minimum of 2 characters';
   }
 
-  if (!validator.isLength(body.lastname, { min: 2, max: 30 })) {
-    errors.lastname = 'Last Name must be between 2 and 30 characters';
+  if (!validator.isLength(body.lastname, { min: 2, max: 100 })) {
+    errors.lastname = 'Last Name must have a minimum of 2 characters';
   }
 
   if (!/^[a-zA-Z ]+$/.test(body.firstname)) {
