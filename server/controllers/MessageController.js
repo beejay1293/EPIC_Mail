@@ -197,9 +197,10 @@ class MessageController {
         });
       } catch (error) {
         await Db.query('ROLLBACK');
-        throw error;
-      } finally {
-        Db.release();
+        return res.status(500).json({
+          status: 500,
+          error: 'something went wrong',
+        });
       }
     } catch (error) {
       return res.status(500).json({
@@ -449,6 +450,7 @@ class MessageController {
     const singleMessageId = parseInt(messageId, 10);
 
     try {
+      await Db.query('BEGIN');
       // delete from sent table
       const deletesent = 'DELETE FROM sent WHERE (senderid, messageid) = ($1, $2) returning *';
       const deletedsentmessage = await Db.query(deletesent, [id, singleMessageId]);
@@ -462,6 +464,8 @@ class MessageController {
       // delete from message table
       const deleteMessage = 'DELETE FROM messages WHERE (createdby, id) = ($1, $2) returning *';
       const deletedmessage = await Db.query(deleteMessage, [id, singleMessageId]);
+
+      await Db.query('COMMIT');
       if (deletedmessage.rows[0]) {
         return res.status(200).json({
           status: 200,
@@ -474,6 +478,7 @@ class MessageController {
         error: 'sorry, you are unable to delete this message',
       });
     } catch (error) {
+      await Db.query('ROLLBACK');
       return res.status(500).json({
         status: 500,
         error: 'internal server error',

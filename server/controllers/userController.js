@@ -5,7 +5,7 @@ import contactData from '../data/contacts';
 import helper from '../helper/helper';
 import validateLoginInput from '../validation/login';
 import Auth from '../middleswares/is-Auth';
-import DB from '../db/index';
+import Db from '../db/index';
 
 const { genSaltSync, hashSync, compareSync } = bcrypt;
 const { saveDataToFile, generateId, findUserByEmail } = helper;
@@ -106,37 +106,46 @@ class UserController {
       });
     }
 
-    //  if user already exists
-    const { body } = req;
-    const salt = genSaltSync(10);
-    const hash = hashSync(body.password, salt);
-    const values = [body.firstname, body.lastname, body.email, body.number, hash];
-
     try {
-      const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning *';
-      const { rows } = await DB.query(queryString, values);
+      const { body } = req;
+      const salt = genSaltSync(10);
+      const hash = hashSync(body.password, salt);
+      const values = [body.firstname, body.lastname, body.email, body.number, hash];
+      try {
+        await Db.query('BEGIN');
+        const queryString = 'INSERT INTO users(firstname, lastname, email, number, password) VALUES($1, $2, $3, $4, $5) returning *';
+        const { rows } = await Db.query(queryString, values);
 
-      // create token
-      const token = createToken(rows[0].email, rows[0].id);
-      const contact = [rows[0].firstname, rows[0].lastname, rows[0].email];
-      const contactQueyString = 'INSERT INTO contacts(firstname, lastname, email) VALUES($1, $2, $3)';
-      await DB.query(contactQueyString, contact);
+        // create token
+        const token = createToken(rows[0].email, rows[0].id);
+        const contact = [rows[0].firstname, rows[0].lastname, rows[0].email];
+        const contactQueyString = 'INSERT INTO contacts(firstname, lastname, email) VALUES($1, $2, $3)';
+        await Db.query(contactQueyString, contact);
 
-      return res.status(201).json({
-        status: 201,
-        data: {
-          username: rows[0].lastname,
-          token,
-        },
-      });
-    } catch (error) {
-      // check if user exist
-      if (error.routine === '_bt_check_unique') {
-        return res.status(409).json({
-          status: 409,
-          error: 'User already exist',
+        await Db.query('COMMIT');
+
+        return res.status(201).json({
+          status: 201,
+          data: {
+            username: rows[0].lastname,
+            token,
+          },
+        });
+      } catch (error) {
+        await Db.query('ROLLBACK');
+        // check if user exist
+        if (error.routine === '_bt_check_unique') {
+          return res.status(409).json({
+            status: 409,
+            error: 'User already exist',
+          });
+        }
+        return res.status(500).json({
+          status: 500,
+          error: 'something went wrong',
         });
       }
+    } catch (error) {
       return res.status(500).json({
         status: 500,
         errors: 'internal server error',
@@ -212,7 +221,7 @@ class UserController {
 
     try {
       // Select all user record where email is equal db email
-      const { rows } = await DB.query(queryString, [email]);
+      const { rows } = await Db.query(queryString, [email]);
 
       // check if user exist in database
       if (!rows[0]) {

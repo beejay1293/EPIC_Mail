@@ -16,25 +16,37 @@ class GroupController {
    * @param {*} res
    */
   static async createGroup(req, res) {
-    const { id } = req.user;
-    const { body } = req;
-
     try {
-      const queryString = 'INSERT INTO groups(name, createdby) VALUES($1, $2) returning *';
-      const { rows } = await query(queryString, [body.groupname, id]);
+      const { id } = req.user;
+      const { body } = req;
 
-      const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3) returning *';
-      const groupmember = await query(queryString2, [rows[0].id, id, 'admin']);
-      const response = {
-        id: groupmember.rows[0].groupid,
-        name: rows[0].name,
-        role: groupmember.rows[0].role,
-      };
+      try {
+        await query('BEGIN');
+        const queryString = 'INSERT INTO groups(name, createdby) VALUES($1, $2) returning *';
+        const { rows } = await query(queryString, [body.groupname, id]);
 
-      return res.status(201).json({
-        status: 201,
-        data: response,
-      });
+        const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3) returning *';
+        const groupmember = await query(queryString2, [rows[0].id, id, 'admin']);
+
+        await query('COMMIT');
+
+        const response = {
+          id: groupmember.rows[0].groupid,
+          name: rows[0].name,
+          role: groupmember.rows[0].role,
+        };
+
+        return res.status(201).json({
+          status: 201,
+          data: response,
+        });
+      } catch (error) {
+        await query('ROLLBACK');
+        return res.status(500).json({
+          status: 500,
+          error: 'something went wrong',
+        });
+      }
     } catch (error) {
       return res.status(500).json({
         status: 500,
@@ -130,18 +142,28 @@ class GroupController {
         error: 'sorry you can not delete group',
       });
     }
-    const querystr = 'DELETE FROM groups_members WHERE groups_members.groupId = $1';
-    await query(querystr, [groupId]);
+    try {
+      await query('BEGIN');
+      const querystr = 'DELETE FROM groups_members WHERE groups_members.groupId = $1';
+      await query(querystr, [groupId]);
 
-    const queryString2 = 'DELETE FROM groups WHERE groups.id = $1';
-    await query(queryString2, [groupId]);
+      const queryString2 = 'DELETE FROM groups WHERE groups.id = $1';
+      await query(queryString2, [groupId]);
+      await query('COMMIT');
 
-    return res.status(200).json({
-      status: 200,
-      data: {
-        message: 'group has been deleted',
-      },
-    });
+      return res.status(200).json({
+        status: 200,
+        data: {
+          message: 'group has been deleted',
+        },
+      });
+    } catch (error) {
+      await query('ROLLBACK');
+      return res.status(500).json({
+        status: 500,
+        error: 'something went wrong',
+      });
+    }
   }
 
   /**
