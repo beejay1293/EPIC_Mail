@@ -59,6 +59,8 @@ document.addEventListener('click', (e) => {
   }
   if (e.target.className === 'reset__password') {
     passwordResetOverlay.style.display = 'block';
+    overlay.style.display = 'none';
+    createGroupOverlay.style.display = 'none';
   }
 
   if (e.target.className === 'clear__overlay') {
