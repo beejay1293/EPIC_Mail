@@ -20,14 +20,6 @@ const validateSignUpInput = (data) => {
     errors.lastname = 'Last Name must be between 2 and 30 characters';
   }
 
-  if (validator.isEmpty(body.firstname)) {
-    errors.firstname = 'First Name field is required';
-  }
-
-  if (validator.isEmpty(body.lastname)) {
-    errors.lastname = 'Last Name field is required';
-  }
-
   if (!/^[a-zA-Z ]+$/.test(body.firstname)) {
     errors.firstname = 'First Name field cannot contain numbers and symbols';
   }
@@ -36,24 +28,31 @@ const validateSignUpInput = (data) => {
     errors.lastname = 'Last Name field cannot contain numbers and symbols';
   }
 
-  if (validator.isEmpty(body.number)) {
-    errors.phonenumber = 'Phone Number field is required';
+  if (validator.isEmpty(body.firstname)) {
+    errors.firstname = 'First Name field is required';
   }
 
-  if (validator.isEmpty(body.email)) {
-    errors.email = 'Email field is required';
+  if (validator.isEmpty(body.lastname)) {
+    errors.lastname = 'Last Name field is required';
+  }
+
+  if (validator.isEmpty(body.number)) {
+    errors.phonenumber = 'Phone Number field is required';
   }
 
   if (!validator.isEmail(body.email)) {
     errors.email = 'Email is invalid';
   }
 
-  if (validator.isEmpty(body.password)) {
-    errors.password = 'Password field is required';
+  if (validator.isEmpty(body.email)) {
+    errors.email = 'Email field is required';
   }
 
   if (!validator.isLength(body.password, { min: 6, max: 30 })) {
     errors.password = 'Password must be at least 6 characters';
+  }
+  if (validator.isEmpty(body.password)) {
+    errors.password = 'Password field is required';
   }
 
   return {

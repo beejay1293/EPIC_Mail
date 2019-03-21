@@ -483,8 +483,6 @@ class MessageController {
         status: 500,
         error: 'internal server error',
       });
-    } finally {
-      Db.release();
     }
   }
 }

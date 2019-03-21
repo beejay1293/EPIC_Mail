@@ -20,6 +20,12 @@ const validMessage = {
   reciever: 'matti@epics.com',
 };
 
+const validMessage2 = {
+  subject: 'Welcome home',
+  message: 'New message',
+  reciever: 'andela.matti@eeeepic.com',
+};
+
 const invalidMessage = {
   sender: 'matti@epics.com',
   subject: 'Welcome home',
@@ -418,6 +424,26 @@ describe('POST api/v1/messages', () => {
   });
 });
 
+describe('POST api/v2/messages', () => {
+  it('Should successfully create a message if inputs are valid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/messages')
+      .set('token', DbToken)
+      .send(validMessage2)
+      .end((err, res) => {
+        if (err) done(err);
+        const { body } = res;
+        console.log(body);
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equals(201);
+        expect(body.data).to.be.an('object');
+        expect(body.data.msg).to.be.an('object');
+        done();
+      });
+  });
+});
 // test route for POST /messages reciever does not exist
 describe('POST api/v1/messages', () => {
   it('Should return an error if reciever does not exist', (done) => {
@@ -434,6 +460,27 @@ describe('POST api/v1/messages', () => {
         expect(body.status).to.be.equals(404);
         expect(body.error).to.be.a('string');
         expect(body.error).to.be.equals('Reciever address was not recognized');
+        done();
+      });
+  });
+});
+
+// test route for POST /messages reciever does not exist
+describe('POST api/v2/messages', () => {
+  it('Should return an error if reciever does not exist', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/messages')
+      .set('token', DbToken)
+      .send(invalidMessage)
+      .end((err, res) => {
+        if (err) done(err);
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equals(404);
+        expect(body.error).to.be.a('string');
+        expect(body.error).to.be.equals('Reciever not a valid user');
         done();
       });
   });
@@ -560,6 +607,33 @@ describe('GET api/v1/messages/unread', () => {
     chai
       .request(app)
       .get('/api/v1/messages/unread')
+      .set('token', 'sfjjjjjjkkkkkkkkkkkkknnnnjn')
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(400);
+        expect(body.errors).to.be.an('array');
+        expect(body.errors[0]).to.be.a('object');
+        expect(body.errors.length).to.be.equal(1);
+        expect(body.errors[0]).to.haveOwnProperty('name');
+        expect(body.errors[0]).to.haveOwnProperty('message');
+        expect(body.errors[0].name).to.be.a('string');
+        expect(body.errors[0].message).to.be.a('string');
+
+        done();
+      });
+  });
+});
+
+//  Test suite for GET /messages/unread invalid token
+describe('GET api/v2/messages/unread', () => {
+  it('Should throw an error is token is invalid', (done) => {
+    chai
+      .request(app)
+      .get('/api/v2/messages/unread')
       .set('token', 'sfjjjjjjkkkkkkkkkkkkknnnnjn')
       .end((err, res) => {
         if (err) done();
