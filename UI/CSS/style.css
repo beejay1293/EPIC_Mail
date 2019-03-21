@@ -1058,8 +1058,6 @@ textarea:focus {
   font-weight: bold;
   font-size: 25px;
   color: #f8f8f8;
-  position: fixed;
-
   text-align: center;
   width: 100%;
   animation: jump 9s linear infinite;
@@ -1090,12 +1088,49 @@ textarea:focus {
 
 @keyframes jump {
   0% {
-    top: 100px;
+    top: 200px;
   }
   50% {
-    top: 50px;
+    top: 180px;
   }
   100% {
-    top: 100px;
+    top: 200px;
+  }
+}
+
+.spinner_overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+.spinner-icon path {
+  stroke-width: 3px;
+  stroke-dasharray: 36.299235026041664, 72.59847005208333;
+  -webkit-animation: wistia_dash 1.2s infinite linear forwards;
+}
+
+.spinner-icon-container {
+  height: 80px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 125px;
+}
+@-webkit-keyframes wistia_dash {
+  from {
+    stroke-dashoffset: 108.897705078125;
+  }
+
+  to {
+    stroke-dashoffset: 0;
   }
 }
