@@ -40,6 +40,8 @@ document.addEventListener('click', (e) => {
     topNavUp.classList.remove('down');
     topNavAllGroup.classList.remove('show__groups');
     messageBody.classList.remove('main__body__height2');
+    passwordResetOverlay.style.display = 'none';
+    overlay.style.display = 'none';
   }
 
   if (e.target.className === 'clear__overlay') {
@@ -100,6 +102,8 @@ document.addEventListener('click', (e) => {
     topNavUp.classList.remove('down');
     topNavAllGroup.classList.remove('show__groups');
     messageBody.classList.remove('main__body__height2');
+    passwordResetOverlay.style.display = 'none';
+    createGroupOverlay.style.display = 'none';
   }
 
   if (e.target.className === 'clear__overlay') {
