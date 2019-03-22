@@ -1090,12 +1090,12 @@ textarea:focus {
 
 @keyframes jump {
   0% {
-    top: 100px;
+    top: 200px;
   }
   50% {
-    top: 50px;
+    top: 180px;
   }
   100% {
-    top: 100px;
+    top: 200px;
   }
 }
