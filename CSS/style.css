@@ -1058,7 +1058,6 @@ textarea:focus {
   font-weight: bold;
   font-size: 25px;
   color: #f8f8f8;
-
   text-align: center;
   width: 100%;
   animation: jump 9s linear infinite;
