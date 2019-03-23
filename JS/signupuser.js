@@ -13,6 +13,14 @@ const displayFeedback = (responseData) => {
   return listItem;
 };
 
+const showOverlay = () => {
+  document.querySelector('.spinner_overlay').style.display = 'block';
+};
+
+const hideOverlay = () => {
+  document.querySelector('.spinner_overlay').style.display = 'none';
+};
+
 const displayFeedbackLogin = (responseData) => {
   let listItem = '';
 
@@ -126,6 +134,7 @@ signupbtn.addEventListener('click', signUp);
 
 const signIn = (e) => {
   e.preventDefault();
+  showOverlay();
 
   // get form data
   const userEmail = document.getElementById('sign-in-email').value;
@@ -150,6 +159,7 @@ const signIn = (e) => {
     .then(res => res.json())
     .then((body) => {
       console.log(body);
+      hideOverlay();
 
       // check for success status
       if (body.status === 200) {
