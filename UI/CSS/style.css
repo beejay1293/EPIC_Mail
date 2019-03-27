@@ -63,6 +63,7 @@ span {
   padding: 15px;
   font-weight: bold;
   color: #ffaf30;
+  cursor: pointer;
 }
 
 /*  set login__wrapper to a width of 30% */
