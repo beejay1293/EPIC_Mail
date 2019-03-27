@@ -39,7 +39,7 @@ const getAllInbox = () => {
             += '<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const formatedDate = moment(message.createdon).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
               message.subject
             } <h1 class="message"> ${
@@ -88,7 +88,7 @@ const getAllSent = () => {
             += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const formatedDate = moment(message.createdon).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name"> ${
               message.subject
             } <h1 class="message"> ${
