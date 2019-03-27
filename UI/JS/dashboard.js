@@ -222,8 +222,9 @@ document.addEventListener('click', (e) => {
   }
 
   if (
-    e.target.parentNode.className === 'inbox__message'
-    || e.target.parentNode.className === 'sent__message'
+    e.target.classList[0] === 'name'
+    || e.target.classList[0] === 'time'
+    || e.target.classList[0] === 'message'
   ) {
     readEmail.style.display = 'block';
     draftBody.style.display = 'none';
