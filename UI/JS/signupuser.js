@@ -164,7 +164,9 @@ const signIn = (e) => {
       // check for success status
       if (body.status === 200) {
         // store user data in browser local storage
+
         const userData = JSON.stringify({
+          username: body.data.lastname,
           token: body.data.token,
         });
         localStorage.setItem('user', userData);

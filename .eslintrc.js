@@ -14,4 +14,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {},
+  globals: {
+    moment: true,
+  },
 };
