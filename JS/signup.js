@@ -52,3 +52,7 @@ loginButton.addEventListener('click', () => {
 
   loginWrapper.classList.remove('pad');
 });
+
+document.querySelector('.header').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
