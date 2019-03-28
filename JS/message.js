@@ -55,7 +55,7 @@ const getAllInbox = () => {
           body.data.forEach((message) => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
-              message.subject
+              message.sender
             } <h1 class="message"> ${
               message.message
             }</h1> <h1 class="time">${formatedDate}</h1></li>
@@ -103,8 +103,8 @@ const getAllSent = () => {
         } else {
           body.data.forEach((message) => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name"> ${
-              message.subject
+            inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
+              message.receiver
             } <h1 class="message"> ${
               message.message
             }</h1> <h1 class="time">${formatedDate}</h1></li>
@@ -131,10 +131,17 @@ const postMessages = (e) => {
   const messageContent = document.querySelector('.messageContent').value;
   const feedbackContainer = document.querySelector('.feedback_container');
 
+  let status;
+  if (e.target.classList[0] === 'draft_message__btn') {
+    status = 'draft';
+  }
+  console.log(e.target.classList[0]);
+
   const formData = {
     reciever,
     subject,
     message: messageContent,
+    status,
   };
   console.log(formData);
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
@@ -160,7 +167,10 @@ const postMessages = (e) => {
       console.log(body);
       hideOverlay();
       if (body.status === 201) {
-        feedbackContainer.innerHTML = 'Message sent successfully';
+        if (body.data.msg.status === 'sent') {
+          feedbackContainer.innerHTML = 'Message sent successfully';
+        }
+
         feedbackContainer.classList.remove('feedback-message-error');
         feedbackContainer.classList.add('feedback-message-success');
 
@@ -176,6 +186,7 @@ const postMessages = (e) => {
 };
 
 document.querySelector('.send_message__btn').addEventListener('click', postMessages);
+document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
 
 getAllInbox();
 getAllSent();
