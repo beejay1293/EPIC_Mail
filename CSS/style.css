@@ -969,8 +969,12 @@ textarea:focus {
 
 .feedback-message-error {
   color: #dc3545;
-  border: 0.9px solid #dc3545;
+
   display: block;
+}
+
+.feedback_container li {
+  list-style-type: none;
 }
 
 .feedback-message-success {
