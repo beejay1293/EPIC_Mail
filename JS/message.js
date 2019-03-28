@@ -5,6 +5,10 @@ const displayFeedback = (responseData) => {
   if (responseData.status === 400 && typeof responseData.errors === 'object') {
     listItem
       += "<li class='feedback-list-item'>Please fill the required field below to send message.</li>";
+  } else if (responseData.status === 201 && typeof responseData.data.msg === 'object') {
+    listItem += "<li class='feedback-list-item'>message sent successfully</li>";
+  } else if (responseData.status === 201 && typeof responseData.data.rows[0] === 'object') {
+    listItem += "<li class='feedback-list-item'>message saved successfully</li>";
   } else {
     listItem += `<li class='feedback-list-item'>${responseData.errors}</li>`;
   }
@@ -12,18 +16,20 @@ const displayFeedback = (responseData) => {
   return listItem;
 };
 
+// show overlay
 const showOverlay = () => {
   document.querySelector('.spinner_overlay').style.display = 'block';
 };
 
+// hide overlay
 const hideOverlay = () => {
   document.querySelector('.spinner_overlay').style.display = 'none';
 };
 
+// get inbox
 const getAllInbox = () => {
   showOverlay();
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
-  console.log(localStorage.getItem('token'));
   // get user object from
   let userToken = '';
   if (localStorage.getItem('user')) {
@@ -44,7 +50,6 @@ const getAllInbox = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-      console.log(body);
 
       if (body.status === 200) {
         let inbox = '';
@@ -65,13 +70,12 @@ const getAllInbox = () => {
 
         const messageBody = document.querySelector('.inbox__body');
         messageBody.innerHTML = inbox;
-      } else {
-        console.log(body);
       }
     })
     .catch(err => err);
 };
 
+// get sent messages
 const getAllSent = () => {
   showOverlay();
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages/sent';
@@ -93,7 +97,6 @@ const getAllSent = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-      console.log(body);
 
       if (body.status === 200) {
         let inbox = '';
@@ -121,6 +124,7 @@ const getAllSent = () => {
     .catch(err => err);
 };
 
+// send or save messages as draft
 const postMessages = (e) => {
   e.preventDefault();
   showOverlay();
@@ -135,7 +139,6 @@ const postMessages = (e) => {
   if (e.target.classList[0] === 'draft_message__btn') {
     status = 'draft';
   }
-  console.log(e.target.classList[0]);
 
   const formData = {
     reciever,
@@ -143,7 +146,6 @@ const postMessages = (e) => {
     message: messageContent,
     status,
   };
-  console.log(formData);
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
 
   let userToken;
@@ -164,18 +166,18 @@ const postMessages = (e) => {
   })
     .then(res => res.json())
     .then((body) => {
-      console.log(body);
       hideOverlay();
+      console.log(body);
       if (body.status === 201) {
-        if (body.data.msg.status === 'sent') {
-          feedbackContainer.innerHTML = 'Message sent successfully';
-        }
-
         feedbackContainer.classList.remove('feedback-message-error');
         feedbackContainer.classList.add('feedback-message-success');
+        feedbackContainer.innerHTML = displayFeedback(body);
+        console.log(body.data);
 
         // reload page
-        window.location.href = 'dashboard.html';
+        setInterval(() => {
+          window.location.href = 'dashboard.html';
+        }, 2000);
       } else {
         feedbackContainer.innerHTML = displayFeedback(body);
         feedbackContainer.classList.remove('feedback-message-success');

@@ -979,7 +979,7 @@ textarea:focus {
 
 .feedback-message-success {
   color: green;
-  border: 0.9px solid green;
+
   display: block;
 }
 
