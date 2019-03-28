@@ -1,15 +1,35 @@
+// display feedback
+const displayFeedback = (responseData) => {
+  let listItem = '';
+
+  if (responseData.status === 400 && typeof responseData.errors === 'object') {
+    listItem
+      += "<li class='feedback-list-item'>Please fill the required field below to send message.</li>";
+  } else if (responseData.status === 201 && typeof responseData.data.msg === 'object') {
+    listItem += "<li class='feedback-list-item'>message sent successfully</li>";
+  } else if (responseData.status === 201 && typeof responseData.data.rows[0] === 'object') {
+    listItem += "<li class='feedback-list-item'>message saved successfully</li>";
+  } else {
+    listItem += `<li class='feedback-list-item'>${responseData.errors}</li>`;
+  }
+
+  return listItem;
+};
+
+// show overlay
 const showOverlay = () => {
   document.querySelector('.spinner_overlay').style.display = 'block';
 };
 
+// hide overlay
 const hideOverlay = () => {
   document.querySelector('.spinner_overlay').style.display = 'none';
 };
 
+// get inbox
 const getAllInbox = () => {
   showOverlay();
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
-  console.log(localStorage.getItem('token'));
   // get user object from
   let userToken = '';
   if (localStorage.getItem('user')) {
@@ -30,7 +50,6 @@ const getAllInbox = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-      console.log(body);
 
       if (body.status === 200) {
         let inbox = '';
@@ -39,9 +58,9 @@ const getAllInbox = () => {
             += '<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const formatedDate = moment(message.createdon).format('dddd, MMMM Do YYYY, h:mm:ss a');
+            const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
-              message.subject
+              message.sender
             } <h1 class="message"> ${
               message.message
             }</h1> <h1 class="time">${formatedDate}</h1></li>
@@ -51,13 +70,12 @@ const getAllInbox = () => {
 
         const messageBody = document.querySelector('.inbox__body');
         messageBody.innerHTML = inbox;
-      } else {
-        console.log(body);
       }
     })
     .catch(err => err);
 };
 
+// get sent messages
 const getAllSent = () => {
   showOverlay();
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages/sent';
@@ -79,7 +97,6 @@ const getAllSent = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-      console.log(body);
 
       if (body.status === 200) {
         let inbox = '';
@@ -88,9 +105,9 @@ const getAllSent = () => {
             += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const formatedDate = moment(message.createdon).format('dddd, MMMM Do YYYY, h:mm:ss a');
-            inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name"> ${
-              message.subject
+            const formatedDate = moment(message.createdon).format('Do MMMM');
+            inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
+              message.receiver
             } <h1 class="message"> ${
               message.message
             }</h1> <h1 class="time">${formatedDate}</h1></li>
@@ -106,6 +123,72 @@ const getAllSent = () => {
     })
     .catch(err => err);
 };
+
+// send or save messages as draft
+const postMessages = (e) => {
+  e.preventDefault();
+  showOverlay();
+
+  // get form data
+  const reciever = document.querySelector('.messageTo').value;
+  const subject = document.querySelector('.messageSubject').value;
+  const messageContent = document.querySelector('.messageContent').value;
+  const feedbackContainer = document.querySelector('.feedback_container');
+
+  let status;
+  if (e.target.classList[0] === 'draft_message__btn') {
+    status = 'draft';
+  }
+
+  const formData = {
+    reciever,
+    subject,
+    message: messageContent,
+    status,
+  };
+  const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
+
+  let userToken;
+
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      token: userToken,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then(res => res.json())
+    .then((body) => {
+      hideOverlay();
+      console.log(body);
+      if (body.status === 201) {
+        feedbackContainer.classList.remove('feedback-message-error');
+        feedbackContainer.classList.add('feedback-message-success');
+        feedbackContainer.innerHTML = displayFeedback(body);
+        console.log(body.data);
+
+        // reload page
+        setInterval(() => {
+          window.location.href = 'dashboard.html';
+        }, 2000);
+      } else {
+        feedbackContainer.innerHTML = displayFeedback(body);
+        feedbackContainer.classList.remove('feedback-message-success');
+        feedbackContainer.classList.add('feedback-message-error');
+      }
+    })
+    .catch(err => err);
+};
+
+document.querySelector('.send_message__btn').addEventListener('click', postMessages);
+document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
 
 getAllInbox();
 getAllSent();
