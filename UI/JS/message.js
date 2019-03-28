@@ -8,7 +8,7 @@ const displayFeedback = (responseData) => {
   } else if (responseData.status === 201 && typeof responseData.data.msg === 'object') {
     listItem += "<li class='feedback-list-item'>message sent successfully</li>";
   } else if (responseData.status === 201 && typeof responseData.data.rows[0] === 'object') {
-    listItem += "<li class='feedback-list-item'>message saved successfully</li>";
+    listItem += "<li class='feedback-list-item'>message saved</li>";
   } else {
     listItem += `<li class='feedback-list-item'>${responseData.errors}</li>`;
   }
