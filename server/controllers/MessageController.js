@@ -127,8 +127,8 @@ class MessageController {
       // save as draft is status is draft
 
       if (body.status === 'draft') {
-        const values = [body.subject, body.message, body.parentmessageid, body.status, id];
-        const queryString = 'INSERT INTO messages(subject, message, parentmessageid, status, createdby) VALUES($1, $2, $3, $4, $5) returning *';
+        const values = [body.subject, body.message, body.parentmessageid, body.status, id, email];
+        const queryString = 'INSERT INTO messages(subject, message, parentmessageid, status, createdby, sender) VALUES($1, $2, $3, $4, $5, $6) returning *';
         const { rows } = await Db.query(queryString, values);
 
         return res.status(201).json({
@@ -163,9 +163,17 @@ class MessageController {
           });
         }
 
-        const messagevalues = [body.subject, body.message, 'sent', id, body.parentmessageid];
+        const messagevalues = [
+          body.subject,
+          body.message,
+          'sent',
+          id,
+          body.parentmessageid,
+          email,
+          body.reciever,
+        ];
 
-        const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid) VALUES($1, $2, $3, $4, $5) returning *';
+        const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid, sender, receiver) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
         const { rows } = await Db.query(saveMessagequeryString, messagevalues);
         // sent message
 
@@ -238,7 +246,7 @@ class MessageController {
   static async GetAllReceivedMessagesdb(req, res) {
     const { id } = req.user;
 
-    const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE inbox.receiverid = $1';
+    const queryString = 'SELECT messages.id, messages.sender, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE inbox.receiverid = $1';
     const { rows } = await Db.query(queryString, [id]);
 
     return res.status(200).json({
@@ -271,7 +279,7 @@ class MessageController {
   static async GetAllUnreadReceivedMessagesdb(req, res) {
     const { id } = req.user;
     // get all read messages by status
-    const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE (inbox.receiverid, messages.status) = ($1, $2)';
+    const queryString = 'SELECT messages.id, messages.sender messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE (inbox.receiverid, messages.status) = ($1, $2)';
     const { rows } = await Db.query(queryString, [id, 'sent']);
 
     return res.status(200).json({
@@ -309,7 +317,7 @@ class MessageController {
   static async GetAllSentMessagesdb(req, res) {
     const { id } = req.user;
 
-    const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN sent ON messages.id = sent.messageid WHERE sent.senderid = $1';
+    const queryString = 'SELECT messages.id, messages.receiver, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN sent ON messages.id = sent.messageid WHERE sent.senderid = $1';
     const { rows } = await Db.query(queryString, [id]);
 
     return res.status(200).json({
