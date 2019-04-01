@@ -66,8 +66,11 @@ const addGroup = (e) => {
             email: checked,
           };
 
+          console.log(form);
+          console.log(body.data.id);
+
           const addUserUrl = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${
-            body.data.response.id
+            body.data.id
           }/users`;
           fetch(addUserUrl, {
             method: 'POST',
