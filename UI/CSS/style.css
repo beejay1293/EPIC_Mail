@@ -1176,3 +1176,21 @@ textarea:focus {
     stroke-dashoffset: 0;
   }
 }
+
+.btnspinner {
+  animation: 2s ease-in-out infinite spin;
+}
+
+#spinbtn,
+#spinbtn2 {
+  display: none;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

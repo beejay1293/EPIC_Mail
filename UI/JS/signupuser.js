@@ -13,12 +13,32 @@ const displayFeedback = (responseData) => {
   return listItem;
 };
 
-const showOverlay = () => {
-  document.querySelector('.spinner_overlay').style.display = 'block';
+const showSpinner = (e) => {
+  if (e.target.className === 'tit' || e.target.className === 'loginbtn') {
+    document.querySelector('.tit').innerHTML = 'Loading ...';
+    document.querySelector('.tit').style.display = 'inline-block';
+    document.querySelector('.loginbtn').disabled = true;
+
+    document.getElementById('spinbtn').style.display = 'inline-block';
+  } else if (e.target.className === 'signuptit' || e.target.className === 'registerbtn') {
+    document.querySelector('.signuptit').innerHTML = 'Loading ...';
+    document.querySelector('.signuptit').style.display = 'inline-block';
+    document.querySelector('.registerbtn').disabled = true;
+
+    document.getElementById('spinbtn2').style.display = 'inline-block';
+  }
 };
 
-const hideOverlay = () => {
-  document.querySelector('.spinner_overlay').style.display = 'none';
+const hideSpinner = (e) => {
+  if (e.target.className === 'tit' || e.target.className === 'loginbtn') {
+    document.getElementById('spinbtn').style.display = 'none';
+    document.querySelector('.tit').innerHTML = 'Login';
+    document.querySelector('.loginbtn').disabled = false;
+  } else if (e.target.className === 'signuptit' || e.target.className === 'registerbtn') {
+    document.getElementById('spinbtn2').style.display = 'none';
+    document.querySelector('.signuptit').innerHTML = 'Sign up';
+    document.querySelector('.registerbtn').disabled = false;
+  }
 };
 
 const displayFeedbackLogin = (responseData) => {
@@ -38,6 +58,7 @@ const displayFeedbackLogin = (responseData) => {
 // Create new user account
 const signUp = (e) => {
   e.preventDefault();
+  showSpinner(e);
   // get all user input values
   const firstname = document.getElementById('firstname').value;
   const lastname = document.getElementById('lastname').value;
@@ -47,6 +68,8 @@ const signUp = (e) => {
   const password2 = document.getElementById('password2').value;
   const feedbackContainer = document.querySelector('.feedback_container');
   const feedbackContainer2 = document.querySelector('.feedback_container2');
+
+  feedbackContainer.innerHTML = '';
 
   if (password !== password2) {
     feedbackContainer2.innerHTML = 'comfirm password does not match';
@@ -84,6 +107,7 @@ const signUp = (e) => {
     )
       .then(res => res.json())
       .then((body) => {
+        hideSpinner(e);
         console.log(body);
 
         // check for success status
@@ -103,8 +127,6 @@ const signUp = (e) => {
           // redirect user to dashboard after 2 seconds
           window.location.href = 'dashboard.html';
         } else {
-          feedbackContainer.innerHTML = displayFeedback(body);
-
           feedbackContainer.innerHTML = displayFeedback(body);
           feedbackContainer.classList.add('feedback-message-error');
           window.scrollTo(0, 0);
@@ -134,12 +156,14 @@ signupbtn.addEventListener('click', signUp);
 
 const signIn = (e) => {
   e.preventDefault();
-  showOverlay();
+  showSpinner(e);
 
   // get form data
   const userEmail = document.getElementById('sign-in-email').value;
   const userPassword = document.getElementById('sign-in-password').value;
   const feedbackContainerLogin = document.querySelector('.feedback-message-login');
+
+  feedbackContainerLogin.innerHTML = '';
 
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/auth/login';
 
@@ -159,7 +183,7 @@ const signIn = (e) => {
     .then(res => res.json())
     .then((body) => {
       console.log(body);
-      hideOverlay();
+      hideSpinner(e);
 
       // check for success status
       if (body.status === 200) {
