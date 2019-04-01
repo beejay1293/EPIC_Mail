@@ -11,7 +11,6 @@ document.querySelector('.add-contact').addEventListener('click', (e) => {
       checked.splice(index, 1);
     }
   }
-  console.log(checked);
 });
 
 const displayFeedBack = (responseData) => {
@@ -59,15 +58,12 @@ const addGroup = (e) => {
     .then((body) => {
       // eslint-disable-next-line no-undef
       hideOverlay();
-      console.log(body);
+
       if (body.status === 201) {
         if (checked.length > 0) {
           const form = {
             email: checked,
           };
-
-          console.log(form);
-          console.log(body.data.id);
 
           const addUserUrl = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${
             body.data.id
@@ -82,8 +78,10 @@ const addGroup = (e) => {
           })
             .then(res => res.json())
             .then((userBody) => {
+              console.log(userBody);
+
               if (userBody.status === 201) {
-                feedBackContainer.innerHTML = 'Group Created successfully';
+                feedBackContainer.innerHTML = ` ${checked.length} new group members added`;
                 feedBackContainer.classList.remove('feedback-message-error');
                 feedBackContainer.classList.add('feedback-message-success');
 
