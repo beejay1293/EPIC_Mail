@@ -20,6 +20,13 @@ class GroupController {
       const { id } = req.user;
       const { body } = req;
 
+      if (body.groupname === '') {
+        return res.status(400).json({
+          status: 400,
+          error: 'Group name cannot be empty',
+        });
+      }
+
       try {
         await query('BEGIN');
         const queryString = 'INSERT INTO groups(name, createdby) VALUES($1, $2) returning *';
@@ -171,10 +178,18 @@ class GroupController {
    * @param {*} req
    * @param {*} res
    */
+
   static async AddUserToGroup(req, res) {
     const { id } = req.user;
     const { groupId } = req.params;
     const { body } = req;
+
+    async function asyncForEach(array, callback) {
+      for (let index = 0; index < array.length; index += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await callback(array[index], index, array);
+      }
+    }
 
     try {
       const queryString = 'SELECT * FROM groups_members WHERE (groups_members.groupId, groups_members.memberId) = ($1, $2)';
@@ -185,6 +200,24 @@ class GroupController {
         return res.status(403).json({
           status: 403,
           error: 'sorry, you can not add a user to this group',
+        });
+      }
+
+      if (typeof body.email !== 'string' && body.email.length > 0) {
+        await asyncForEach(body.email, async (user) => {
+          const userQuery = 'SELECT * FROM users WHERE email = $1';
+          const newUser = await query(userQuery, [user]);
+
+          const addUserQuery = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3)';
+          await query(addUserQuery, [groupId, newUser.rows[0].id, 'user']);
+        });
+
+        const responseQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
+        const response = await query(responseQuery, [groupId]);
+
+        return res.status(201).json({
+          status: 201,
+          data: response.rows,
         });
       }
 

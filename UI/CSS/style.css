@@ -687,6 +687,8 @@ a {
   display: flex;
   margin-top: 10px;
   font-size: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   border-bottom: 1px solid #888;
   border-top: 0px;
@@ -695,21 +697,48 @@ a {
 .checkbox {
   width: 5%;
   height: 20px;
+  flex-grow: 1;
 }
 
 .name {
   width: 20%;
-  overflow: hidden;
+  font-family: "Comic Sans MS";
+  font-weight: bold;
+  flex-grow: 1;
 }
 .message {
   width: 60%;
-  overflow: hidden;
+
+  flex-grow: 1;
 }
 .time {
   width: 15%;
-  overflow: hidden;
+
+  flex-grow: 1;
 }
 
+@media only screen and (max-width: 700px) {
+  .checkbox {
+    width: 5%;
+    height: 20px;
+    flex-grow: 1;
+  }
+  .name {
+    width: 80%;
+
+    flex-grow: 1;
+  }
+  .message {
+    width: 100%;
+    padding-left: 10px;
+    flex-grow: 1;
+  }
+  .time {
+    width: 10%;
+    padding-left: 10px;
+    flex-grow: 1;
+  }
+}
 .delete {
   width: 5%;
 }
