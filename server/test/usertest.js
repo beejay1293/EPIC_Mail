@@ -932,6 +932,30 @@ describe('POST api/v2/groups', () => {
 
 // Test suite for POST /groups/<:groupId>/users
 describe('POST api/v2/groups', () => {
+  it('Should add multiple users to a group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/users')
+      .set('token', DbToken)
+      .send({
+        email: ['Darryl99@hotmail.com', 'andela.matti@eeeepic.com'],
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        console.log(body);
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(201);
+        expect(body.data).to.be.an('array');
+        expect(body.data[0]).to.be.an('object');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/users
+describe('POST api/v2/groups', () => {
   it('Should throw an error if user is not an admin/moderator in group', (done) => {
     chai
       .request(app)
@@ -1061,6 +1085,30 @@ describe('DELETE api/v2/groups', () => {
         expect(body.status).to.be.equal(409);
         expect(body.error).to.be.an('string');
         expect(body.error).to.be.equal('user not a group member');
+        done();
+      });
+  });
+});
+
+// Test suite for POST /groups/<:groupId>/messages
+describe('POST api/v2/groups/<:groupId>/messages', () => {
+  it('Should send a message to a group', (done) => {
+    chai
+      .request(app)
+      .post('/api/v2/groups/11/messages')
+      .set('token', DbToken)
+      .send({
+        subject: 'Test message',
+        message: 'i want to send a new group message to test database',
+        parentmessageid: 8,
+      })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(201);
+        expect(body.data).to.be.an('object');
         done();
       });
   });
