@@ -55,11 +55,15 @@ const getAllInbox = () => {
         let inbox = '';
         if (body.data.length === 0) {
           inbox
-            += '<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
+            += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
+            inbox += `<li class="inbox__message ${
+              message.id
+            }"><input type="hidden" class="messageId" value="${
+              message.id
+            }"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
               message.sender
             } <h1 class="message"> ${
               message.message
@@ -106,7 +110,9 @@ const getAllSent = () => {
         } else {
           body.data.forEach((message) => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li class="inbox__message"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
+            inbox += `<li  class="inbox__message ${
+              message.id
+            }"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
               message.receiver
             } <h1 class="message"> ${
               message.message
@@ -187,6 +193,72 @@ const postMessages = (e) => {
     .catch(err => err);
 };
 
+const getSpecificMessage = (e) => {
+  let messageId;
+  const readMessage = document.querySelector('.read__email');
+  let messageContent;
+
+  if (e.target.parentNode.classList[0] === 'inbox__message') {
+    // eslint-disable-next-line prefer-destructuring
+    messageId = e.target.parentNode.classList[1];
+    console.log(messageId);
+
+    let userToken;
+
+    if (localStorage.getItem('user')) {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const { token } = userData;
+      userToken = token;
+    }
+
+    const url = `https://andela-epic-mail.herokuapp.com/api/v2/messages/${messageId}`;
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        token: userToken,
+      },
+    })
+      .then(res => res.json())
+      .then((body) => {
+        if (body.status === 200) {
+          console.log(body);
+
+          messageContent = `<div class="subject__wrapper"><h1 class="subject">${
+            body.data.subject
+          }</h1> <p class="time__created">  ${body.data.createdon} </p></div>
+
+            
+          <div class="users">
+
+            <h1 class="from">Matti Mobolaji </h1><p class="epic"> ${body.data.sender}</p>
+            <p class="to">to: ${body.data.receiver}</p>
+          </div>
+                
+          <div class="message__body">
+           <p> ${body.data.message}
+            </p> 
+            
+          </div>
+          <hr class="line"/>`;
+          readMessage.innerHTML = messageContent;
+
+          // eslint-disable-next-line no-undef
+          readEmail.style.display = 'block';
+          // eslint-disable-next-line no-undef
+          draftBody.style.display = 'none';
+          // eslint-disable-next-line no-undef
+          sentBody.style.display = 'none';
+          // eslint-disable-next-line no-undef
+          inboxBody.style.display = 'none';
+          // eslint-disable-next-line no-undef
+          starredBody.style.display = 'none';
+        }
+      });
+  }
+};
+
+document.addEventListener('click', getSpecificMessage);
 document.querySelector('.send_message__btn').addEventListener('click', postMessages);
 document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
 

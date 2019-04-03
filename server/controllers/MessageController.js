@@ -367,7 +367,7 @@ class MessageController {
    */
   static async GetSpecificMessagedb(req, res) {
     const { messageId } = req.params;
-    const { id } = req.user;
+    const { id, firstname, lastname } = req.user;
     const idParams = parseInt(messageId, 10);
 
     try {
@@ -381,22 +381,33 @@ class MessageController {
           data: draftmessage.rows[0],
         });
       }
-      const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status, sent.senderid, inbox.receiverid FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid LEFT JOIN sent ON messages.id = sent.messageid WHERE messages.id = $1';
+      const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status, messages.sender, messages.receiver, sent.senderid, inbox.receiverid FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid LEFT JOIN sent ON messages.id = sent.messageid WHERE messages.id = $1';
       const { rows } = await Db.query(queryString, [idParams]);
+
+      const query = 'SELECT firstname,lastname FROM users WHERE id = $1';
+      const messageReceiver = await Db.query(query, [rows[0].receiverid]);
 
       if (rows[0].senderid === id) {
         return res.status(200).json({
           status: 200,
           data: rows[0],
+          sender: { firstname, lastname },
+          receiver: messageReceiver.rows[0],
         });
       }
 
       if (rows[0].receiverid === id) {
         const queryStrings = 'UPDATE messages SET STATUS = $1 WHERE ID = $2 returning *';
-        const updatedMessage = await Db.query(queryStrings, ['read', rows[0].id]);
+        await Db.query(queryStrings, ['read', rows[0].id]);
+
+        const senderQuery = 'SELECT firstname,lastname FROM users WHERE id = $1';
+        const messageSender = await Db.query(senderQuery, [rows[0].senderid]);
+
         return res.status(200).json({
           status: 200,
-          data: updatedMessage.rows[0],
+          data: rows[0],
+          sender: messageSender.rows[0],
+          receiver: { firstname, lastname },
         });
       }
       return res.status(404).json({

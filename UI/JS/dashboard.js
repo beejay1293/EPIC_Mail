@@ -26,8 +26,6 @@ const dropDownUser = document.querySelector('.dropdown-user');
 const allContacts = document.querySelector('.all_contacts');
 const bars = document.querySelector('.nav_name');
 
-document.querySelector('.time__created').textContent = new Date().toUTCString();
-
 document.addEventListener('click', (e) => {
   if (e.target.className === 'add') {
     dropDownUser.style.display = 'block';
@@ -221,17 +219,17 @@ document.addEventListener('click', (e) => {
     bars.textContent = 'starred';
   }
 
-  if (
-    e.target.classList[0] === 'name'
-    || e.target.classList[0] === 'time'
-    || e.target.classList[0] === 'message'
-  ) {
-    readEmail.style.display = 'block';
-    draftBody.style.display = 'none';
-    sentBody.style.display = 'none';
-    inboxBody.style.display = 'none';
-    starredBody.style.display = 'none';
-  }
+  // if (
+  //   e.target.classList[0] === 'name'
+  //   || e.target.classList[0] === 'time'
+  //   || e.target.classList[0] === 'message'
+  // ) {
+  //   readEmail.style.display = 'block';
+  //   draftBody.style.display = 'none';
+  //   sentBody.style.display = 'none';
+  //   inboxBody.style.display = 'none';
+  //   starredBody.style.display = 'none';
+  // }
 
   if (
     e.target.classList[0] === 'top_nav_contacts__btn'
