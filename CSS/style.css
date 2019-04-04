@@ -288,11 +288,12 @@ a {
   min-height: calc(100vh);
   min-width: 150px;
   position: fixed;
-  margin-top: 67px;
+  margin-top: 65px;
   border-right: 1px solid #6272b8;
   margin-right: 12px;
   overflow: auto;
   height: calc(100vh);
+  z-index: 3;
 }
 
 .top__nav {
@@ -832,11 +833,11 @@ textarea:focus {
 }
 
 .read__email {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
   border: 1px solid rgb(238, 238, 238);
   display: none;
-  padding: 17px;
-  margin-top: 1em;
+  padding: 1px 25px;
+  margin-top: 1.5em;
+  height: calc(100vh);
 }
 
 .subject__wrapper {

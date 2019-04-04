@@ -199,6 +199,7 @@ const getSpecificMessage = (e) => {
   let messageContent;
 
   if (e.target.parentNode.classList[0] === 'inbox__message') {
+    showOverlay();
     // eslint-disable-next-line prefer-destructuring
     messageId = e.target.parentNode.classList[1];
     console.log(messageId);
@@ -222,16 +223,20 @@ const getSpecificMessage = (e) => {
       .then(res => res.json())
       .then((body) => {
         if (body.status === 200) {
+          hideOverlay();
           console.log(body);
+          const formatedDated = moment(body.data.createdon).format('Do MMMM');
 
           messageContent = `<div class="subject__wrapper"><h1 class="subject">${
             body.data.subject
-          }</h1> <p class="time__created">  ${body.data.createdon} </p></div>
+          }</h1> <p class="time__created">${formatedDated} </p></div>
 
             
           <div class="users">
 
-            <h1 class="from">Matti Mobolaji </h1><p class="epic"> ${body.data.sender}</p>
+            <h1 class="from">${body.sender.firstname} ${
+  body.sender.lastname
+}     </h1><p class="epic">     < ${body.data.sender} ></p>
             <p class="to">to: ${body.data.receiver}</p>
           </div>
                 
