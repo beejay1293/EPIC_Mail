@@ -702,18 +702,19 @@ a {
 }
 
 .name {
-  width: 20%;
-  font-family: "Comic Sans MS";
-  font-weight: bold;
+  width: 25%;
+
   flex-grow: 1;
 }
+
 .message {
   width: 60%;
 
   flex-grow: 1;
 }
+
 .time {
-  width: 15%;
+  width: 10%;
 
   flex-grow: 1;
 }
@@ -730,14 +731,17 @@ a {
     flex-grow: 1;
   }
   .message {
-    width: 100%;
-    padding-left: 10px;
+    width: 85%;
+    padding-left: 30px;
     flex-grow: 1;
   }
   .time {
     width: 10%;
-    padding-left: 10px;
+    padding-left: 0px;
     flex-grow: 1;
+  }
+  .msgSubject {
+    padding-left: 30px;
   }
 }
 .delete {
@@ -837,7 +841,6 @@ textarea:focus {
   display: none;
   padding: 1px 25px;
   margin-top: 1.5em;
-  height: calc(100vh);
 }
 
 .subject__wrapper {

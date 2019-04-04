@@ -50,7 +50,6 @@ const getAllInbox = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
@@ -58,17 +57,21 @@ const getAllInbox = () => {
             += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
+            const str = ` ${message.subject} -${message.message}`;
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
             const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li class="inbox__message ${
+            inbox += `<li  class="inbox__message ${
               message.id
-            }"><input type="hidden" class="messageId" value="${
-              message.id
-            }"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
+            }"><input type="checkbox" class="checkbox"> <h1 class="name">${
               message.sender
-            } <h1 class="message"> ${
-              message.message
-            }</h1> <h1 class="time">${formatedDate}</h1></li>
-                `;
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1></li>
+                    `;
           });
         }
 
@@ -101,7 +104,6 @@ const getAllSent = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
@@ -109,14 +111,20 @@ const getAllSent = () => {
             += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
+            const str = ` ${message.subject} -${message.message}`;
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
             const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li  class="inbox__message ${
               message.id
             }"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
               message.receiver
-            } <h1 class="message"> ${
-              message.message
-            }</h1> <h1 class="time">${formatedDate}</h1></li>
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1></li>
                     `;
           });
         }
@@ -197,8 +205,13 @@ const getSpecificMessage = (e) => {
   let messageId;
   const readMessage = document.querySelector('.read__email');
   let messageContent;
+  console.log(e.target.className);
 
-  if (e.target.parentNode.classList[0] === 'inbox__message') {
+  if (
+    e.target.classList[0] === 'message'
+    || e.target.classList[0] === 'name'
+    || e.target.classList[0] === 'time'
+  ) {
     showOverlay();
     // eslint-disable-next-line prefer-destructuring
     messageId = e.target.parentNode.classList[1];
@@ -224,7 +237,7 @@ const getSpecificMessage = (e) => {
       .then((body) => {
         if (body.status === 200) {
           hideOverlay();
-          console.log(body);
+
           const formatedDated = moment(body.data.createdon).format('Do MMMM');
 
           messageContent = `<div class="subject__wrapper"><h1 class="subject">${
