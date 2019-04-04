@@ -18,6 +18,7 @@ const showSpinner = (e) => {
     document.querySelector('.tit').innerHTML = 'Loading ...';
     document.querySelector('.tit').style.display = 'inline-block';
     document.querySelector('.loginbtn').disabled = true;
+    document.getElementById('sign-in-btn').style.backgroundColor = '#ddd';
 
     document.getElementById('spinbtn').style.display = 'inline-block';
   } else if (e.target.className === 'signuptit' || e.target.className === 'registerbtn') {
@@ -26,6 +27,7 @@ const showSpinner = (e) => {
     document.querySelector('.registerbtn').disabled = true;
 
     document.getElementById('spinbtn2').style.display = 'inline-block';
+    document.getElementById('signup').style.backgroundColor = '#ddd';
   }
 };
 
@@ -34,10 +36,12 @@ const hideSpinner = (e) => {
     document.getElementById('spinbtn').style.display = 'none';
     document.querySelector('.tit').innerHTML = 'Login';
     document.querySelector('.loginbtn').disabled = false;
+    document.getElementById('sign-in-btn').style.backgroundColor = '#6272b8';
   } else if (e.target.className === 'signuptit' || e.target.className === 'registerbtn') {
     document.getElementById('spinbtn2').style.display = 'none';
     document.querySelector('.signuptit').innerHTML = 'Sign up';
     document.querySelector('.registerbtn').disabled = false;
+    document.getElementById('signup').style.backgroundColor = '#6272b8';
   }
 };
 
