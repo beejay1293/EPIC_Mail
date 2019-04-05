@@ -57,7 +57,9 @@ const getAllInbox = () => {
             += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const str = ` ${message.subject} -${message.message}`;
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+              message.message
+            }</p>`;
             let msg;
             if (str.length > 80) {
               const substring = str.substring(0, 80);
@@ -111,7 +113,10 @@ const getAllSent = () => {
             += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const str = ` ${message.subject} -${message.message}`;
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+              message.message
+            }</p>`;
+
             let msg;
             if (str.length > 80) {
               const substring = str.substring(0, 80);
@@ -205,17 +210,25 @@ const getSpecificMessage = (e) => {
   let messageId;
   const readMessage = document.querySelector('.read__email');
   let messageContent;
-  console.log(e.target.className);
 
   if (
     e.target.classList[0] === 'message'
     || e.target.classList[0] === 'name'
     || e.target.classList[0] === 'time'
+    || e.target.classList[0] === 'inline'
+    || e.target.classList[0] === 'ms'
   ) {
     showOverlay();
-    // eslint-disable-next-line prefer-destructuring
-    messageId = e.target.parentNode.classList[1];
-    console.log(messageId);
+
+    if (e.target.classList[0] === 'inline' || e.target.classList[0] === 'ms') {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.parentNode.classList[1];
+      console.log(messageId);
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.classList[1];
+      console.log(messageId);
+    }
 
     let userToken;
 
