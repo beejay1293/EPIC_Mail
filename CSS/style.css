@@ -18,7 +18,7 @@ body {
   margin: 0;
 
   font-size: 100%;
-  line-height: 1.2;
+
   font-size: 14px;
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
   letter-spacing: 0.2px;
@@ -126,6 +126,32 @@ hr {
   margin-bottom: 25px;
 }
 
+.top-content {
+  padding: 22px;
+  position: fixed;
+  background: #f4f4f4;
+  width: 100%;
+  z-index: 3;
+  border-bottom: 2px solid #d4d0d0;
+  display: flex;
+}
+
+.first {
+  width: 5%;
+  height: 20px;
+
+  text-align: left;
+}
+
+.fa-redo-alt {
+  width: 30%;
+  margin-left: 10px;
+  margin-top: 4px;
+  color: rgba(0, 0, 0, 0.904);
+
+  text-align: left;
+}
+
 /**#ffaf30;**/
 /* Set a style for the submit/login button */
 .loginbtn,
@@ -223,6 +249,9 @@ a {
   .epic__mail {
     display: none;
   }
+  .top-content {
+    display: none;
+  }
 }
 
 /** user dashboard styling */
@@ -296,7 +325,7 @@ a {
   min-width: 150px;
   position: fixed;
   margin-top: 65px;
-  border-right: 1px solid #6272b8;
+
   margin-right: 12px;
   overflow: auto;
   height: calc(100vh);
@@ -376,7 +405,7 @@ a {
   width: 40%;
   padding: 20px;
   background: #f1f1f1;
-  margin: 20px auto;
+  margin: 60px auto;
   border-radius: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -404,6 +433,9 @@ a {
   .dropdown-content {
     padding-right: 40px;
     width: 10px;
+  }
+  .top-content {
+    display: none;
   }
 }
 @media only screen and (min-width: 802px) {
@@ -452,6 +484,9 @@ a {
     margin-top: 480px;
   }
 
+  .main__body ul {
+    margin-top: 0px;
+  }
   .main__body__height2 {
     margin-top: 570px;
   }
@@ -475,6 +510,9 @@ a {
     margin: 20px auto;
     border-radius: 10px;
     padding: 20px;
+  }
+  .top-content {
+    display: none;
   }
 }
 
@@ -697,7 +735,17 @@ a {
 .main__body ul,
 .visible ul {
   list-style-type: none;
-  margin: 20px;
+  margin: 10px;
+
+  margin-top: 80px;
+}
+
+@media only screen and (max-width: 802px) {
+  .main__body ul,
+  .visible ul {
+    list-style-type: none;
+    margin-top: 0px;
+  }
 }
 
 .main__body ul li {
@@ -735,7 +783,7 @@ a {
 }
 
 .message {
-  width: 60%;
+  width: 57%;
   font-weight: normal;
   flex-grow: 1;
 }
@@ -748,6 +796,16 @@ a {
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.3px;
+}
+
+.delete__icon {
+  width: 3%;
+  color: #333;
+}
+
+.delete__icon:hover {
+  width: 3%;
+  color: red;
 }
 
 @media only screen and (max-width: 700px) {
@@ -871,7 +929,16 @@ textarea:focus {
   border: 1px solid rgb(238, 238, 238);
   display: none;
   padding: 1px 25px;
-  margin-top: 1.5em;
+  margin-top: 80px;
+}
+
+@media only screen and (max-width: 802px) {
+  .read__email {
+    border: 1px solid rgb(238, 238, 238);
+    display: none;
+    padding: 1px 25px;
+    margin-top: 30px;
+  }
 }
 
 .subject__wrapper {
@@ -903,10 +970,6 @@ textarea:focus {
 
 .from {
   display: inline-block;
-}
-
-.delete__icon {
-  color: red;
 }
 
 .plus__icon {
@@ -955,6 +1018,7 @@ textarea:focus {
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  margin-top: 70px;
 }
 
 .contact {

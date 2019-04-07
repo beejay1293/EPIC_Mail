@@ -72,7 +72,7 @@ const getAllInbox = () => {
               message.id
             }"><input type="checkbox" class="checkbox"> <h1 class="name">${
               message.sender
-            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1></li>
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
           });
         }
@@ -129,7 +129,7 @@ const getAllSent = () => {
               message.id
             }"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
               message.receiver
-            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1></li>
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
           });
         }
