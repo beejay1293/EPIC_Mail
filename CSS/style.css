@@ -355,7 +355,7 @@ a {
   padding: 8px 8px;
   font-family: "Encode Sans Condensed", sans-serif;
   font-size: 1.2em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
 }
 
@@ -367,6 +367,7 @@ a {
   box-sizing: border-box;
   margin-left: 15%;
   overflow: auto;
+
   background: #f4f4f4;
 }
 
@@ -481,7 +482,7 @@ a {
     margin-top: 50px;
   }
   .main__body__height {
-    margin-top: 480px;
+    margin-top: 500px;
   }
 
   .main__body ul {
@@ -582,7 +583,7 @@ a {
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
   letter-spacing: 0.2px;
   font-size: 1em;
-
+  font-weight: normal;
   cursor: pointer;
 }
 
@@ -643,11 +644,10 @@ a {
   border-radius: 0px;
   background: #6272b8;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
   letter-spacing: 0.2px;
   font-size: 1em;
-
+  font-weight: normal;
   cursor: pointer;
   height: 80px;
   overflow: auto;
@@ -708,7 +708,7 @@ a {
   padding: 4px 4px;
   font-family: "Encode Sans Condensed", sans-serif;
   font-size: 1em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
   color: #fff;
 }
