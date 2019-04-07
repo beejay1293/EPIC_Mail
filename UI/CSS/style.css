@@ -1,6 +1,10 @@
 html,
 body {
   width: 100%;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+
+  color: #202124;
 }
 
 * {
@@ -12,10 +16,12 @@ body {
 /* sets the style of my body tag*/
 body {
   margin: 0;
-  font-family: "Sarabun", sans-serif;
+
   font-size: 100%;
-  line-height: 1.2;
+
   font-size: 14px;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
 
   color: #393e46;
 }
@@ -34,14 +40,15 @@ body {
 /** span tag is used to style the E in EPIC */
 span {
   color: #ffaf30;
-  font-family: "Encode Sans Condensed", sans-serif;
-  font-size: 0.99em;
-  font-weight: bolder;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  font-size: 0.97em;
 }
 
 .email {
   color: #ffaf30;
-  font-family: "sarabun";
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 0.79em;
 }
 
@@ -117,6 +124,32 @@ textarea:focus {
 hr {
   border: 1px solid #eee;
   margin-bottom: 25px;
+}
+
+.top-content {
+  padding: 22px;
+  position: fixed;
+  background: #f4f4f4;
+  width: 100%;
+  z-index: 3;
+  border-bottom: 2px solid #d4d0d0;
+  display: flex;
+}
+
+.first {
+  width: 5%;
+  height: 20px;
+
+  text-align: left;
+}
+
+.fa-redo-alt {
+  width: 30%;
+  margin-left: 10px;
+  margin-top: 4px;
+  color: rgba(0, 0, 0, 0.904);
+
+  text-align: left;
 }
 
 /**#ffaf30;**/
@@ -216,6 +249,9 @@ a {
   .epic__mail {
     display: none;
   }
+  .top-content {
+    display: none;
+  }
 }
 
 /** user dashboard styling */
@@ -288,11 +324,14 @@ a {
   min-height: calc(100vh);
   min-width: 150px;
   position: fixed;
-  margin-top: 67px;
-  border-right: 1px solid #6272b8;
+  margin-top: 65px;
+
   margin-right: 12px;
   overflow: auto;
   height: calc(100vh);
+  z-index: 3;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
 }
 
 .top__nav {
@@ -316,7 +355,7 @@ a {
   padding: 8px 8px;
   font-family: "Encode Sans Condensed", sans-serif;
   font-size: 1.2em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
 }
 
@@ -328,6 +367,7 @@ a {
   box-sizing: border-box;
   margin-left: 15%;
   overflow: auto;
+
   background: #f4f4f4;
 }
 
@@ -366,8 +406,9 @@ a {
   width: 40%;
   padding: 20px;
   background: #f1f1f1;
-  margin: 20px auto;
+  margin: 60px auto;
   border-radius: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 @media only screen and (max-width: 700px) {
@@ -393,6 +434,9 @@ a {
   .dropdown-content {
     padding-right: 40px;
     width: 10px;
+  }
+  .top-content {
+    display: none;
   }
 }
 @media only screen and (min-width: 802px) {
@@ -438,9 +482,12 @@ a {
     margin-top: 50px;
   }
   .main__body__height {
-    margin-top: 480px;
+    margin-top: 500px;
   }
 
+  .main__body ul {
+    margin-top: 0px;
+  }
   .main__body__height2 {
     margin-top: 570px;
   }
@@ -464,6 +511,9 @@ a {
     margin: 20px auto;
     border-radius: 10px;
     padding: 20px;
+  }
+  .top-content {
+    display: none;
   }
 }
 
@@ -503,10 +553,12 @@ a {
   border-radius: 0 70px 70px 0;
   background: #eee;
   padding: 10px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
-  font-size: 1.2em;
-  font-weight: bolder;
+
+  font-size: 1.1em;
+
   cursor: pointer;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
 }
 .up,
 .top_nav_up {
@@ -517,6 +569,7 @@ a {
 .top_nav_group__wrapper {
   margin-left: 10px;
   display: inline-block;
+  font-weight: normal;
 }
 
 .nav2 ul li.groups,
@@ -527,9 +580,10 @@ a {
   border-radius: 0px;
   background: #f4f4f4;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
 }
 
@@ -542,9 +596,10 @@ a {
   border-radius: 0px;
   background: #f4f4f4;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+
   cursor: pointer;
   overflow: auto;
   height: 80px;
@@ -553,9 +608,10 @@ a {
   overflow: auto;
   height: 80px;
   cursor: pointer;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+
   padding: 2px 10px;
 }
 
@@ -575,9 +631,10 @@ a {
   border-radius: 0px;
   background: #f4f4f4;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+
   cursor: pointer;
   overflow: auto;
 }
@@ -587,9 +644,10 @@ a {
   border-radius: 0px;
   background: #6272b8;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
   height: 80px;
   overflow: auto;
@@ -599,9 +657,10 @@ a {
   border-radius: 0px;
   background: #f4f4f4;
   padding: 2px 10px;
-  font-family: "Encode Sans Condensed", sans-serif;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 1em;
-  font-weight: bolder;
+
   cursor: pointer;
   list-style-type: none;
 }
@@ -610,7 +669,8 @@ a {
   border-radius: 0px;
   background: #6272b8;
   padding: 1px 8px;
-  font-family: "sarabun";
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
   font-size: 0.9em;
   cursor: pointer;
   list-style-type: none;
@@ -648,7 +708,7 @@ a {
   padding: 4px 4px;
   font-family: "Encode Sans Condensed", sans-serif;
   font-size: 1em;
-  font-weight: bolder;
+  font-weight: normal;
   cursor: pointer;
   color: #fff;
 }
@@ -675,7 +735,17 @@ a {
 .main__body ul,
 .visible ul {
   list-style-type: none;
-  margin: 20px;
+  margin: 10px;
+
+  margin-top: 80px;
+}
+
+@media only screen and (max-width: 802px) {
+  .main__body ul,
+  .visible ul {
+    list-style-type: none;
+    margin-top: 0px;
+  }
 }
 
 .main__body ul li {
@@ -701,20 +771,41 @@ a {
 }
 
 .name {
-  width: 20%;
-  font-family: "Comic Sans MS";
-  font-weight: bold;
+  width: 25%;
+
   flex-grow: 1;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0.2px;
+  color: #202124;
 }
+
 .message {
-  width: 60%;
-
+  width: 57%;
+  font-weight: normal;
   flex-grow: 1;
 }
-.time {
-  width: 15%;
 
+.time {
+  width: 10%;
+  font-weight: normal;
   flex-grow: 1;
+  color: #5f6368;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3px;
+}
+
+.delete__icon {
+  width: 3%;
+  color: #333;
+}
+
+.delete__icon:hover {
+  width: 3%;
+  color: red;
 }
 
 @media only screen and (max-width: 700px) {
@@ -729,14 +820,17 @@ a {
     flex-grow: 1;
   }
   .message {
-    width: 100%;
-    padding-left: 10px;
+    width: 85%;
+    padding-left: 30px;
     flex-grow: 1;
   }
   .time {
     width: 10%;
-    padding-left: 10px;
+    padding-left: 0px;
     flex-grow: 1;
+  }
+  .msgSubject {
+    padding-left: 30px;
   }
 }
 .delete {
@@ -762,7 +856,7 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
   text-align: center;
@@ -832,11 +926,19 @@ textarea:focus {
 }
 
 .read__email {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
   border: 1px solid rgb(238, 238, 238);
   display: none;
-  padding: 17px;
-  margin-top: 1em;
+  padding: 1px 25px;
+  margin-top: 80px;
+}
+
+@media only screen and (max-width: 802px) {
+  .read__email {
+    border: 1px solid rgb(238, 238, 238);
+    display: none;
+    padding: 1px 25px;
+    margin-top: 30px;
+  }
 }
 
 .subject__wrapper {
@@ -870,10 +972,6 @@ textarea:focus {
   display: inline-block;
 }
 
-.delete__icon {
-  color: red;
-}
-
 .plus__icon {
   display: inline-block;
   color: #6272b8;
@@ -881,6 +979,9 @@ textarea:focus {
 
 .compose__message_btn {
   display: inline-block;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  font-weight: normal;
 }
 
 .dropdown:hover .dropdown-content {
@@ -917,6 +1018,7 @@ textarea:focus {
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  margin-top: 70px;
 }
 
 .contact {
@@ -1193,4 +1295,21 @@ textarea:focus {
   to {
     transform: rotate(360deg);
   }
+}
+
+.inline {
+  display: inline-block;
+
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  font-size: 0.875rem;
+  color: #202124;
+}
+
+.ms {
+  color: #5f6368;
+  display: inline-block;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+  font-size: 0.875rem;
 }

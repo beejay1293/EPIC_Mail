@@ -943,7 +943,6 @@ describe('POST api/v2/groups', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
-        console.log(body);
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(201);

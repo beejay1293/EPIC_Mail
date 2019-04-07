@@ -50,7 +50,6 @@ const getAllInbox = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
@@ -58,17 +57,23 @@ const getAllInbox = () => {
             += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
-            const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li class="inbox__message ${
-              message.id
-            }"><input type="hidden" class="messageId" value="${
-              message.id
-            }"> <input type="checkbox" class="checkbox"> <h1 class="name"> ${
-              message.sender
-            } <h1 class="message"> ${
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
               message.message
-            }</h1> <h1 class="time">${formatedDate}</h1></li>
-                `;
+            }</p>`;
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
+            const formatedDate = moment(message.createdon).format('Do MMMM');
+            inbox += `<li  class="inbox__message ${
+              message.id
+            }"><input type="checkbox" class="checkbox"> <h1 class="name">${
+              message.sender
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+                    `;
           });
         }
 
@@ -101,7 +106,6 @@ const getAllSent = () => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
@@ -109,14 +113,23 @@ const getAllSent = () => {
             += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
         } else {
           body.data.forEach((message) => {
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+              message.message
+            }</p>`;
+
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
             const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li  class="inbox__message ${
               message.id
             }"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
               message.receiver
-            } <h1 class="message"> ${
-              message.message
-            }</h1> <h1 class="time">${formatedDate}</h1></li>
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
           });
         }
@@ -198,10 +211,24 @@ const getSpecificMessage = (e) => {
   const readMessage = document.querySelector('.read__email');
   let messageContent;
 
-  if (e.target.parentNode.classList[0] === 'inbox__message') {
-    // eslint-disable-next-line prefer-destructuring
-    messageId = e.target.parentNode.classList[1];
-    console.log(messageId);
+  if (
+    e.target.classList[0] === 'message'
+    || e.target.classList[0] === 'name'
+    || e.target.classList[0] === 'time'
+    || e.target.classList[0] === 'inline'
+    || e.target.classList[0] === 'ms'
+  ) {
+    showOverlay();
+
+    if (e.target.classList[0] === 'inline' || e.target.classList[0] === 'ms') {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.parentNode.classList[1];
+      console.log(messageId);
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.classList[1];
+      console.log(messageId);
+    }
 
     let userToken;
 
@@ -222,16 +249,20 @@ const getSpecificMessage = (e) => {
       .then(res => res.json())
       .then((body) => {
         if (body.status === 200) {
-          console.log(body);
+          hideOverlay();
+
+          const formatedDated = moment(body.data.createdon).format('Do MMMM');
 
           messageContent = `<div class="subject__wrapper"><h1 class="subject">${
             body.data.subject
-          }</h1> <p class="time__created">  ${body.data.createdon} </p></div>
+          }</h1> <p class="time__created">${formatedDated} </p></div>
 
             
           <div class="users">
 
-            <h1 class="from">Matti Mobolaji </h1><p class="epic"> ${body.data.sender}</p>
+            <h1 class="from">${body.sender.firstname} ${
+  body.sender.lastname
+}     </h1><p class="epic">     < ${body.data.sender} ></p>
             <p class="to">to: ${body.data.receiver}</p>
           </div>
                 
