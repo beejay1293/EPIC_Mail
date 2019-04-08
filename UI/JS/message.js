@@ -143,6 +143,67 @@ const getAllSent = () => {
     .catch(err => err);
 };
 
+// get all unread messages
+const getAllUnreadMessages = () => {
+  showOverlay();
+  const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages/unread';
+
+  let userToken;
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+  console.log(userToken);
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      token: userToken,
+    },
+  })
+    .then(res => res.json())
+    .then((body) => {
+      console.log(body);
+
+      hideOverlay();
+      if (body.status === 200) {
+        let inbox = '';
+        if (body.data.length === 0) {
+          inbox
+            += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
+        } else {
+          body.data.forEach((message) => {
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+              message.message
+            }</p>`;
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
+            const formatedDate = moment(message.createdon).format('Do MMMM');
+            inbox += `<li  class="inbox__message ${
+              message.id
+            }"><input type="checkbox" class="checkbox"> <h1 class="name">${
+              message.sender
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+                    `;
+          });
+        }
+
+        const messageBody = document.querySelector('.starred__body');
+        messageBody.innerHTML = inbox;
+      } else {
+        console.log(body);
+      }
+    })
+    .catch(err => err);
+};
+
 // send or save messages as draft
 const postMessages = (e) => {
   e.preventDefault();
@@ -206,6 +267,7 @@ const postMessages = (e) => {
     .catch(err => err);
 };
 
+// get specific message
 const getSpecificMessage = (e) => {
   let messageId;
   const readMessage = document.querySelector('.read__email');
@@ -289,6 +351,7 @@ const getSpecificMessage = (e) => {
   }
 };
 
+// delete specific message
 const deleteMessage = (e) => {
   let messageId;
 
@@ -327,6 +390,8 @@ const deleteMessage = (e) => {
     })
       .then(res => res.json())
       .then((body) => {
+        console.log(body);
+
         hideOverlay();
         if (body.status === 200) {
           getAllSent();
@@ -338,8 +403,9 @@ const deleteMessage = (e) => {
 
 document.addEventListener('click', getSpecificMessage);
 document.addEventListener('click', deleteMessage);
+
 document.querySelector('.send_message__btn').addEventListener('click', postMessages);
 document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
-
+getAllUnreadMessages();
 getAllInbox();
 getAllSent();
