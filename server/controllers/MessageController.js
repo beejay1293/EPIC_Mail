@@ -469,26 +469,44 @@ class MessageController {
     const singleMessageId = parseInt(messageId, 10);
 
     try {
-      await Db.query('BEGIN');
       // delete from sent table
       const deletesent = 'DELETE FROM sent WHERE (senderid, messageid) = ($1, $2) returning *';
       const deletedsentmessage = await Db.query(deletesent, [id, singleMessageId]);
 
       if (deletedsentmessage.rows[0]) {
-        // delete from inbox table
-        const deleteinbox = 'DELETE FROM inbox WHERE messageid = $1 returning *';
-        await Db.query(deleteinbox, [singleMessageId]);
+        if (deletedsentmessage.rows[0].status === 'sent') {
+          try {
+            await Db.query('BEGIN');
+            // delete from inbox table
+            const deleteinbox = 'DELETE FROM inbox WHERE messageid = $1 returning *';
+            await Db.query(deleteinbox, [singleMessageId]);
+
+            // delete from message table
+            const deleteMessage = 'DELETE FROM messages WHERE (createdby, id) = ($1, $2) returning *';
+            await Db.query(deleteMessage, [id, singleMessageId]);
+            await Db.query('COMMIT');
+
+            return res.status(200).json({
+              status: 200,
+              data: `message with id of ${deletedsentmessage.rows[0].id} has been deleted`,
+            });
+          } catch (error) {
+            await Db.query('ROLLBACK');
+            return res.status(500).json({
+              status: 500,
+              error: 'internal server error',
+            });
+          }
+        }
       }
 
-      // delete from message table
-      const deleteMessage = 'DELETE FROM messages WHERE (createdby, id) = ($1, $2) returning *';
-      const deletedmessage = await Db.query(deleteMessage, [id, singleMessageId]);
+      const deleteinbox = 'DELETE FROM inbox WHERE (receiverid, messageid) = ($1, $2) returning *';
+      const deletedinbox = await Db.query(deleteinbox, [id, singleMessageId]);
 
-      await Db.query('COMMIT');
-      if (deletedmessage.rows[0]) {
-        return res.status(200).json({
+      if (deletedinbox.rows[0]) {
+        res.status(200).json({
           status: 200,
-          data: `message with id of ${deletedmessage.rows[0].id} has been deleted`,
+          data: `message with id of ${deletedinbox.rows[0].id} has been deleted`,
         });
       }
 
@@ -497,7 +515,6 @@ class MessageController {
         error: 'sorry, you are unable to delete this message',
       });
     } catch (error) {
-      await Db.query('ROLLBACK');
       return res.status(500).json({
         status: 500,
         error: 'internal server error',

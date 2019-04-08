@@ -289,7 +289,55 @@ const getSpecificMessage = (e) => {
   }
 };
 
+const deleteMessage = (e) => {
+  let messageId;
+
+  if (
+    e.target.parentNode.classList[0] === 'delete__icon'
+    || e.target.classList[0] === 'delete__icon'
+  ) {
+    showOverlay();
+
+    if (e.target.classList[0] === 'delete__icon') {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.classList[1];
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      messageId = e.target.parentNode.parentNode.classList[1];
+    }
+
+    console.log(messageId);
+
+    let userToken;
+
+    if (localStorage.getItem('user')) {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const { token } = userData;
+      userToken = token;
+    }
+
+    const url = `https://andela-epic-mail.herokuapp.com/api/v2/messages/${messageId}`;
+
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'authorization/json',
+        token: userToken,
+      },
+    })
+      .then(res => res.json())
+      .then((body) => {
+        hideOverlay();
+        if (body.status === 200) {
+          getAllSent();
+          getAllInbox();
+        }
+      });
+  }
+};
+
 document.addEventListener('click', getSpecificMessage);
+document.addEventListener('click', deleteMessage);
 document.querySelector('.send_message__btn').addEventListener('click', postMessages);
 document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
 
