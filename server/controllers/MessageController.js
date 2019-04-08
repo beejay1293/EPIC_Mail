@@ -278,8 +278,11 @@ class MessageController {
    */
   static async GetAllUnreadReceivedMessagesdb(req, res) {
     const { id } = req.user;
+
+    console.log(id);
+
     // get all read messages by status
-    const queryString = 'SELECT messages.id, messages.sender messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE (inbox.receiverid, messages.status) = ($1, $2)';
+    const queryString = 'SELECT messages.id, messages.sender, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid WHERE (inbox.receiverid, messages.status) = ($1, $2)';
     const { rows } = await Db.query(queryString, [id, 'sent']);
 
     return res.status(200).json({
@@ -498,6 +501,11 @@ class MessageController {
             });
           }
         }
+
+        return res.status(200).json({
+          status: 200,
+          data: `message with id of ${deletedsentmessage.rows[0].id} has been deleted`,
+        });
       }
 
       const deleteinbox = 'DELETE FROM inbox WHERE (receiverid, messageid) = ($1, $2) returning *';
