@@ -93,6 +93,7 @@ document.addEventListener('click', (e) => {
   if (
     e.target.className === 'compose__message_btn'
     || e.target.parentNode.className === 'plus__icon'
+    || e.target.className === 'create'
   ) {
     overlay.style.display = 'block';
     topNav.classList.remove('top__navs');
