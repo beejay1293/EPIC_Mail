@@ -162,6 +162,7 @@ class MessageController {
             error: 'Reciever not a valid user',
           });
         }
+        console.log(receiver.rows[0].id);
 
         const messagevalues = [
           body.subject,
@@ -171,9 +172,10 @@ class MessageController {
           body.parentmessageid,
           email,
           body.reciever,
+          receiver.rows[0].id,
         ];
 
-        const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid, sender, receiver) VALUES($1, $2, $3, $4, $5, $6, $7) returning *';
+        const saveMessagequeryString = 'INSERT INTO messages(subject, message, status, createdby, parentmessageid, sender, receiver, receivedby) VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *';
         const { rows } = await Db.query(saveMessagequeryString, messagevalues);
         // sent message
 
@@ -384,13 +386,14 @@ class MessageController {
           data: draftmessage.rows[0],
         });
       }
-      const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status, messages.sender, messages.receiver, sent.senderid, inbox.receiverid FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid LEFT JOIN sent ON messages.id = sent.messageid WHERE messages.id = $1';
+      const queryString = 'SELECT messages.id, messages.createdon, messages.subject, messages.message, messages.parentmessageid, messages.status, messages.sender, messages.receiver, messages.createdby, messages.receivedby FROM messages LEFT JOIN inbox ON messages.id = inbox.messageid LEFT JOIN sent ON messages.id = sent.messageid WHERE messages.id = $1';
       const { rows } = await Db.query(queryString, [idParams]);
 
       const query = 'SELECT firstname,lastname FROM users WHERE id = $1';
-      const messageReceiver = await Db.query(query, [rows[0].receiverid]);
+      const messageReceiver = await Db.query(query, [rows[0].receivedby]);
+      console.log(rows[0]);
 
-      if (rows[0].senderid === id) {
+      if (rows[0].createdby === id) {
         return res.status(200).json({
           status: 200,
           data: rows[0],
@@ -399,12 +402,12 @@ class MessageController {
         });
       }
 
-      if (rows[0].receiverid === id) {
+      if (rows[0].receivedby === id) {
         const queryStrings = 'UPDATE messages SET STATUS = $1 WHERE ID = $2 returning *';
         await Db.query(queryStrings, ['read', rows[0].id]);
 
         const senderQuery = 'SELECT firstname,lastname FROM users WHERE id = $1';
-        const messageSender = await Db.query(senderQuery, [rows[0].senderid]);
+        const messageSender = await Db.query(senderQuery, [rows[0].createdby]);
 
         return res.status(200).json({
           status: 200,
@@ -477,7 +480,11 @@ class MessageController {
       const deletedsentmessage = await Db.query(deletesent, [id, singleMessageId]);
 
       if (deletedsentmessage.rows[0]) {
-        if (deletedsentmessage.rows[0].status === 'sent') {
+        // check message status
+        const messageQuery = 'SELECT * FROM messages WHERE id = $1';
+        const { rows } = await Db.query(messageQuery, [singleMessageId]);
+
+        if (rows[0].status === 'sent') {
           try {
             await Db.query('BEGIN');
             // delete from inbox table
@@ -491,7 +498,7 @@ class MessageController {
 
             return res.status(200).json({
               status: 200,
-              data: `message with id of ${deletedsentmessage.rows[0].id} has been deleted`,
+              data: `message with id of ${deletedsentmessage.rows[0].messageid} has been deleted`,
             });
           } catch (error) {
             await Db.query('ROLLBACK');
@@ -504,7 +511,7 @@ class MessageController {
 
         return res.status(200).json({
           status: 200,
-          data: `message with id of ${deletedsentmessage.rows[0].id} has been deleted`,
+          data: `message with id of ${deletedsentmessage.rows[0].messageid} has been deleted`,
         });
       }
 
@@ -514,7 +521,7 @@ class MessageController {
       if (deletedinbox.rows[0]) {
         res.status(200).json({
           status: 200,
-          data: `message with id of ${deletedinbox.rows[0].id} has been deleted`,
+          data: `message with id of ${deletedinbox.rows[0].messageid} has been deleted`,
         });
       }
 
