@@ -25,6 +25,60 @@ const displayFeedBack = (responseData) => {
   return listItem;
 };
 
+const getAllGroups = () => {
+  const url = 'https://andela-epic-mail.herokuapp.com/api/v2/groups';
+
+  let userToken;
+
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'json/authorization',
+      token: userToken,
+    },
+  })
+    .then(res => res.json())
+    .then((body) => {
+      if (body.status === 'success') {
+        let groups = '';
+        body.data.forEach((group) => {
+          console.log(group.name, group.role);
+
+          if (group.role === 'admin') {
+            groups += `<li class="add_user"> </i> ${
+              group.name
+            }  <i class="far fa-edit"></i> <i class="fas fa-trash-alt"></i> <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
+            <li>Ayo <i class="fas fa-user-minus"></i></li>
+          </ul>`;
+          } else if (group.moderator === 'moderator') {
+            groups += `<li class="add_user"> </i> ${
+              group.name
+            } <i class="far fa-edit"></i> <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
+            <li>Ayo <i class="fas fa-user-minus"></i></li>
+          </ul>`;
+          } else {
+            groups += `<li class="add_user"> </i> ${
+              group.name
+            } <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
+            <li>Ayo <i class="fas fa-user-minus"></i></li>
+          </ul>`;
+          }
+        });
+
+        document.querySelector('.all__groups').innerHTML = groups;
+      }
+    });
+};
+
 const addGroup = (e) => {
   e.preventDefault();
   // eslint-disable-next-line no-undef
@@ -85,6 +139,8 @@ const addGroup = (e) => {
                 feedBackContainer.classList.remove('feedback-message-error');
                 feedBackContainer.classList.add('feedback-message-success');
 
+                getAllGroups();
+
                 // reload page after 2 seconds
                 setInterval(() => {
                   window.location.href = 'dashboard.html';
@@ -95,6 +151,8 @@ const addGroup = (e) => {
         feedBackContainer.innerHTML = 'Group Created';
         feedBackContainer.classList.remove('feedback-message-error');
         feedBackContainer.classList.add('feedback-message-success');
+
+        getAllGroups();
 
         // reload page after 2 seconds
         setInterval(() => {
@@ -110,3 +168,4 @@ const addGroup = (e) => {
 };
 
 document.querySelector('.create-group').addEventListener('click', addGroup);
+getAllGroups();

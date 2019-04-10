@@ -53,27 +53,46 @@ const getAllInbox = () => {
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
-          inbox
-            += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
+          inbox += '<li class="empty"> <h1>No message in inbox </h1> </li>';
         } else {
           body.data.forEach((message) => {
-            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
-              message.message
-            }</p>`;
-            let msg;
-            if (str.length > 80) {
-              const substring = str.substring(0, 80);
-              msg = `${substring}...`;
+            if (message.status === 'sent') {
+              const str = ` <p class="inline inlineUnread">${
+                message.subject
+              }</p> -<p class="ms msUnread">${message.message}</p>`;
+              let msg;
+              if (str.length > 80) {
+                const substring = str.substring(0, 80);
+                msg = `${substring}...`;
+              } else {
+                msg = str.substring(0, 80);
+              }
+              const formatedDate = moment(message.createdon).format('Do MMMM');
+              inbox += `<li  class="inbox__message ${
+                message.id
+              } msg msgUnread"><input type="checkbox" class="checkbox"> <h1 class="name nameUnread">${
+                message.sender
+              }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time timeUnread">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+                      `;
             } else {
-              msg = str.substring(0, 80);
-            }
-            const formatedDate = moment(message.createdon).format('Do MMMM');
-            inbox += `<li  class="inbox__message ${
-              message.id
-            }"><input type="checkbox" class="checkbox"> <h1 class="name">${
-              message.sender
-            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+              const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+                message.message
+              }</p>`;
+              let msg;
+              if (str.length > 80) {
+                const substring = str.substring(0, 80);
+                msg = `${substring}...`;
+              } else {
+                msg = str.substring(0, 80);
+              }
+              const formatedDate = moment(message.createdon).format('Do MMMM');
+              inbox += `<li  class="inbox__message ${
+                message.id
+              } msg"><input type="checkbox" class="checkbox"> <h1 class="name">${
+                message.sender
+              }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
+            }
           });
         }
 
@@ -110,7 +129,7 @@ const getAllSent = () => {
         let inbox = '';
         if (body.data.length === 0) {
           inbox
-            += '<li class="inbox__message"><input type="checkbox" class="checkbox"><h1 class="name"> Welcome<h1 class="message"> Send a message with EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
+            += '<li class="empty"> <h1>No sent messages click <a class="create">here</a> to send a message</h1> </li>';
         } else {
           body.data.forEach((message) => {
             const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
@@ -127,7 +146,7 @@ const getAllSent = () => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li  class="inbox__message ${
               message.id
-            }"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
+            } msg"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
               message.receiver
             }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
@@ -154,7 +173,6 @@ const getAllUnreadMessages = () => {
     const { token } = userData;
     userToken = token;
   }
-  console.log(userToken);
 
   fetch(url, {
     method: 'GET',
@@ -165,19 +183,16 @@ const getAllUnreadMessages = () => {
   })
     .then(res => res.json())
     .then((body) => {
-      console.log(body);
-
       hideOverlay();
       if (body.status === 200) {
         let inbox = '';
         if (body.data.length === 0) {
-          inbox
-            += '<li id="msgId" class="inbox__message"> <input type="checkbox" class="checkbox"> <h1 class="name"> Welcome<h1 class="message"> Welcome to EPIC Mail</h1> <h1 class="time"> 1st march</h1></li>';
+          inbox += '<li class="empty"> <h1>No unread messages</h1> </li>';
         } else {
           body.data.forEach((message) => {
-            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
-              message.message
-            }</p>`;
+            const str = ` <p class="inline inlineUnread">${
+              message.subject
+            }</p> -<p class="ms msUnread">${message.message}</p>`;
             let msg;
             if (str.length > 80) {
               const substring = str.substring(0, 80);
@@ -188,9 +203,9 @@ const getAllUnreadMessages = () => {
             const formatedDate = moment(message.createdon).format('Do MMMM');
             inbox += `<li  class="inbox__message ${
               message.id
-            }"><input type="checkbox" class="checkbox"> <h1 class="name">${
+            }msg msgUnread"><input type="checkbox" class="checkbox"> <h1 class="name nameUnread">${
               message.sender
-            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time timeUnread">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
                     `;
           });
         }
@@ -247,17 +262,34 @@ const postMessages = (e) => {
     .then(res => res.json())
     .then((body) => {
       hideOverlay();
-      console.log(body);
+
       if (body.status === 201) {
         feedbackContainer.classList.remove('feedback-message-error');
         feedbackContainer.classList.add('feedback-message-success');
         feedbackContainer.innerHTML = displayFeedback(body);
-        console.log(body.data);
+
+        const overlay = document.querySelector('.overlay');
+
+        overlay.style.display = 'none';
 
         // reload page
+        getAllInbox();
+        getAllSent();
+        getAllUnreadMessages();
+
+        document.querySelector('.feed').innerHTML = displayFeedback(body);
+
+        const feedbackOverlay = document.querySelector('.feedbackOverlay');
+        feedbackOverlay.style.display = 'block';
+
         setInterval(() => {
-          window.location.href = 'dashboard.html';
+          feedbackOverlay.style.display = 'none';
         }, 2000);
+
+        feedbackContainer.innerHTML = '';
+        document.querySelector('.messageTo').value = '';
+        document.querySelector('.messageSubject').value = '';
+        document.querySelector('.messageContent').value = '';
       } else {
         feedbackContainer.innerHTML = displayFeedback(body);
         feedbackContainer.classList.remove('feedback-message-success');
@@ -285,11 +317,9 @@ const getSpecificMessage = (e) => {
     if (e.target.classList[0] === 'inline' || e.target.classList[0] === 'ms') {
       // eslint-disable-next-line prefer-destructuring
       messageId = e.target.parentNode.parentNode.classList[1];
-      console.log(messageId);
     } else {
       // eslint-disable-next-line prefer-destructuring
       messageId = e.target.parentNode.classList[1];
-      console.log(messageId);
     }
 
     let userToken;
@@ -310,6 +340,8 @@ const getSpecificMessage = (e) => {
     })
       .then(res => res.json())
       .then((body) => {
+        console.log(body);
+
         if (body.status === 200) {
           hideOverlay();
 
@@ -335,6 +367,9 @@ const getSpecificMessage = (e) => {
           </div>
           <hr class="line"/>`;
           readMessage.innerHTML = messageContent;
+          getAllInbox();
+          getAllSent();
+          getAllUnreadMessages();
 
           // eslint-disable-next-line no-undef
           readEmail.style.display = 'block';
@@ -369,8 +404,6 @@ const deleteMessage = (e) => {
       messageId = e.target.parentNode.parentNode.classList[1];
     }
 
-    console.log(messageId);
-
     let userToken;
 
     if (localStorage.getItem('user')) {
@@ -390,12 +423,11 @@ const deleteMessage = (e) => {
     })
       .then(res => res.json())
       .then((body) => {
-        console.log(body);
-
         hideOverlay();
         if (body.status === 200) {
           getAllSent();
           getAllInbox();
+          getAllUnreadMessages();
         }
       });
   }
@@ -403,6 +435,11 @@ const deleteMessage = (e) => {
 
 document.addEventListener('click', getSpecificMessage);
 document.addEventListener('click', deleteMessage);
+document.getElementById('reload').addEventListener('click', () => {
+  getAllSent();
+  getAllInbox();
+  getAllUnreadMessages();
+});
 
 document.querySelector('.send_message__btn').addEventListener('click', postMessages);
 document.querySelector('.draft_message__btn').addEventListener('click', postMessages);
