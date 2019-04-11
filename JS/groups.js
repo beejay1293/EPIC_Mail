@@ -48,12 +48,12 @@ const getAllGroups = () => {
       if (body.status === 'success') {
         let groups = '';
         body.data.forEach((group) => {
-          console.log(group.name, group.role);
+          console.log(group);
 
           if (group.role === 'admin') {
-            groups += `<li class="add_user"> </i> ${
+            groups += `<li class="add_user ${group.id}"> </i> ${
               group.name
-            }  <i class="far fa-edit"></i> <i class="fas fa-trash-alt"></i> <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            }  <div class="grp"><i class="far fa-edit edit-group"></i> <i class="fas fa-trash-alt delete-group"></i><i class="fas fa-plus message-group"></i></li></div> <ul class="group__contacts">
             <li>Mobolaji <i class="fas fa-user-minus"></i></li>
             <li>Ayo <i class="fas fa-user-minus"></i></li>
           </ul>`;
@@ -166,6 +166,37 @@ const addGroup = (e) => {
     })
     .catch(err => err);
 };
+
+const deleteGroup = (e) => {
+  if (e.target.classList[2] === 'delete-group') {
+    const messageId = e.target.parentNode.parentNode.classList[1];
+    let userToken;
+
+    if (localStorage.getItem('user')) {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      const { token } = userData;
+      userToken = token;
+    }
+
+    const url = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${messageId}`;
+
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'json/authorization',
+        token: userToken,
+      },
+    })
+      .then(res => res.json())
+      .then((body) => {
+        if (body.status === 200) {
+          getAllGroups();
+        }
+      });
+  }
+};
+
+document.addEventListener('click', deleteGroup);
 
 document.querySelector('.create-group').addEventListener('click', addGroup);
 getAllGroups();

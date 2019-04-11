@@ -1426,3 +1426,11 @@ textarea:focus {
   margin-bottom: 10px;
   font-family: "roboto";
 }
+
+.delete-group {
+  display: inline;
+}
+
+.grp i {
+  padding: 5px;
+}
