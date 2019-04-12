@@ -40,10 +40,12 @@ document.addEventListener('click', (e) => {
     messageBody.classList.remove('main__body__height2');
     passwordResetOverlay.style.display = 'none';
     overlay.style.display = 'none';
+    document.querySelector('.Edit_groupname_overlay').style.display = 'block';
   }
 
   if (e.target.className === 'clear__overlay') {
     createGroupOverlay.style.display = 'none';
+    document.querySelector('.Edit_groupname_overlay').style.display = 'none';
   }
 
   if (e.target.className === 'top_nav_group__wrapper') {
@@ -61,6 +63,8 @@ document.addEventListener('click', (e) => {
     passwordResetOverlay.style.display = 'block';
     overlay.style.display = 'none';
     createGroupOverlay.style.display = 'none';
+
+    document.querySelector('.Edit_groupname_overlay').style.display = 'none';
   }
 
   if (e.target.className === 'clear__overlay') {
@@ -103,6 +107,7 @@ document.addEventListener('click', (e) => {
     messageBody.classList.remove('main__body__height2');
     passwordResetOverlay.style.display = 'none';
     createGroupOverlay.style.display = 'none';
+    document.querySelector('.Edit_groupname_overlay').style.display = 'none';
   }
 
   if (e.target.className === 'clear__overlay') {
