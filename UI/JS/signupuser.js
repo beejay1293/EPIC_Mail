@@ -79,6 +79,12 @@ const signUp = (e) => {
     feedbackContainer2.innerHTML = 'comfirm password does not match';
     feedbackContainer2.style.color = 'red';
     feedbackContainer2.style.border = '0.7px solid #dc3545';
+
+    setInterval(() => {
+      feedbackContainer2.innerHTML = '';
+      feedbackContainer2.style.border = 'none';
+    }, 5000);
+    hideSpinner(e);
   } else {
     feedbackContainer2.innerHTML = '';
     feedbackContainer2.style.border = 'none';
@@ -118,7 +124,7 @@ const signUp = (e) => {
         if (body.status === 201) {
           // store user data in browser local storage
           const userData = JSON.stringify({
-            username: body.data.lastname,
+            username: body.data.username,
             token: body.data.token,
           });
           localStorage.setItem('user', userData);

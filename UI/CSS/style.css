@@ -173,7 +173,8 @@ hr {
 .signup {
   font-size: 20px;
 }
-.send_message__btn {
+.send_message__btn,
+.reset_name__btn {
   background-color: #6272b8;
   color: white;
   padding: 16px 20px;
@@ -213,7 +214,8 @@ hr {
 
 .loginbtn:hover,
 .send_message__btn:hover,
-.draft_message__btn:hover {
+.draft_message__btn:hover,
+.reset_name__btn:hover {
   opacity: 1;
 }
 
@@ -901,7 +903,8 @@ a {
 .overlay,
 .password__reset_overlay,
 .create__group_overlay,
-.feedbackOverlay {
+.feedbackOverlay,
+.Edit_groupname_overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
   width: 100%; /* Full width (cover the whole page) */
@@ -948,7 +951,7 @@ a {
 }
 
 .clear__overlay {
-  color: red;
+  color: #333;
   width: 10%;
   font-weight: bolder;
   font-size: 20px;
@@ -956,7 +959,7 @@ a {
 }
 
 .clear__overlay:hover {
-  color: #333;
+  color: red;
 }
 
 .message_container input[type="text"],
