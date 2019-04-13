@@ -48,26 +48,22 @@ const getAllGroups = () => {
       if (body.status === 'success') {
         let groups = '';
         body.data.forEach((group) => {
-          console.log(group);
-
           if (group.role === 'admin') {
             groups += `<li class="add_user ${group.id}"> </i> ${
               group.name
-            }  <div class="grp"><i class="far fa-edit edit-group"></i> <i class="fas fa-trash-alt delete-group"></i><i class="fas fa-plus message-group"></i></li></div> <ul class="group__contacts">
+            }  <div class="grp"><i class="far fa-edit edit-group"></i> <i class="fas fa-trash-alt delete-group"></i></li></div> <ul class="group__contacts">
             <li>Mobolaji <i class="fas fa-user-minus"></i></li>
             <li>Ayo <i class="fas fa-user-minus"></i></li>
           </ul>`;
           } else if (group.moderator === 'moderator') {
             groups += `<li class="add_user"> </i> ${
               group.name
-            } <i class="far fa-edit"></i> <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            } <i class="far fa-edit"></i> </li> <ul class="group__contacts">
             <li>Mobolaji <i class="fas fa-user-minus"></i></li>
             <li>Ayo <i class="fas fa-user-minus"></i></li>
           </ul>`;
           } else {
-            groups += `<li class="add_user"> </i> ${
-              group.name
-            } <i class="fas fa-plus"></i></li> <ul class="group__contacts">
+            groups += `<li class="add_user"> </i> ${group.name} </li> <ul class="group__contacts">
             <li>Mobolaji <i class="fas fa-user-minus"></i></li>
             <li>Ayo <i class="fas fa-user-minus"></i></li>
           </ul>`;
@@ -132,8 +128,6 @@ const addGroup = (e) => {
           })
             .then(res => res.json())
             .then((userBody) => {
-              console.log(userBody);
-
               if (userBody.status === 201) {
                 feedBackContainer.innerHTML = ` ${checked.length} new group members added`;
                 feedBackContainer.classList.remove('feedback-message-error');
@@ -196,7 +190,74 @@ const deleteGroup = (e) => {
   }
 };
 
+const editGroupOverlay = (e) => {
+  if (e.target.classList[2] === 'edit-group') {
+    document.querySelector('.Edit_groupname_overlay').style.display = 'block';
+    document.querySelector('.overlay').style.display = 'none';
+    document.querySelector('.password__reset_overlay').style.display = 'none';
+    document.querySelector('.create__group_overlay').style.display = 'none';
+
+    // eslint-disable-next-line prefer-destructuring
+    document.querySelector('.newGroupName').value = e.target.parentNode.parentNode.innerHTML
+      .split('<div')[0]
+      .trim();
+
+    // eslint-disable-next-line prefer-destructuring
+    document.querySelector('.newGroupId').value = e.target.parentNode.parentNode.classList[1];
+  }
+};
+
+const EditGroupName = (e) => {
+  e.preventDefault();
+  // eslint-disable-next-line no-undef
+  showOverlay();
+  let userToken;
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+
+  const formData = {
+    groupname: document.querySelector('.newGroupName').value,
+  };
+
+  const id = document.querySelector('.newGroupId').value;
+
+  const url = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${id}/name`;
+
+  fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      token: userToken,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then(res => res.json())
+    .then((body) => {
+      // eslint-disable-next-line no-undef
+      hideOverlay();
+
+      if (body.status === 200) {
+        document.querySelector('.Edit_groupname_overlay').style.display = 'none';
+        getAllGroups();
+
+        document.querySelector('.feed').innerHTML = 'Group name successfully edited';
+
+        const feedbackOverlay = document.querySelector('.feedbackOverlay');
+        feedbackOverlay.style.display = 'block';
+
+        setInterval(() => {
+          feedbackOverlay.style.display = 'none';
+        }, 2000);
+      }
+    });
+};
+
 document.addEventListener('click', deleteGroup);
+document.addEventListener('click', editGroupOverlay);
+document.querySelector('.reset_name__btn').addEventListener('click', EditGroupName);
 
 document.querySelector('.create-group').addEventListener('click', addGroup);
 getAllGroups();
