@@ -846,7 +846,7 @@ describe('PATCH api/v2/groups/<:groupId>/name', () => {
   it('Should edit the name of a specific group', (done) => {
     chai
       .request(app)
-      .patch('/api/v2/groups/11/name')
+      .patch('/api/v2/groups/28/name')
       .set('token', DbToken)
       .send({
         groupname: 'South Epic Group',
@@ -910,7 +910,7 @@ describe('POST api/v2/groups', () => {
   it('Should add a new user to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/users')
+      .post('/api/v2/groups/28/users')
       .set('token', DbToken)
       .send({
         email: `${newUser.email}`,
@@ -935,7 +935,7 @@ describe('POST api/v2/groups', () => {
   it('Should add multiple users to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/users')
+      .post('/api/v2/groups/28/users')
       .set('token', DbToken)
       .send({
         email: ['Darryl99@hotmail.com', 'andela.matti@eeeepic.com'],
@@ -958,7 +958,7 @@ describe('POST api/v2/groups', () => {
   it('Should throw an error if user is not an admin/moderator in group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/users')
+      .post('/api/v2/groups/28/users')
       .set('token', DbnewUserToken)
       .send({
         email: `${newUser.email}`,
@@ -983,10 +983,10 @@ describe('POST api/v2/groups', () => {
   it('Should throw an error if user already exists in group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/users')
+      .post('/api/v2/groups/28/users')
       .set('token', DbToken)
       .send({
-        email: 'Stephan71@yahoo.com',
+        email: 'Darryl99@hotmail.com',
         role: 'moderator',
       })
       .end((err, res) => {
@@ -1007,7 +1007,7 @@ describe('POST api/v2/groups', () => {
   it('Should return an error if user cannot be found', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/users')
+      .post('/api/v2/groups/28/users')
       .set('token', DbToken)
       .send({
         email: 'nono@gmail.com',
@@ -1032,7 +1032,7 @@ describe('DELETE api/v2/groups', () => {
   it('Should delete a user from a group', (done) => {
     chai
       .request(app)
-      .delete(`/api/v2/groups/11/users/${userToDelete}`)
+      .delete(`/api/v2/groups/28/users/${userToDelete}`)
       .set('token', DbToken)
       .end((err, res) => {
         if (err) done();
@@ -1054,7 +1054,7 @@ describe('DELETE api/v2/groups', () => {
   it('Should throw an error is user is not an admin/moderator in group', (done) => {
     chai
       .request(app)
-      .delete(`/api/v2/groups/11/users/${userToDelete}`)
+      .delete(`/api/v2/groups/28/users/${userToDelete}`)
       .set('token', DbnewUserToken)
       .end((err, res) => {
         if (err) done();
@@ -1074,7 +1074,7 @@ describe('DELETE api/v2/groups', () => {
   it('Should throw an error if userId is not in group', (done) => {
     chai
       .request(app)
-      .delete('/api/v2/groups/11/users/2000')
+      .delete('/api/v2/groups/28/users/2000')
       .set('token', DbToken)
       .end((err, res) => {
         if (err) done();
@@ -1094,7 +1094,7 @@ describe('POST api/v2/groups/<:groupId>/messages', () => {
   it('Should send a message to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/11/messages')
+      .post('/api/v2/groups/28/messages')
       .set('token', DbToken)
       .send({
         subject: 'Test message',
