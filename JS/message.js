@@ -9,6 +9,8 @@ const displayFeedback = (responseData) => {
     listItem += "<li class='feedback-list-item'>message sent successfully</li>";
   } else if (responseData.status === 201 && typeof responseData.data.rows[0] === 'object') {
     listItem += "<li class='feedback-list-item'>message saved</li>";
+  } else if (responseData.status === 201 && typeof responseData.data === 'object') {
+    listItem += "<li class='feedback-list-item'>message sent to group</li>";
   } else {
     listItem += `<li class='feedback-list-item'>${responseData.errors}</li>`;
   }
@@ -65,7 +67,7 @@ const getAllInbox = () => {
                 const substring = str.substring(0, 80);
                 msg = `${substring}...`;
               } else {
-                msg = str.substring(0, 80);
+                msg = str;
               }
               const formatedDate = moment(message.createdon).format('Do MMMM');
               inbox += `<li  class="inbox__message ${
@@ -83,7 +85,7 @@ const getAllInbox = () => {
                 const substring = str.substring(0, 80);
                 msg = `${substring}...`;
               } else {
-                msg = str.substring(0, 80);
+                msg = str;
               }
               const formatedDate = moment(message.createdon).format('Do MMMM');
               inbox += `<li  class="inbox__message ${
@@ -235,13 +237,27 @@ const postMessages = (e) => {
     status = 'draft';
   }
 
-  const formData = {
-    reciever,
-    subject,
-    message: messageContent,
-    status,
-  };
-  const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
+  let formData;
+  let url;
+
+  const grpcheck = document.querySelector('.checkbox__grp');
+  const grpId = document.getElementById('group__list').value;
+
+  if (grpcheck.checked) {
+    formData = {
+      subject,
+      message: messageContent,
+    };
+    url = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${grpId}/messages`;
+  } else {
+    formData = {
+      reciever,
+      subject,
+      message: messageContent,
+      status,
+    };
+    url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages';
+  }
 
   let userToken;
 
@@ -264,10 +280,6 @@ const postMessages = (e) => {
       hideOverlay();
 
       if (body.status === 201) {
-        feedbackContainer.classList.remove('feedback-message-error');
-        feedbackContainer.classList.add('feedback-message-success');
-        feedbackContainer.innerHTML = displayFeedback(body);
-
         const overlay = document.querySelector('.overlay');
 
         overlay.style.display = 'none';
@@ -277,7 +289,11 @@ const postMessages = (e) => {
         getAllSent();
         getAllUnreadMessages();
 
-        document.querySelector('.feed').innerHTML = displayFeedback(body);
+        if (grpcheck.checked) {
+          document.querySelector('.feed').innerHTML = 'Message sent to group successfully';
+        } else {
+          document.querySelector('.feed').innerHTML = displayFeedback(body);
+        }
 
         const feedbackOverlay = document.querySelector('.feedbackOverlay');
         feedbackOverlay.style.display = 'block';
@@ -290,6 +306,7 @@ const postMessages = (e) => {
         document.querySelector('.messageTo').value = '';
         document.querySelector('.messageSubject').value = '';
         document.querySelector('.messageContent').value = '';
+        grpcheck.checked = 'false';
       } else {
         feedbackContainer.innerHTML = displayFeedback(body);
         feedbackContainer.classList.remove('feedback-message-success');
