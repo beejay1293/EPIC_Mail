@@ -208,8 +208,13 @@ class GroupController {
           const userQuery = 'SELECT * FROM users WHERE email = $1';
           const newUser = await query(userQuery, [user]);
 
-          const addUserQuery = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3)';
-          await query(addUserQuery, [groupId, newUser.rows[0].id, 'user']);
+          const addUserQuery = 'INSERT INTO groups_members(groupId, memberId, role, membername) VALUES($1, $2, $3, $4)';
+          await query(addUserQuery, [
+            groupId,
+            newUser.rows[0].id,
+            'user',
+            `${newUser.rows[0].firstname} ${newUser.rows[0].lastname}`,
+          ]);
         });
 
         const responseQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
@@ -242,8 +247,13 @@ class GroupController {
         });
       }
 
-      const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3)';
-      await query(queryString2, [groupId, user.rows[0].id, 'user']);
+      const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role, membername) VALUES($1, $2, $3, $4)';
+      await query(queryString2, [
+        groupId,
+        user.rows[0].id,
+        'user',
+        `${user.rows[0].firstname} ${user.rows[0].lastname}`,
+      ]);
 
       const responseQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
       const response = await query(responseQuery, [groupId]);
@@ -350,6 +360,40 @@ class GroupController {
       return res.status(201).json({
         status: 201,
         data: message.rows[0],
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: 500,
+        error: 'internal server error',
+      });
+    }
+  }
+  /**
+   * Get all group members
+   * @param {*} req
+   * @param {*} res
+   */
+
+  static async getAllGroupMembers(req, res) {
+    const { groupId } = req.params;
+    const { id } = req.user;
+    try {
+      const findQuery = 'SELECT * FROM groups_members WHERE (groupId, memberId) = ($1, $2)';
+      const member = await query(findQuery, [groupId, id]);
+
+      if (member.rows[0]) {
+        const groupQuery = 'SELECT * FROM groups_members WHERE groupId = $1';
+        const { rows } = await query(groupQuery, [groupId]);
+
+        return res.status(200).json({
+          status: 200,
+          data: rows,
+        });
+      }
+
+      return res.status(400).json({
+        status: 400,
+        error: "you don't belong to this group",
       });
     } catch (error) {
       return res.status(500).json({
