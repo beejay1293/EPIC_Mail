@@ -101,8 +101,6 @@ class GroupController {
     try {
       const queryString2 = 'SELECT * FROM groups_members WHERE (groupid, memberid) = ($1, $2)';
       const members = await query(queryString2, [groupId, id]);
-      console.log(members);
-      
 
       if (members.rows[0].role === 'admin' || members.rows[0].role === 'moderator') {
         const queryString = 'UPDATE groups SET name = $1 WHERE (id) = ($2) returning *';

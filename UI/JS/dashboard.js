@@ -268,6 +268,17 @@ document.addEventListener('click', (e) => {
   }
 });
 
+const grpcheck = document.querySelector('.checkbox__grp');
+grpcheck.addEventListener('change', () => {
+  if (grpcheck.checked) {
+    document.getElementById('group__list').style.display = 'block';
+    document.querySelector('.messageTo').style.display = 'none';
+  } else {
+    document.getElementById('group__list').style.display = 'none';
+    document.querySelector('.messageTo').style.display = 'block';
+  }
+});
+
 window.onload = () => {
   inboxButton.classList.add('active');
   topNavInbox.classList.add('actives');
