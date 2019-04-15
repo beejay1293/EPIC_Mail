@@ -964,7 +964,8 @@ a {
 
 .message_container input[type="text"],
 .message_container input[type="password"],
-.message_container textarea {
+.message_container textarea,
+.message_container select {
   width: 100%;
   padding: 15px;
   margin: 5px 0 0 0;
@@ -976,10 +977,15 @@ a {
   border-bottom: 1px solid rgba(110, 108, 108, 0.5);
 }
 
+#group__list {
+  display: none;
+}
+
 .message_container input[type="text"]:focus,
 .message_container input[type="password"]:focus,
 .message_container input[type="email"]:focus,
-textarea:focus {
+textarea:focus,
+.message_container select:focus {
   background-color: #ddd;
   border: 0px;
   outline: none;
@@ -1436,4 +1442,20 @@ textarea:focus {
 
 .grp i {
   padding: 5px;
+}
+
+.group__checkbox {
+  margin-left: 5px;
+  padding: 5px;
+  margin-top: 2px;
+  display: flex;
+}
+
+.send__to_group {
+  display: inline-block;
+}
+
+.grp__check {
+  display: inline-block;
+  padding: 4px;
 }

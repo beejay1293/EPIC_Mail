@@ -1,6 +1,7 @@
 const checked = [];
 document.querySelector('.add-contact').addEventListener('click', (e) => {
   e.target.classList.toggle('checked');
+
   if (e.target.classList[0] === 'checked') {
     if (e.target.name !== undefined) {
       checked.push(e.target.name);
@@ -47,7 +48,10 @@ const getAllGroups = () => {
     .then((body) => {
       if (body.status === 'success') {
         let groups = '';
+        let groupList = '';
         body.data.forEach((group) => {
+          groupList += `<option class = "${group.id}" value="${group.id}">${group.name}</option>`;
+
           if (group.role === 'admin') {
             groups += `<li class="add_user ${group.id}"> </i> ${
               group.name
@@ -69,7 +73,7 @@ const getAllGroups = () => {
           </ul>`;
           }
         });
-
+        document.getElementById('group__list').innerHTML = groupList;
         document.querySelector('.all__groups').innerHTML = groups;
       }
     });
