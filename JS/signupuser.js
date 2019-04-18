@@ -124,6 +124,7 @@ const signUp = (e) => {
         if (body.status === 201) {
           // store user data in browser local storage
           const userData = JSON.stringify({
+            id: body.data.id,
             username: body.data.username,
             token: body.data.token,
           });
@@ -200,6 +201,7 @@ const signIn = (e) => {
         // store user data in browser local storage
 
         const userData = JSON.stringify({
+          id: body.data.id,
           username: body.data.lastname,
           token: body.data.token,
         });

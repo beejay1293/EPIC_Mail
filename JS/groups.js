@@ -31,11 +31,13 @@ const getAllGroups = async () => {
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/groups';
 
   let userToken;
+  let userId;
 
   if (localStorage.getItem('user')) {
     const userData = JSON.parse(localStorage.getItem('user'));
-    const { token } = userData;
+    const { id, token } = userData;
     userToken = token;
+    userId = id;
   }
 
   await fetch(url, {
@@ -85,11 +87,11 @@ const getAllGroups = async () => {
               let membersList = '';
               if (members.status === 200) {
                 members.data.forEach((member) => {
-                  if (member.memberid === 219) {
+                  if (member.memberid === userId) {
                     // eslint-disable-next-line no-param-reassign
                     member.membername = 'you';
                   }
-                  console.log(member);
+                  // console.log(member);
 
                   if (group.role === 'admin') {
                     if (member.role === 'admin') {
