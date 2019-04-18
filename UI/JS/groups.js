@@ -26,18 +26,21 @@ const displayFeedBack = (responseData) => {
   return listItem;
 };
 
-const getAllGroups = () => {
+const getAllGroups = async () => {
+  document.querySelector('.all__groups').innerHTML = '';
   const url = 'https://andela-epic-mail.herokuapp.com/api/v2/groups';
 
   let userToken;
+  let userId;
 
   if (localStorage.getItem('user')) {
     const userData = JSON.parse(localStorage.getItem('user'));
-    const { token } = userData;
+    const { id, token } = userData;
     userToken = token;
+    userId = id;
   }
 
-  fetch(url, {
+  await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'json/authorization',
@@ -47,34 +50,102 @@ const getAllGroups = () => {
     .then(res => res.json())
     .then((body) => {
       if (body.status === 'success') {
-        let groups = '';
         let groupList = '';
-        body.data.forEach((group) => {
+        let groupMembers = '';
+
+        body.data.forEach(async (group) => {
+          let groupmem = '';
           groupList += `<option class = "${group.id}" value="${group.id}">${group.name}</option>`;
 
           if (group.role === 'admin') {
-            groups += `<li class="add_user ${group.id}"> </i> ${
+            groupmem += `<li class="add_user ${group.id}"> </i> ${
               group.name
-            }  <div class="grp"><i class="far fa-edit edit-group"></i> <i class="fas fa-trash-alt delete-group"></i></li></div> <ul class="group__contacts">
-            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
-            <li>Ayo <i class="fas fa-user-minus"></i></li>
-          </ul>`;
+            }  <div class="grp"><i class="far fa-edit edit-group"></i> <i class="fas fa-trash-alt delete-group"></i></li></div> `;
           } else if (group.moderator === 'moderator') {
-            groups += `<li class="add_user"> </i> ${
+            groupmem += `<li class="add_user"> </i> ${
               group.name
             } <i class="far fa-edit"></i> </li> <ul class="group__contacts">
-            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
-            <li>Ayo <i class="fas fa-user-minus"></i></li>
+            
           </ul>`;
           } else {
-            groups += `<li class="add_user"> </i> ${group.name} </li> <ul class="group__contacts">
-            <li>Mobolaji <i class="fas fa-user-minus"></i></li>
-            <li>Ayo <i class="fas fa-user-minus"></i></li>
+            groupmem += `<li class="add_user"> </i> ${group.name} </li> <ul class="group__contacts">
+            
           </ul>`;
           }
+
+          const newurl = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${group.id}/members`;
+
+          await fetch(newurl, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'json/authorization',
+              token: userToken,
+            },
+          })
+            .then(res => res.json())
+            .then((members) => {
+              let membersList = '';
+              if (members.status === 200) {
+                members.data.forEach((member) => {
+                  if (member.memberid === userId) {
+                    // eslint-disable-next-line no-param-reassign
+                    member.membername = 'you';
+                  }
+                  // console.log(member);
+
+                  if (group.role === 'admin') {
+                    if (member.role === 'admin') {
+                      membersList += ` <li>${member.membername} </li>`;
+                    } else {
+                      membersList += ` <li>${
+                        member.membername
+                      } <h1 class ="group__member_inline"><i class="fas fa-user-minus ${
+                        member.memberid
+                      } ${member.groupid}" ></i> </h1></li>`;
+                    }
+                  } else {
+                    membersList += ` <li>${member.membername}</li>`;
+                  }
+                });
+                // console.log(members);
+                groupMembers = `<ul class="group__contacts">
+                ${membersList}
+                </ul>`;
+                // console.log('grp =', groupMembers);
+                groupmem += groupMembers;
+              }
+            });
+
+          // console.log(groupmem);
+          document.querySelector('.all__groups').innerHTML += groupmem;
         });
+
         document.getElementById('group__list').innerHTML = groupList;
-        document.querySelector('.all__groups').innerHTML = groups;
+      }
+    });
+};
+const deleteUserFromGroup = (e) => {
+  const groupId = e.target.classList[3];
+  const userId = e.target.classList[2];
+  let userToken;
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+  const url = `https://andela-epic-mail.herokuapp.com/api/v2/groups/${groupId}/users/${userId}`;
+
+  fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'json/authorization',
+      token: userToken,
+    },
+  })
+    .then(res => res.json())
+    .then((body) => {
+      if (body.status === 201) {
+        getAllGroups();
       }
     });
 };
@@ -187,6 +258,8 @@ const deleteGroup = (e) => {
     })
       .then(res => res.json())
       .then((body) => {
+        console.log(body);
+
         if (body.status === 200) {
           getAllGroups();
         }
@@ -258,6 +331,11 @@ const EditGroupName = (e) => {
       }
     });
 };
+document.addEventListener('click', (e) => {
+  if (e.target.classList[1] === 'fa-user-minus') {
+    deleteUserFromGroup(e);
+  }
+});
 
 document.addEventListener('click', deleteGroup);
 document.addEventListener('click', editGroupOverlay);

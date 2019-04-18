@@ -17,7 +17,7 @@ class GroupController {
    */
   static async createGroup(req, res) {
     try {
-      const { id } = req.user;
+      const { id, firstname, lastname } = req.user;
       const { body } = req;
 
       if (body.groupname === '') {
@@ -32,8 +32,13 @@ class GroupController {
         const queryString = 'INSERT INTO groups(name, createdby) VALUES($1, $2) returning *';
         const { rows } = await query(queryString, [body.groupname, id]);
 
-        const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role) VALUES($1, $2, $3) returning *';
-        const groupmember = await query(queryString2, [rows[0].id, id, 'admin']);
+        const queryString2 = 'INSERT INTO groups_members(groupId, memberId, role, membername) VALUES($1, $2, $3, $4) returning *';
+        const groupmember = await query(queryString2, [
+          rows[0].id,
+          id,
+          'admin',
+          `${firstname} ${lastname}`,
+        ]);
 
         await query('COMMIT');
 
@@ -51,7 +56,7 @@ class GroupController {
         await query('ROLLBACK');
         return res.status(500).json({
           status: 500,
-          error: 'something went wrong',
+          error,
         });
       }
     } catch (error) {

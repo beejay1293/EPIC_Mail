@@ -127,6 +127,7 @@ class UserController {
         return res.status(201).json({
           status: 201,
           data: {
+            id: rows[0].id,
             username: rows[0].lastname,
             token,
           },
@@ -251,6 +252,7 @@ class UserController {
       return res.status(200).json({
         status: 200,
         data: {
+          id: rows[0].id,
           lastname: rows[0].lastname,
           token,
         },

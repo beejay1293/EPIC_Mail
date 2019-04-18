@@ -1459,3 +1459,7 @@ textarea:focus,
   display: inline-block;
   padding: 4px;
 }
+
+.group__member_inline {
+  display: inline-block;
+}
