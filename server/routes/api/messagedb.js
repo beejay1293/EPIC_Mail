@@ -10,6 +10,7 @@ const {
   GetAllSentMessagesdb,
   GetSpecificMessagedb,
   DeleteSpecificMessagedb,
+  GetAllDraftMessages,
 } = MessageController;
 
 const router = express.Router();
@@ -25,6 +26,9 @@ router.get('/messages/unread', verifyTokendb, GetAllUnreadReceivedMessagesdb);
 
 // get all sent messages endpoint
 router.get('/messages/sent', verifyTokendb, GetAllSentMessagesdb);
+
+// get all draft messages endpoint
+router.get('/messages/draft', verifyTokendb, GetAllDraftMessages);
 
 // get specific messages endpoint
 router.get('/messages/:messageId', verifyTokendb, GetSpecificMessagedb);

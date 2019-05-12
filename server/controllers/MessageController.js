@@ -331,6 +331,20 @@ class MessageController {
     });
   }
 
+  static async GetAllDraftMessages(req, res) {
+    console.log('draft');
+
+    const { id } = req.user;
+    const queryString = 'SELECT * FROM messages WHERE (status,createdBy) = ($1, $2)';
+
+    const { rows } = await Db.query(queryString, ['draft', id]);
+
+    return res.status(200).json({
+      status: 200,
+      data: rows,
+    });
+  }
+
   /**
    *Get a specific message
    * @param {*} req
