@@ -105,6 +105,61 @@ const getAllInbox = () => {
     .catch(err => err);
 };
 
+const getDraftMessage = () => {
+  showOverlay();
+  const url = 'https://andela-epic-mail.herokuapp.com/api/v2/messages/draft';
+
+  let userToken;
+
+  if (localStorage.getItem('user')) {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    const { token } = userData;
+    userToken = token;
+  }
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      token: userToken,
+    },
+  })
+    .then(res => res.json())
+    .then((body) => {
+      if (body.status === '200') {
+        let draft = '';
+        if (body.data.length === 0) {
+          draft
+            += '<li class="empty"> <h1>No sent messages click <a class="create">here</a> to send a message</h1> </li>';
+        } else {
+          body.data.forEach((message) => {
+            const str = ` <p class="inline">${message.subject}</p> -<p class="ms">${
+              message.message
+            }</p>`;
+
+            let msg;
+            if (str.length > 80) {
+              const substring = str.substring(0, 80);
+              msg = `${substring}...`;
+            } else {
+              msg = str.substring(0, 80);
+            }
+            const formatedDate = moment(message.createdon).format('Do MMMM');
+            draft += `<li  class="inbox__message ${
+              message.id
+            } msg"><input type="checkbox" class="checkbox"> <h1 class="name">To: ${
+              message.receiver
+            }</h1> <h1 class="message"> ${msg}</h1> <h1 class="time">${formatedDate}</h1><div class="delete__icon"> <i class="fas fa-trash-alt"></i></div></li>
+                    `;
+          });
+        }
+
+        const messageBody = document.querySelector('.draft__body');
+        messageBody.innerHTML = draft;
+      }
+    });
+};
+
 // get sent messages
 const getAllSent = () => {
   showOverlay();
