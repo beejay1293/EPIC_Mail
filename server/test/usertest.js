@@ -846,7 +846,7 @@ describe('PATCH api/v2/groups/<:groupId>/name', () => {
   it('Should edit the name of a specific group', (done) => {
     chai
       .request(app)
-      .patch('/api/v2/groups/28/name')
+      .patch(`/api/v2/groups/${groupId}/name`)
       .set('token', DbToken)
       .send({
         groupname: 'South Epic Group',
@@ -859,27 +859,6 @@ describe('PATCH api/v2/groups/<:groupId>/name', () => {
         expect(body.status).to.be.equal(200);
         expect(body.data).to.be.an('array');
         expect(body.data[0]).to.be.an('object');
-        done();
-      });
-  });
-});
-
-// Test suite for DELETE /groups/<:groupId>
-describe('DELETE api/v2/groups/<:groupId>', () => {
-  it('Should delete a specific group', (done) => {
-    chai
-      .request(app)
-      .delete(`/api/v2/groups/${groupId}`)
-      .set('token', DbToken)
-      .end((err, res) => {
-        if (err) done();
-        const { body } = res;
-        expect(body).to.be.an('object');
-        expect(body.status).to.be.a('number');
-        expect(body.status).to.be.equal(200);
-        expect(body.data).to.be.an('object');
-        expect(body.data).to.haveOwnProperty('message');
-        expect(body.data.message).to.be.equal('group has been deleted');
         done();
       });
   });
@@ -910,7 +889,7 @@ describe('POST api/v2/groups', () => {
   it('Should add a new user to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/28/users')
+      .post(`/api/v2/groups/${groupId}/users`)
       .set('token', DbToken)
       .send({
         email: `${newUser.email}`,
@@ -919,6 +898,8 @@ describe('POST api/v2/groups', () => {
       .end((err, res) => {
         if (err) done();
         const { body } = res;
+        console.log(body);
+
         userToDelete = body.data[body.data.length - 1].memberid;
         expect(body).to.be.an('object');
         expect(body.status).to.be.a('number');
@@ -935,7 +916,7 @@ describe('POST api/v2/groups', () => {
   it('Should add multiple users to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/28/users')
+      .post(`/api/v2/groups/${groupId}/users`)
       .set('token', DbToken)
       .send({
         email: ['Darryl99@hotmail.com', 'andela.matti@eeeepic.com'],
@@ -983,7 +964,7 @@ describe('POST api/v2/groups', () => {
   it('Should throw an error if user already exists in group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/28/users')
+      .post(`/api/v2/groups/${groupId}/users`)
       .set('token', DbToken)
       .send({
         email: 'Darryl99@hotmail.com',
@@ -1007,7 +988,7 @@ describe('POST api/v2/groups', () => {
   it('Should return an error if user cannot be found', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/28/users')
+      .post(`/api/v2/groups/${groupId}/users`)
       .set('token', DbToken)
       .send({
         email: 'nono@gmail.com',
@@ -1032,7 +1013,7 @@ describe('DELETE api/v2/groups', () => {
   it('Should delete a user from a group', (done) => {
     chai
       .request(app)
-      .delete(`/api/v2/groups/28/users/${userToDelete}`)
+      .delete(`/api/v2/groups/${groupId}/users/${userToDelete}`)
       .set('token', DbToken)
       .end((err, res) => {
         if (err) done();
@@ -1074,7 +1055,7 @@ describe('DELETE api/v2/groups', () => {
   it('Should throw an error if userId is not in group', (done) => {
     chai
       .request(app)
-      .delete('/api/v2/groups/28/users/2000')
+      .delete(`/api/v2/groups/${groupId}/users/2000`)
       .set('token', DbToken)
       .end((err, res) => {
         if (err) done();
@@ -1094,7 +1075,7 @@ describe('POST api/v2/groups/<:groupId>/messages', () => {
   it('Should send a message to a group', (done) => {
     chai
       .request(app)
-      .post('/api/v2/groups/28/messages')
+      .post(`/api/v2/groups/${groupId}/messages`)
       .set('token', DbToken)
       .send({
         subject: 'Test message',
@@ -1108,6 +1089,27 @@ describe('POST api/v2/groups/<:groupId>/messages', () => {
         expect(body.status).to.be.a('number');
         expect(body.status).to.be.equal(201);
         expect(body.data).to.be.an('object');
+        done();
+      });
+  });
+});
+
+// Test suite for DELETE /groups/<:groupId>
+describe('DELETE api/v2/groups/<:groupId>', () => {
+  it('Should delete a specific group', (done) => {
+    chai
+      .request(app)
+      .delete(`/api/v2/groups/${groupId}`)
+      .set('token', DbToken)
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(body.status).to.be.a('number');
+        expect(body.status).to.be.equal(200);
+        expect(body.data).to.be.an('object');
+        expect(body.data).to.haveOwnProperty('message');
+        expect(body.data.message).to.be.equal('group has been deleted');
         done();
       });
   });
